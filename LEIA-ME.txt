@@ -1,0 +1,95 @@
+CURSO NR-35 ONLINE - COLOCAR NO AR EM ~15 MINUTOS (TUDO GRATUITO)
+
+O que você terá: um site com endereço gratuito (nome.netlify.app), login do colaborador
+(e-mail + senha), registro com nome e CPF, curso com módulos travados em sequência e
+avaliações, e um painel do instrutor com tempo, respostas e notas ao vivo.
+
+Você vai usar dois serviços gratuitos:
+  - Supabase (banco de dados e login)  -> supabase.com
+  - Netlify  (hospedagem do site)      -> netlify.com
+
+------------------------------------------------------------------------------
+PASSO 1 - Criar o banco (Supabase)
+------------------------------------------------------------------------------
+1. Entre em supabase.com, crie a conta (pode usar o Google) e clique em "New project".
+2. Nome: nr35. Crie uma senha do banco (guarde). Região: South America (São Paulo).
+   Plano: Free. Clique em "Create new project" e aguarde ~2 minutos.
+3. No menu da esquerda abra "SQL Editor" > "New query". Abra o arquivo
+   01-estrutura.sql, copie TUDO, cole e clique em "Run". Deve aparecer "Success".
+
+------------------------------------------------------------------------------
+PASSO 2 - Criar o seu acesso de instrutor
+------------------------------------------------------------------------------
+1. Menu "Authentication" > "Users" > "Add user" > "Create new user".
+2. Informe o SEU e-mail e uma senha. Marque "Auto Confirm User". Crie.
+3. Volte ao "SQL Editor", abra o arquivo 02-instrutor.sql, confira se o e-mail é o mesmo
+   do passo anterior (troque se precisar), copie tudo, cole e clique em "Run".
+   O resultado deve mostrar 1 linha com o seu e-mail.
+
+------------------------------------------------------------------------------
+PASSO 3 - Deixar o cadastro do colaborador sem confirmação por e-mail
+------------------------------------------------------------------------------
+1. "Authentication" > "Sign In / Providers" (ou "Providers") > "Email".
+2. Desligue a opção "Confirm email" e salve.
+   (Sem isso o colaborador precisaria confirmar o e-mail antes de entrar, e o e-mail
+   gratuito do Supabase tem limite baixo de envios.)
+
+------------------------------------------------------------------------------
+PASSO 4 - Ligar o site ao banco
+------------------------------------------------------------------------------
+1. "Project Settings" (engrenagem) > "API" (ou botão "Connect").
+2. Copie a "Project URL" e a chave "anon public" (ou "publishable").
+3. Abra o arquivo config.js no Bloco de Notas, troque os dois valores entre aspas e salve.
+
+------------------------------------------------------------------------------
+PASSO 5 - Publicar o site (Netlify)
+------------------------------------------------------------------------------
+1. Entre em netlify.com e CRIE A CONTA ANTES (pode usar o Google). Sem conta o site
+   é apagado em 1 hora.
+2. Acesse app.netlify.com/drop e ARRASTE a pasta "nr35-online" (a pasta inteira,
+   com index.html e config.js) para a área indicada.
+3. Em instantes o site fica no ar com um endereço tipo  https://nome-aleatorio.netlify.app
+4. Para um nome melhor: "Site configuration" > "Change site name" > ex.: nr35-suaempresa.
+   O endereço final será https://nr35-suaempresa.netlify.app
+
+------------------------------------------------------------------------------
+PASSO 6 - Informar o endereço ao Supabase (para o "Esqueci minha senha")
+------------------------------------------------------------------------------
+1. Supabase > "Authentication" > "URL Configuration".
+2. Em "Site URL" coloque o endereço do Netlify e salve.
+
+------------------------------------------------------------------------------
+TESTE RÁPIDO (5 min)
+------------------------------------------------------------------------------
+1. Abra o site numa janela anônima > "Criar conta" com um e-mail de teste e senha (8+).
+2. Preencha nome e CPF válidos e faça o módulo 1.
+3. Em outra janela entre com SEU e-mail de instrutor: o painel mostra o participante.
+4. Para apagar o teste: painel > clique no nome > "Excluir registro".
+
+------------------------------------------------------------------------------
+USO NO DIA A DIA
+------------------------------------------------------------------------------
+- Envie ao colaborador só o endereço do site. Ele cria a conta, registra nome e CPF e faz o curso.
+- Painel: online agora, módulo atual, progresso, respostas certas, tempo, notas, histórico
+  de avaliações e cada pergunta respondida. Atualiza sozinho a cada 10 segundos.
+- Ao concluir, o resumo com a nota aparece para o colaborador ("Meu resumo") e para você
+  (clique no nome). O painel gera o texto do e-mail; peça ao Claude para enviá-lo pelo Gmail.
+- "Baixar planilha (.csv)" exporta todos os participantes.
+- Esqueceu a senha de alguém? Supabase > Authentication > Users > ... > "Send password recovery"
+  ou defina uma nova senha no próprio painel do Supabase.
+
+------------------------------------------------------------------------------
+ATUALIZAR O CURSO DEPOIS
+------------------------------------------------------------------------------
+Netlify > seu site > "Deploys" > arraste a pasta atualizada para a área "Drag and drop".
+Os registros continuam, pois ficam no Supabase.
+
+------------------------------------------------------------------------------
+OBSERVAÇÕES IMPORTANTES
+------------------------------------------------------------------------------
+- Dados pessoais (CPF): ficam só no seu Supabase e só o instrutor os lê (regras de
+  acesso em 01-estrutura.sql). Avise o colaborador no registro (já há um termo na tela).
+- As respostas certas fazem parte do código do site. Para prova oficial, acompanhe
+  presencialmente a avaliação final.
+- Plano gratuito do Supabase: projetos sem uso por 7 dias podem ser pausados; é só
+  reativar no painel. Para turmas maiores ou uso contínuo, considere o plano pago.

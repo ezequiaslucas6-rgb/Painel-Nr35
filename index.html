@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>Curso NR-35 12h</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Layout: barra de progresso em horas no topo, agenda dos 3 dias na lateral, módulo de 1 h no centro.
+   Cores: sinalização de segurança (amarelo de EPI sobre azul-petróleo). */
+:root{
+  --bg:#EDF0F3; --surface:#FFFFFF; --ink:#13202B; --muted:#546472; --line:#D2D9DF;
+  --navy:#0F2A3F; --navy-ink:#EAF1F6; --accent:#F2B705; --accent-ink:#1A1400;
+  --ok:#1E7A4B; --ok-bg:#E2F3EA; --bad:#B62E1B; --bad-bg:#FBE7E3; --info:#1F5F8B; --info-bg:#E3EEF6;
+  --f-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --f-body:'IBM Plex Sans',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C141B; --surface:#152029; --ink:#E6ECF1; --muted:#93A2AF; --line:#2A3947;
+  --navy:#0A1B29; --navy-ink:#EAF1F6; --accent:#F5C518; --accent-ink:#1A1400;
+  --ok:#5CC98D; --ok-bg:#12301F; --bad:#FF8F7D; --bad-bg:#3A1A15; --info:#7DB8E4; --info-bg:#15293A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C141B; --surface:#152029; --ink:#E6ECF1; --muted:#93A2AF; --line:#2A3947;
+  --navy:#0A1B29; --navy-ink:#EAF1F6; --accent:#F5C518; --accent-ink:#1A1400;
+  --ok:#5CC98D; --ok-bg:#12301F; --bad:#FF8F7D; --bad-bg:#3A1A15; --info:#7DB8E4; --info-bg:#15293A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--f-body);margin:0}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.1;margin:0;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.top{background:var(--navy);color:var(--navy-ink);padding:14px 16px 12px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:8px;background:repeating-linear-gradient(-45deg,var(--accent) 0 10px,#111 10px 20px)}
+.top-in{max-width:1180px;margin:0 auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.6rem;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+.brand b{background:var(--accent);color:var(--accent-ink);padding:0 8px;margin-right:8px}
+.prog{flex:1;min-width:180px;display:grid;gap:4px}
+.prog small{font:500 .75rem var(--f-mono);letter-spacing:.04em;text-transform:uppercase;opacity:.85}
+.bar{height:10px;background:rgba(255,255,255,.18);display:flex;gap:2px}
+.bar i{flex:1;background:rgba(255,255,255,.12)} .bar i.on{background:var(--accent)}
+.tog{background:transparent;border:1.5px solid var(--navy-ink);color:var(--navy-ink);padding:6px 12px;font:500 .8rem var(--f-mono);text-transform:uppercase;letter-spacing:.04em}
+.tog[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:32px 64px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:32px}
+.nav{position:sticky;top:96px;align-self:start;display:grid;gap:4px}
+.nav h4{font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
+.nav button{display:flex;gap:10px;align-items:baseline;text-align:left;background:none;border:0;border-left:4px solid var(--line);padding:7px 10px;width:100%}
+.nav button:hover{background:var(--surface)}
+.nav button[aria-current="true"]{border-left-color:var(--accent);background:var(--surface);font-weight:600}
+.nav .n{font:500 .8rem var(--f-mono);color:var(--muted)}
+.nav .ck{margin-left:auto;color:var(--ok);font-weight:600}
+.nav .home{border-left-color:var(--ink);font-weight:600}
+
+main{min-width:0}
+.mhead{display:grid;gap:8px;margin-bottom:24px}
+.kick{font:500 .78rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mhead h1{font-size:clamp(2rem,5vw,3rem)}
+.mhead p{margin:0;color:var(--muted);max-width:65ch}
+.goals{background:var(--surface);border:1px solid var(--line);padding:14px 18px;margin-bottom:20px}
+.goals h3{font-size:1.1rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.goals ul{margin:0;padding-left:20px} .goals li{margin:3px 0}
+.block{background:var(--surface);border:1px solid var(--line);padding:20px;margin-bottom:20px;min-width:0}
+.block>h3{font-size:1.5rem;margin-bottom:12px}
+.block p{max-width:70ch} .block ul{max-width:70ch;padding-left:20px}
+.tag{display:inline-block;font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);padding:2px 8px;margin-bottom:8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card{border:1px solid var(--line);padding:14px;background:var(--bg)}
+.card h4{font:700 1.15rem var(--f-display);text-transform:uppercase;letter-spacing:.03em;margin:0 0 4px}
+.card p{margin:0;font-size:.95rem}
+.card.warn{border-color:var(--bad);background:var(--bad-bg)}
+.note{border-left:4px solid var(--info);background:var(--info-bg);padding:10px 14px;margin:12px 0;max-width:70ch}
+.note.warn{border-color:var(--bad);background:var(--bad-bg)}
+
+.q{padding:14px 0;border-top:1px solid var(--line)} .q:first-of-type{border-top:0;padding-top:0}
+.qt{font-weight:600;margin:0 0 10px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;background:var(--bg);border:1.5px solid var(--line);padding:10px 14px;width:100%}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.sel{border-color:var(--info);background:var(--info-bg)}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)} .opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt:disabled{cursor:default}
+.two{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.fb{margin:10px 0 0;padding:8px 12px;font-size:.95rem;max-width:70ch}
+.fb.ok{background:var(--ok-bg);border-left:4px solid var(--ok)} .fb.bad{background:var(--bad-bg);border-left:4px solid var(--bad)}
+.crow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;padding:10px 0;border-top:1px solid var(--line);align-items:center}
+.crow:first-of-type{border-top:0}
+.crow .btns{display:flex;gap:6px;flex-wrap:wrap}
+.crow .btns .opt{width:auto;padding:6px 12px;font-size:.9rem}
+.crow .fb{grid-column:1/-1;margin:0}
+.ord{list-style:none;padding:0!important;margin:0;display:grid;gap:6px}
+.ord li{display:flex;gap:8px;align-items:center;background:var(--bg);border:1.5px solid var(--line);padding:8px 10px}
+.ord li span{flex:1;min-width:0}
+.ord li.right{border-color:var(--ok);background:var(--ok-bg)} .ord li.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.mv{border:1px solid var(--line);background:var(--surface);width:32px;height:32px;line-height:1}
+.act{background:var(--ink);color:var(--bg);border:0;padding:10px 18px;font:600 .9rem var(--f-mono);letter-spacing:.04em;text-transform:uppercase;margin-top:12px}
+.act.alt{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.flash{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.fc{min-height:120px;background:var(--navy);color:var(--navy-ink);border:0;padding:16px;text-align:left;font-size:1rem}
+.fc small{display:block;font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.fc.back{background:var(--accent);color:var(--accent-ink)} .fc.back small{color:var(--accent-ink)}
+.fc strong{font:700 1.3rem/1.15 var(--f-display)}
+
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.calc label{display:grid;gap:4px;font-size:.85rem;color:var(--muted)}
+.calc input[type=number]{font:500 1rem var(--f-mono);padding:8px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.calc input[type=range]{width:100%;accent-color:var(--accent)}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px}
+.res div{border:1px solid var(--line);padding:12px;background:var(--bg)}
+.res small{display:block;font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.res strong{font:700 2rem/1.1 var(--f-display)}
+.gauge{margin-top:16px;display:grid;gap:8px}
+.gauge .row{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;align-items:center;font-size:.85rem}
+.gauge .trk{height:22px;background:var(--bg);border:1px solid var(--line)}
+.gauge .fill{height:100%;background:var(--info);transition:width .2s}
+.gauge .fill.need{background:var(--accent)} .gauge .fill.bad{background:var(--bad)}
+.inst{border:2px dashed var(--info);background:var(--info-bg);padding:16px 18px;margin-bottom:20px}
+.inst h3{font-size:1.2rem;text-transform:uppercase;letter-spacing:.04em;color:var(--info);margin-bottom:6px}
+.inst ul{margin:0;padding-left:20px} .inst li{margin:4px 0}
+.foot{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;border-top:3px solid var(--ink);padding-top:16px}
+.foot .sc{font:500 .85rem var(--f-mono);color:var(--muted)}
+.foot .row{display:flex;gap:8px;flex-wrap:wrap}
+.done{background:var(--ok)!important;color:#fff!important}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.95rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 .72rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td.n{font-family:var(--f-mono)}
+.id{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.id label{display:grid;gap:4px;font-size:.85rem;color:var(--muted)}
+.id input{font:inherit;padding:8px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.result{padding:16px;border:2px solid var(--ink);margin-top:16px}
+.result.pass{border-color:var(--ok);background:var(--ok-bg)} .result.fail{border-color:var(--bad);background:var(--bad-bg)}
+.result strong{font:700 2.4rem/1 var(--f-display)}
+.gab{margin:10px 0 0;padding:10px 12px;background:var(--bg);border-left:4px solid var(--muted);font-size:.92rem}
+.mprog{margin-top:8px;display:grid;gap:6px;max-width:520px}
+.mrow{display:flex;justify-content:space-between;gap:12px;font:500 .8rem var(--f-mono);text-transform:uppercase;letter-spacing:.04em}
+.mrow.sm{color:var(--muted);text-transform:none;letter-spacing:0}
+.bar2{height:16px;background:var(--line)} .bar2 i{display:block;height:100%;background:var(--ok);transition:width .3s}
+.bar.cont{height:6px;display:block;background:rgba(255,255,255,.18)} .bar.cont i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.evalbox.locked{border:2px dashed var(--muted)}
+.nav button:disabled{opacity:.5;cursor:not-allowed}
+.nav .pc{margin-left:auto;font:500 .75rem var(--f-mono);color:var(--muted)} .nav .pc.ck{color:var(--ok);font-weight:600}
+.rd{margin-top:14px} .act:disabled{opacity:.7;cursor:default}
+.sync{font:500 .72rem var(--f-mono);letter-spacing:.04em;opacity:.85}
+.chip{display:inline-block;font:500 .72rem var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border:1.5px solid var(--line)}
+.chip.on{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)} .chip.fin{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.mini{height:10px;background:var(--line)} .mini i{display:block;height:100%;background:var(--ok)}
+.rowbtn{background:none;border:0;padding:0;text-align:left;font-weight:600;text-decoration:underline;font-size:1rem}
+.reg{display:grid;gap:14px;max-width:560px} .reg label{display:grid;gap:4px;font-size:.9rem;color:var(--muted)}
+.reg input[type=text],.reg input[type=email]{font:inherit;padding:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.err{color:var(--bad);font-size:.9rem;margin:0;min-height:1.2em}
+pre.mail{white-space:pre-wrap;word-break:break-word;background:var(--bg);border:1px solid var(--line);padding:12px;font:400 .85rem/1.5 var(--f-mono);overflow:auto}
+@media(max-width:860px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:16px;padding-block:20px 48px}
+  .nav{position:static;display:flex;overflow-x:auto;gap:6px;padding-bottom:6px}
+  .nav h4{display:none}
+  .nav button{border:1.5px solid var(--line);border-left-width:1.5px;width:auto;flex:none;padding:6px 10px;background:var(--surface)}
+  .nav button[aria-current="true"]{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+  .nav .tt{display:none} .nav .home .tt{display:inline}
+  .brand{font-size:1.25rem}
+  .top{position:static}
+  .crow{grid-template-columns:minmax(0,1fr)}
+  .gauge .row{grid-template-columns:minmax(0,1fr)}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+</head><body>
+<header class="top"><div class="top-in">
+  <div class="brand"><b>NR-35</b>Trabalho em Altura</div>
+  <div class="prog" id="prog"></div>
+  <span id="sync" class="sync"></span>
+  <button class="tog" id="instBtn" type="button" aria-pressed="false" hidden>Modo instrutor</button>
+  <button class="tog" id="panelBtn" type="button" hidden>Painel</button>
+  <button class="tog" id="outBtn" type="button" hidden>Sair</button>
+</div></header>
+<div class="wrap"><nav class="nav" id="nav" aria-label="Módulos do curso"></nav><main id="main"></main></div>
+
+<script>
+const $=s=>document.querySelector(s);
+function h(tag,props,...kids){const e=document.createElement(tag);for(const k in props||{}){const v=props[k];if(v==null)continue;if(k==='class')e.className=v;else if(k==='html')e.innerHTML=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v)}kids.flat(9).forEach(c=>{if(c==null||c===false)return;e.append(c.nodeType?c:document.createTextNode(c))});return e}
+const KEY='nr35-12h-v2';
+let MODE='boot',UID=null,DB=null,USERC=null,MYREF=null,ISOWNER=false,ME=null;
+function newState(){return{units:{},passed:{},score:{},attempts:{},stats:{},secs:{},current:null,finishedAt:null,summary:null,inst:false}}
+let S=newState();
+function loadLocal(){try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(newState(),JSON.parse(r))}catch(e){}}
+function save(){if(MODE==='aluno')schedulePush();else if(MODE==='preview'||MODE==='local'){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}}
+const sess={}; // pontuação da sessão por módulo
+function rec(mod,ok,label){const s=sess[mod]=sess[mod]||{r:0,t:0};s.t++;if(ok)s.r++;const st=S.stats[mod]=S.stats[mod]||{r:0,t:0};st.t++;if(ok)st.r++;if(label)logResp(mod,label,ok);save();const el=document.getElementById('sc');if(el)el.textContent=scoreTxt(mod)}
+function scoreTxt(mod){const s=sess[mod];return s?`Atividades deste módulo: ${s.r} de ${s.t} corretas`:'Faça as atividades para ver sua pontuação'}
+
+/* ======================= CONTEÚDO ======================= */
+const M=[
+{id:'m1',day:1,title:'A norma e o conceito de altura',sub:'O que a NR-35 regula, a quem se aplica e a partir de que altura.',
+ goals:['Definir trabalho em altura segundo a NR-35','Reconhecer o valor correto (2,00 m) e as armadilhas de prova','Identificar quando uma atividade do dia a dia entra no campo da norma'],
+ exam:'Questões 1 e 3',
+ inst:['0–10 min: abertura, apresentação dos participantes e regras do curso.','10–30 min: exposição do objetivo e do campo de aplicação (blocos abaixo).','30–50 min: atividade "É trabalho em altura?" em plenário: cada participante decide antes de o grupo discutir.','50–60 min: cartões de revisão e mini-prova.','Prática sugerida: caminhada pelo local de trabalho para achar 3 atividades acima de 2,00 m e 1 abaixo.'],
+ blocks:[
+ {t:'text',h:'O que a NR-35 estabelece',html:`<p>A NR-35 fixa os <strong>requisitos mínimos e as medidas de proteção</strong> para o trabalho em altura. Ela cobre o <strong>planejamento, a organização e a execução</strong> do serviço, para garantir a segurança e a saúde dos trabalhadores envolvidos <strong>direta ou indiretamente</strong> na atividade.</p><p>Considera-se trabalho em altura toda atividade executada <strong>acima de 2,00 m do nível inferior</strong>, onde haja <strong>risco de queda</strong>.</p><div class="note warn"><strong>Armadilha de prova:</strong> as alternativas 2,10 m, 2,50 m e 3 m são falsas. O número da NR-35 é 2,00 m.</div>`},
+ {t:'cards',h:'Quatro ideias para guardar',items:[['Campo de aplicação','Toda atividade acima de 2,00 m do nível inferior com risco de queda.'],['Quem é protegido','Quem executa e também quem trabalha ao lado ou embaixo, direta ou indiretamente.'],['O que a norma organiza','Planejamento, organização e execução da atividade.'],['Abaixo de 2,00 m','A definição da NR-35 não se aplica, mas o risco segue precisando de avaliação (NR-1 e demais NRs).']]},
+ {t:'quiz',h:'É trabalho em altura pela NR-35?',items:[
+  {q:'Instalar uma antena de rádio no topo de uma torre a 18 m do solo.',o:['Sim','Não'],a:0,why:'18 m está acima de 2,00 m e há risco de queda.'},
+  {q:'Trocar uma lâmpada usando escada, a 2,5 m do piso.',o:['Sim','Não'],a:0,why:'2,5 m é maior que 2,00 m. Escada não tira a atividade do campo da norma.'},
+  {q:'Organizar caixas em uma prateleira usando um banquinho, a 1,2 m do piso.',o:['Sim','Não'],a:1,why:'Abaixo de 2,00 m a definição da NR-35 não é atingida.'},
+  {q:'Trabalhar na borda de uma laje sem fechamento, 3 m acima do pavimento inferior.',o:['Sim','Não'],a:0,why:'Há risco de queda e a diferença de nível passa de 2,00 m.'},
+  {q:'Subir em um poste para lançar cabo de fibra a 7 m de altura.',o:['Sim','Não'],a:0,why:'Poste é o caso clássico de telecomunicações. Soma-se o risco elétrico (NR-10) se houver rede próxima.'},
+  {q:'Pintar uma fachada em cadeira suspensa a 15 m.',o:['Sim','Não'],a:0,why:'Acesso por cadeira suspensa também é trabalho em altura, com regras próprias de acesso por corda.'}]},
+ {t:'flash',h:'Cartões de revisão',items:[['Altura na NR-35','Acima de 2,00 m do nível inferior, com risco de queda.'],['Envolvidos','Direta ou indiretamente com a atividade.'],['Alternativas de prova','2,10 m, 2,50 m e 3 m estão erradas.']]}
+ ]},
+{id:'m2',day:1,title:'Responsabilidades',sub:'O que cabe ao empregador e o que cabe ao trabalhador.',
+ goals:['Separar as obrigações do empregador das do trabalhador','Saber o que fazer diante de risco grave e iminente','Entender a equipe de salvamento'],
+ exam:'Questões 1, 5 e 6',
+ inst:['0–15 min: exposição das duas listas de responsabilidades.','15–40 min: atividade de classificação, com discussão de cada item errado.','40–60 min: mini-prova e estudo de caso: "o trabalhador parou o serviço e o encarregado mandou voltar".','Ponto de atenção: o direito e o dever de interromper a atividade em risco grave e iminente.'],
+ blocks:[
+ {t:'cards',h:'Quem faz o quê',items:[['Empregador','Garantir o cumprimento da norma, elaborar a Análise de Risco, desenvolver procedimentos, capacitar e autorizar trabalhadores, garantir supervisão, organizar a resposta a emergências e assegurar a suspensão do trabalho em risco grave e iminente.'],['Trabalhador','Cumprir as disposições legais e os procedimentos, colaborar com o empregador, zelar pela sua segurança e a das outras pessoas e interromper a atividade diante de risco grave e iminente, comunicando o superior.']]},
+ {t:'classify',h:'Classifique cada responsabilidade',buckets:['Empregador','Trabalhador'],items:[
+  ['Desenvolver o procedimento operacional das atividades rotineiras',0,'O procedimento operacional é responsabilidade do empregador.'],
+  ['Zelar pela própria segurança e pela de outras pessoas afetadas por suas ações ou omissões',1,'Dever do trabalhador.'],
+  ['Interromper a atividade e informar o superior ao ver risco grave e iminente',1,'O trabalhador interrompe e comunica. O empregador, por sua vez, assegura a suspensão.'],
+  ['Promover o programa de capacitação para trabalho em altura',0,'Capacitar é obrigação do empregador.'],
+  ['Elaborar a Análise de Risco e a Permissão de Trabalho',0,'Planejamento é do empregador.'],
+  ['Colaborar com o empregador no cumprimento da norma',1,'Colaboração e cumprimento dos procedimentos cabem ao trabalhador.'],
+  ['Assegurar a organização de equipe para resposta a emergências',0,'A equipe de salvamento e emergência é organizada pelo empregador.'],
+  ['Garantir que a atividade seja executada sob supervisão',0,'A forma de supervisão é definida na Análise de Risco, e o empregador a garante.']]},
+ {t:'text',h:'Equipe de salvamento e emergência',html:`<p>O empregador deve assegurar que exista equipe capaz de responder a emergências. Essa equipe <strong>pode ser própria, formada por trabalhadores treinados, ou externa</strong>. Dizer que ela "deve ser necessariamente externa" é falso.</p>`},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Quem deve desenvolver o procedimento operacional das atividades rotineiras de trabalho em altura?',o:['O trabalhador','O empregador','O fabricante do EPI','O sindicato'],a:1,why:'Procedimento operacional é dever do empregador.'},
+  {q:'Um trabalhador percebe risco grave e iminente. O que ele deve fazer?',o:['Terminar a tarefa rapidamente','Interromper a atividade e informar o superior','Esperar a hora do almoço para avisar','Chamar um colega para assumir'],a:1,why:'Interromper e comunicar é dever do trabalhador.'},
+  {q:'A equipe de salvamento pode ser composta por trabalhadores da própria empresa?',o:['Sim, desde que treinada e com recursos','Não, deve ser sempre externa'],a:0,why:'A norma permite equipe interna ou externa, desde que preparada.'}]}
+ ]},
+{id:'m3',day:1,title:'Capacitação, treinamento e saúde',sub:'Carga horária, periodicidade, reciclagem e aptidão médica.',
+ goals:['Fixar 8 horas (inicial e periódico) e 2 anos (periodicidade)','Listar as situações que exigem novo treinamento','Relacionar ASO, aptidão e autorização do trabalhador'],
+ exam:'Questões 1 e 4',
+ inst:['0–20 min: exposição da capacitação inicial, periódica e eventual.','20–40 min: cenários "precisa reciclar?" (votação por cartão sim/não).','40–55 min: cartões numéricos em duplas.','55–60 min: fechamento e mini-prova.','Prática: conferir o certificado de um participante e checar se traz nome, conteúdo, carga horária, data, local, instrutor e assinatura.'],
+ blocks:[
+ {t:'cards',h:'Números que caem em prova',items:[['Treinamento inicial','Teórico e prático, mínimo de 8 horas, antes de iniciar a atividade.'],['Treinamento periódico','A cada 2 anos (bienal), com mínimo de 8 horas.'],['Capacitação eventual','Novo treinamento em mudança de procedimento ou condição, evento que mostre necessidade, afastamento superior a 90 dias ou mudança de empresa.'],['Horário','O treinamento deve ser realizado durante o horário normal de trabalho.']]},
+ {t:'text',h:'Conteúdo mínimo, certificado e autorização',html:`<p>O conteúdo programático deve abordar, no mínimo: normas e regulamentos aplicáveis, análise de risco e condições impeditivas, riscos potenciais e medidas de prevenção, sistemas e equipamentos de proteção (seleção, inspeção, conservação e limitações de uso), acidentes típicos e condutas em emergências, incluindo noções de resgate e primeiros socorros.</p><p>Ao final, o participante recebe <strong>certificado</strong> com nome, conteúdo, carga horária, data, local, instrutor e responsável. A empresa mantém cópia arquivada.</p><p>Só executa trabalho em altura quem é <strong>capacitado, tem ASO com aptidão para altura e recebeu anuência formal (autorização) do empregador</strong>.</p>`},
+ {t:'quiz',h:'Precisa fazer novo treinamento?',items:[
+  {q:'Concluiu a capacitação há 1 ano e 6 meses e nada mudou no trabalho.',o:['Sim','Não'],a:1,why:'Ainda está dentro do prazo bienal.'},
+  {q:'Voltou de licença de 120 dias.',o:['Sim','Não'],a:0,why:'Afastamento superior a 90 dias exige nova capacitação.'},
+  {q:'Voltou de férias de 30 dias.',o:['Sim','Não'],a:1,why:'30 dias não passa de 90.'},
+  {q:'Foi contratado por outra empresa e traz certificado da anterior.',o:['Sim','Não'],a:0,why:'Mudança de empresa exige capacitação na nova empresa.'},
+  {q:'A empresa trocou o sistema de ancoragem e mudou o procedimento.',o:['Sim','Não'],a:0,why:'Mudança nos procedimentos, condições ou operações exige novo treinamento.'},
+  {q:'O último treinamento foi há 25 meses.',o:['Sim','Não'],a:0,why:'Passou de 2 anos: reciclagem periódica vencida.'}]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Em condições normais, com que frequência é o treinamento periódico?',o:['A cada 6 meses','A cada 1 ano','A cada 2 anos','A cada 3 anos'],a:2,why:'Bienal: a cada 2 anos.'},
+  {q:'Qual a carga horária mínima da capacitação inicial?',o:['4 horas','8 horas','16 horas','40 horas'],a:1,why:'Mínimo de 8 horas, teóricas e práticas. Este curso, de 12 horas, supera o mínimo.'}]},
+ {t:'flash',h:'Cartões de revisão',items:[['Inicial','8 h, teoria + prática, antes de começar.'],['Periódico','A cada 2 anos, mínimo de 8 h.'],['Afastamento','Mais de 90 dias exige novo treinamento.']]}
+ ]},
+{id:'m4',day:1,title:'Análise de Risco, PO e PT',sub:'Os documentos que antecedem qualquer trabalho em altura.',
+ goals:['Saber que toda atividade precisa de Análise de Risco','Distinguir PO (rotineira) de PT (não rotineira)','Diferenciar PT de PET'],
+ exam:'Questões 2, 6 e 7',
+ inst:['0–20 min: exposição dos três documentos com exemplos da empresa.','20–40 min: classificação PO x PT.','40–55 min: montar uma AR simples de uma tarefa real do grupo em quadro.','55–60 min: mini-prova.','Prática: preencher um modelo de PT com uma atividade não rotineira fictícia.'],
+ blocks:[
+ {t:'cards',h:'Os documentos',items:[['Análise de Risco (AR)','Obrigatória para todo trabalho em altura, rotineiro ou não. Considera o local e o entorno, isolamento e sinalização, ancoragens, clima, queda de materiais e ferramentas, trabalhos simultâneos e emergências.'],['Procedimento Operacional (PO)','Para atividades rotineiras: método padronizado e documentado.'],['Permissão de Trabalho (PT)','Para atividades não rotineiras: autorização prévia, válida só para o turno.'],['ASO','Atestado de Saúde Ocupacional. Comprova aptidão, não autoriza a atividade em si.']]},
+ {t:'text',h:'PT, PET e supervisão',html:`<p>A <strong>PT</strong> tem validade limitada à duração da atividade, restrita ao turno, podendo ser revalidada se não mudarem as condições nem a equipe. Ela deve estar disponível no local.</p><div class="note warn"><strong>Não confunda:</strong> a <em>Permissão de Entrada e Trabalho (PET)</em> pertence à NR-33 (espaço confinado). Na NR-35 a permissão é a <em>PT</em>.</div><p>Todo trabalho em altura deve ser realizado <strong>sob supervisão</strong>, e a forma da supervisão é definida pela Análise de Risco conforme as peculiaridades da atividade.</p>`},
+ {t:'classify',h:'PO ou PT?',buckets:['PO (rotineira)','PT (não rotineira)'],items:[
+  ['Instalar CTO em poste, tarefa diária com método padronizado',0,'Rotineira, com procedimento definido: PO (sempre precedida de AR).'],
+  ['Reparo emergencial em torre numa situação que a equipe nunca executou',1,'Não rotineira: precisa de PT.'],
+  ['Ativação de clientes com escada de 2,5 m, mesmo método todos os dias',0,'Rotineira: PO.'],
+  ['Primeira vez que a equipe troca um equipamento pesado no topo da torre',1,'Atividade nova e não rotineira: PT.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Atividades de trabalho em altura NÃO rotineiras devem ser autorizadas mediante:',o:['Permissão de Entrada e Trabalho – PET','Permissão de Trabalho – PT','Procedimento Operacional – PO','Atestado de Saúde Ocupacional – ASO'],a:1,why:'PT. A PET é da NR-33.'},
+  {q:'Apenas o trabalho em altura não rotineiro precisa de Análise de Risco?',o:['Sim','Não, todo trabalho em altura precisa'],a:1,why:'A AR precede toda atividade, rotineira ou não.'},
+  {q:'Qual documento considera o local e entorno, o isolamento e a sinalização, as ancoragens e a queda de materiais?',o:['PCMSO','SPCQ','SPIQ','Procedimento Operacional','Análise de Risco'],a:4,why:'É a Análise de Risco.'}]}
+ ]},
+{id:'m5',day:2,title:'Hierarquia das medidas de proteção',sub:'Evitar, proteger coletivamente, proteger individualmente.',
+ goals:['Aplicar a ordem de prioridade das medidas','Montar a sequência segura antes de subir','Justificar por que o SPCQ vem antes do SPIQ'],
+ exam:'Base para as questões 7, 8 e 9',
+ inst:['0–15 min: hierarquia com exemplo de telecom (fazer a emenda no solo antes de subir).','15–30 min: atividade de ordenar.','30–50 min: discussão de casos reais do grupo.','50–60 min: mini-prova.'],
+ blocks:[
+ {t:'text',h:'A lógica da NR-35',html:`<p>Primeiro se pergunta se o trabalho em altura pode ser <strong>evitado</strong>. Quando não pode, adotam-se medidas que <strong>eliminem o risco de queda</strong> (proteção coletiva). Só quando isso não for possível se recorre a medidas que <strong>minimizem as consequências</strong> da queda (proteção individual).</p>`},
+ {t:'order',h:'Ordene a hierarquia',steps:['Evitar o trabalho em altura (fazer no solo ou usar meio alternativo)','Eliminar o risco de queda com proteção coletiva (guarda-corpo, plataforma)','Minimizar as consequências da queda com proteção individual (SPIQ)']},
+ {t:'order',h:'Ordene a sequência antes de subir',steps:['Ler a Análise de Risco e conferir PO ou PT','Verificar clima e condições impeditivas','Isolar e sinalizar a área abaixo','Inspecionar EPI, ancoragem e ferramentas','Conectar-se ao sistema antes de se expor ao risco']},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Qual medida vem primeiro na ordem de prioridade?',o:['Cinturão e talabarte','Evitar o trabalho em altura','Treinamento de resgate','Sinalização'],a:1,why:'Evitar é a primeira medida, sempre que houver meio alternativo.'},
+  {q:'O trabalhador precisa ficar conectado ao SPIQ durante todo o período de exposição ao risco de queda?',o:['Sim','Não'],a:0,why:'Sim. Afirmar que não é necessário é justamente a alternativa errada da questão 8.'}]}
+ ]},
+{id:'m6',day:2,title:'Proteção coletiva (SPCQ)',sub:'Guarda-corpo, rede, rodapé, plataformas e sinalização.',
+ goals:['Reconhecer elementos de proteção coletiva','Distinguir SPCQ de SPIQ','Explicar por que a proteção coletiva é preferida'],
+ exam:'Questão 9',
+ inst:['0–15 min: exposição com fotos ou modelos reais.','15–35 min: atividade de classificação SPCQ x SPIQ.','35–50 min: prática de inspeção de um guarda-corpo (altura, rodapé, fixação).','50–60 min: mini-prova.'],
+ blocks:[
+ {t:'text',h:'O que é SPCQ',html:`<p>O <strong>Sistema de Proteção Coletiva Contra Quedas</strong> protege todos os que estão na área sem depender de ação individual: guarda-corpo com rodapé, redes de proteção, plataformas com fechamento, pisos e pranchas completos, telas e escadas com proteção, além de isolamento e sinalização da área.</p><p>Já o <strong>cinturão, o talabarte, o trava-quedas e os conectores</strong> pertencem ao <strong>SPIQ</strong> (proteção individual).</p><div class="note"><strong>Atenção:</strong> tecnicamente, cabo-guia e linha de vida são elementos de ancoragem do SPIQ, mas a questão 9 da prova os apresenta como coletivos. O item que certamente NÃO é coletivo é <em>cinto de segurança e talabarte</em>. Vale comentar essa ambiguidade em sala.</div>`},
+ {t:'classify',h:'SPCQ ou SPIQ?',buckets:['SPCQ (coletivo)','SPIQ (individual)'],items:[
+  ['Guarda-corpo com rodapé',0,'Barreira física que protege todos.'],
+  ['Cinturão tipo paraquedista',1,'Equipamento usado por cada trabalhador.'],
+  ['Rede de proteção',0,'Coletivo.'],
+  ['Talabarte com absorvedor de energia',1,'Individual.'],
+  ['Plataforma de trabalho com fechamento lateral',0,'Coletivo.'],
+  ['Trava-quedas',1,'Individual.'],
+  ['Conector (mosquetão) com trava dupla',1,'Individual: faz parte da conexão do SPIQ.'],
+  ['Rodapé e prancha de piso',0,'Coletivo.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Qual item NÃO faz parte do Sistema de Proteção Coletiva Contra Quedas?',o:['Rede de proteção','Guarda-corpo com rodapé','Cinto de segurança e talabarte','Plataforma com fechamento'],a:2,why:'Cinto e talabarte são individuais (SPIQ).'}]}
+ ]},
+{id:'m7',day:2,title:'Proteção individual (SPIQ) e inspeção',sub:'Cinturão, talabarte, trava-quedas, conectores e inspeção antes do uso.',
+ goals:['Nomear e descrever os componentes do SPIQ','Definir talabarte','Reprovar equipamento com defeito'],
+ exam:'Questões 8 e 10',
+ inst:['0–15 min: exposição com o kit real em mãos.','15–30 min: inspeção guiada, peça por peça.','30–50 min: PRÁTICA de ajuste do cinturão (peitoral, coxas, argola dorsal) e conexão correta do talabarte em dupla.','50–60 min: mini-prova.','Lembrar: verificar CA, validade e manual do fabricante.'],
+ blocks:[
+ {t:'cards',h:'Componentes do SPIQ',items:[['Cinturão tipo paraquedista','EPI com sustentação no peito, ombros e coxas. Distribui a força da parada e mantém o corpo em posição segura.'],['Talabarte','Dispositivo de conexão, regulável ou não, para sustentar, posicionar e/ou limitar a movimentação do trabalhador. Para retenção de queda usa-se absorvedor de energia.'],['Trava-quedas','Dispositivo que trava em caso de queda, acompanhando o trabalhador em movimentos verticais ou horizontais quando conectado ao cinturão.'],['Ancoragem e conectores','Ponto ou linha onde o sistema se prende, e conectores compatíveis entre si. A compatibilidade entre elementos é exigida na Análise de Risco.']]},
+ {t:'text',h:'Antes do uso',html:`<p>Verifique sempre: <strong>CA válido, etiqueta legível, manual do fabricante, e inspeção visual completa</strong> a cada uso. Equipamento que sofreu queda, absorvedor acionado, corte, queima, corrosão ou contato com químicos é retirado de uso.</p>`},
+ {t:'classify',h:'Inspeção: liberar ou reprovar?',buckets:['Liberar','Reprovar'],items:[
+  ['Fita com fios cortados e costura aberta próxima à argola dorsal',1,'Costura e fita comprometidas: retirar de uso.'],
+  ['Poeira seca na fita, que saiu com pano úmido; etiqueta legível e CA válido',0,'Sujeira leve removível não reprova o equipamento.'],
+  ['Absorvedor de energia com a capa rasgada e fita exposta',1,'Absorvedor acionado ou danificado: nunca reutilizar.'],
+  ['Mosquetão cuja trava não fecha sozinha',1,'Trava defeituosa: risco de abertura acidental.'],
+  ['Etiqueta ilegível e sem identificação do fabricante',1,'Sem rastreabilidade não há como confirmar CA, validade nem histórico.'],
+  ['Fivelas sem corrosão, fitas sem cortes, absorvedor íntegro, etiqueta ok',0,'Conforme: pode ser liberado.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'De acordo com a NR-35, talabarte significa:',o:['Dispositivo de conexão de um sistema de segurança, regulável ou não, para sustentar, posicionar e/ou limitar a movimentação do trabalhador','Equipamento de proteção individual constituído de sustentação no peito, ombros e coxas','Elemento fixado de forma permanente na estrutura','Rede de proteção coletiva'],a:0,why:'A segunda alternativa define o cinturão, e a terceira, a ancoragem.'}]}
+ ]},
+{id:'m8',day:2,title:'Ancoragem, fator de queda e zona livre de queda',sub:'Calcule quanto espaço livre é preciso abaixo do trabalhador.',
+ goals:['Definir distância de queda livre, fator de queda e zona livre de queda','Calcular a ZLQ com a calculadora','Escolher ancoragem que reduza o fator de queda'],
+ exam:'Questão 8',
+ inst:['0–15 min: definições no quadro com desenho da queda.','15–40 min: calculadora, em duplas, com 3 cenários (ancoragem acima da cabeça, nos pés e abaixo).','40–55 min: PRÁTICA de ancoragem em estrutura da empresa, identificando o ponto certo.','55–60 min: mini-prova.','Sempre usar os dados do manual do fabricante para o cálculo real.'],
+ blocks:[
+ {t:'cards',h:'Três definições da Análise de Risco',items:[['Distância de queda livre','Distância percorrida na queda antes de o sistema começar a frear o trabalhador.'],['Fator de queda','Altura de queda livre dividida pelo comprimento do talabarte. Vai de 0 a 2. Quanto maior, mais forte o impacto.'],['Zona livre de queda (ZLQ)','Espaço livre necessário abaixo do trabalhador para ele parar sem bater em solo ou obstáculo.']]},
+ {t:'zlq'},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Marque a alternativa ERRADA. A Análise de Risco do SPIQ deve considerar:',o:['Que não é necessário permanecer conectado ao sistema durante todo o período de exposição','Distância de queda livre','Fator de queda','Zona livre de queda','Compatibilidade entre os elementos do SPIQ'],a:0,why:'O trabalhador deve permanecer conectado durante toda a exposição ao risco de queda.'},
+  {q:'Qual ancoragem produz o MENOR fator de queda?',o:['Ancoragem acima da cabeça','Ancoragem na altura dos pés','Ancoragem abaixo dos pés'],a:0,why:'Com o ponto acima, a queda livre é curta ou nula.'}]}
+ ]},
+{id:'m9',day:2,title:'Acessos e equipamentos',sub:'Escadas, andaimes, plataformas, postes, torres e acesso por corda.',
+ goals:['Tomar decisão segura na hora de escolher o acesso','Reconhecer situações que exigem parar','Relacionar trabalho em altura com riscos elétricos'],
+ exam:'Aplicação prática',
+ inst:['0–15 min: exposição rápida dos acessos usados pela empresa.','15–40 min: casos de decisão em duplas.','40–55 min: PRÁTICA supervisionada em escada e/ou estrutura, com ancoragem e comunicação.','55–60 min: mini-prova.','Ajustar os exemplos ao acesso real (poste, torre, telhado, andaime).'],
+ blocks:[
+ {t:'cards',h:'Acessos mais comuns',items:[['Escadas portáteis','Firmes, em bom estado, fixadas ou seguradas, com três pontos de apoio. Não substituem o SPIQ quando exigido pela Análise de Risco.'],['Andaimes','Montados e liberados por pessoal habilitado, com piso completo, guarda-corpo e rodapé.'],['Postes e torres','Riscos de queda, de rede elétrica próxima (NR-10) e de resgate difícil. Ancoragem contínua durante a subida.'],['Acesso por corda','Regras próprias no Anexo I da NR-35: cabos independentes, equipe treinada e plano de resgate.']]},
+ {t:'quiz',h:'O que fazer?',items:[
+  {q:'A escada de 6 m está encostada num poste sem fixação e sem ninguém segurando.',o:['Subir rápido para reduzir o tempo de exposição','Fixar ou travar a escada, ou trocar o acesso, antes de subir','Pedir para o colega segurar só com uma mão'],a:1,why:'Acesso instável é situação para corrigir antes de começar.'},
+  {q:'O andaime do último nível está sem guarda-corpo.',o:['Trabalhar conectado e seguir','Interromper e solicitar correção','Improvisar com corda solta'],a:1,why:'Sem proteção coletiva completa, a atividade é interrompida até a correção.'},
+  {q:'Há rede de energia a menos de 1 m do ponto de trabalho no poste.',o:['Trabalhar com muito cuidado','Não iniciar sem procedimento, habilitação e autorização para o risco elétrico (NR-10)','Desligar a luz do poste com uma vara'],a:1,why:'Risco adicional elétrico exige controle próprio antes de qualquer subida.'},
+  {q:'Uma ferramenta pesada está solta e pode cair sobre quem passa embaixo.',o:['Avisar quem passa e continuar','Prender a ferramenta, isolar e sinalizar a área abaixo','Trabalhar rápido para terminar logo'],a:1,why:'A queda de materiais é risco previsto na Análise de Risco. Isolamento e sinalização são medidas obrigatórias.'}]}
+ ]},
+{id:'m10',day:2,title:'Condições impeditivas e riscos adicionais',sub:'Quando iniciar e quando interromper.',
+ goals:['Listar condições impeditivas','Decidir entre iniciar e interromper','Reconhecer riscos adicionais'],
+ exam:'Aplicação prática',
+ inst:['0–10 min: definição de condição impeditiva.','10–40 min: simulador "iniciar ou interromper" com discussão de cada decisão.','40–55 min: construir uma lista de verificação para a realidade da empresa.','55–60 min: mini-prova.'],
+ blocks:[
+ {t:'text',h:'Condição impeditiva',html:`<p>É toda situação que <strong>impede a realização</strong> ou <strong>obriga a interrupção</strong> da atividade. Exemplos: chuva forte, vento forte, descargas atmosféricas, iluminação insuficiente, trabalhador com mal-estar, equipamento danificado, ausência de AR/PO/PT, ancoragem duvidosa e trabalhador sem capacitação ou sem autorização.</p><p>Riscos adicionais que também entram na Análise de Risco: queda de materiais, trabalhos simultâneos em níveis diferentes, rede elétrica, animais peçonhentos, atmosfera perigosa e isolamento do local.</p>`},
+ {t:'classify',h:'Iniciar ou interromper?',buckets:['Iniciar','Interromper'],items:[
+  ['Céu aberto, PT emitida, EPI inspecionado, área isolada',0,'Condições atendidas.'],
+  ['Trovoadas com raios se aproximando',1,'Descarga atmosférica é condição impeditiva.'],
+  ['Trabalhador relata tontura antes de subir',1,'Mal-estar é condição impeditiva: não deve executar.'],
+  ['Falta a PT em atividade não rotineira',1,'Sem autorização prévia não se inicia.'],
+  ['Talabarte com absorvedor rasgado',1,'Equipamento danificado.'],
+  ['Trabalhador com capacitação vigente, ASO apto e autorização formal',0,'Requisitos cumpridos.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Um trabalhador pode interromper a atividade se achar que há risco grave e iminente?',o:['Não, apenas o encarregado pode decidir','Sim, ele deve interromper e informar o superior'],a:1,why:'É dever do trabalhador e o empregador deve assegurar a suspensão.'}]}
+ ]},
+{id:'m11',day:2,title:'Emergência e salvamento',sub:'Plano de resgate, primeiros socorros e síndrome da suspensão.',
+ goals:['Ordenar as etapas de resposta a uma queda','Explicar por que o resgate deve ser rápido','Reconhecer o papel da equipe de emergência'],
+ exam:'Questão 5 (equipe de salvamento)',
+ inst:['0–15 min: exposição do plano de emergência da empresa e contatos.','15–30 min: atividade de ordenar.','30–55 min: PRÁTICA de simulado de resgate de trabalhador suspenso (boneco), com cronômetro.','55–60 min: mini-prova.','Protocolo de primeiros socorros e técnicas de resgate são conduzidos pelo instrutor habilitado.'],
+ blocks:[
+ {t:'text',h:'Por que o resgate é urgente',html:`<p>Um trabalhador que fica <strong>suspenso e imóvel no cinturão</strong> corre risco de vida em pouco tempo: a circulação nas pernas é prejudicada e pode ocorrer a chamada <strong>síndrome da suspensão</strong>. Por isso o <strong>plano de resgate deve existir antes</strong> de a atividade começar, com equipe, equipamentos e treinamento definidos.</p><div class="note"><strong>Depois do resgate</strong> toda vítima de suspensão deve ser avaliada por serviço médico, mesmo sem sintomas. As posições e os procedimentos de primeiros socorros seguem o protocolo do instrutor habilitado.</div>`},
+ {t:'order',h:'Ordene a resposta a uma queda',steps:['Garantir a segurança da equipe e da área','Acionar a equipe de emergência e os serviços de socorro (SAMU 192 e Bombeiros 193)','Manter contato verbal com a vítima','Executar o resgate conforme o plano, com equipe treinada','Prestar primeiros socorros e encaminhar ao atendimento médico','Registrar, comunicar e investigar o ocorrido']},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'O plano de resgate deve ser pensado quando?',o:['Somente depois de um acidente','Antes de a atividade começar','Apenas em atividades não rotineiras'],a:1,why:'O planejamento de emergência faz parte da preparação da atividade.'},
+  {q:'A equipe de salvamento e emergência deve ser necessariamente externa?',o:['Sim','Não, pode ser própria ou externa, desde que preparada'],a:1,why:'A norma não obriga equipe externa.'}]}
+ ]},
+{id:'m12',day:2,title:'Revisão e avaliação final',sub:'Cartões de revisão e a prova de 10 questões.',
+ goals:['Revisar os números e conceitos essenciais','Responder a avaliação da NR-35','Identificar pontos a reforçar'],
+ exam:'Todas',
+ inst:['0–20 min: revisão em plenário usando os cartões.','20–50 min: aplicação da avaliação. Participante preenche nome, empresa e data.','50–60 min: correção comentada, questão por questão.','Critério de aprovação sugerido: 70% (ajuste conforme o critério da empresa).'],
+ blocks:[
+ {t:'flash',h:'Revisão relâmpago',items:[['Altura','Acima de 2,00 m do nível inferior com risco de queda.'],['Capacitação inicial','Mínimo 8 h, teoria e prática.'],['Periódico','A cada 2 anos.'],['Reciclagem','Mudança de procedimento, evento, afastamento superior a 90 dias, mudança de empresa.'],['Não rotineira','Permissão de Trabalho (PT). PET é da NR-33.'],['Análise de Risco','Todo trabalho em altura, rotineiro ou não.'],['SPCQ','Coletivo: guarda-corpo, rede, rodapé, plataforma.'],['SPIQ','Individual: cinturão, talabarte, trava-quedas, conectores.'],['Conexão','Permanecer conectado durante toda a exposição ao risco.'],['Equipe de salvamento','Pode ser própria ou externa.']]}
+ ]}
+];
+
+/* ======================= PROVA (do arquivo enviado) ======================= */
+const EXAM=[
+ {q:'A respeito das disposições sobre o Trabalho em Altura da Norma Regulamentadora 35, assinale a alternativa correta:',o:['É considerado trabalho em altura a atividade executada acima de 3 metros do nível inferior, em que haja risco de queda.','Trabalhador capacitado para trabalho em altura deve participar e ser aprovado em treinamento teórico e prático de duração de 8 horas.','A capacitação ao trabalhador em altura deve ser periódica a cada 6 meses e realizada, preferencialmente, durante horário de trabalho.','O empregador não é o responsável por promover programa de capacitação para trabalho em altura.'],a:1,why:'A capacitação inicial é teórica e prática, com mínimo de 8 horas. O limite é 2,00 m (não 3 m), a periodicidade é bienal e a capacitação é obrigação do empregador.',mod:'m3'},
+ {q:'Na NR-35, as atividades de trabalho em altura NÃO rotineiras devem ser previamente autorizadas mediante:',o:['Permissão de Entrada e Trabalho – PET.','Permissão de Trabalho – PT.','Procedimento Operacional – PO.','Atestado de Saúde Ocupacional – ASO.'],a:1,why:'Atividades não rotineiras exigem Permissão de Trabalho (PT). A PET é da NR-33.',mod:'m4'},
+ {q:'A NR-35 estabelece os requisitos mínimos e as medidas de proteção para o trabalho em altura, envolvendo o planejamento, a organização e a execução, de forma a garantir a segurança e a saúde dos trabalhadores. Podemos considerar como trabalho em altura:',o:['Toda atividade executada acima de 2,10 m do nível inferior, onde haja risco de queda.','Toda atividade executada acima de 2,00 m do nível inferior, onde haja risco de queda.','Toda atividade executada acima de 2,50 m do nível inferior, onde haja risco de queda.','Nenhuma das alternativas.'],a:1,why:'A definição usa 2,00 m.',mod:'m1'},
+ {q:'Conforme a NR-35, o empregador deve promover programa para capacitação dos trabalhadores para a realização de trabalho em altura. Em condições normais, este treinamento deve ser realizado em período:',o:['A cada 02 anos','A cada 01 ano','A cada 3 anos','Semestral'],a:0,why:'O treinamento periódico é bienal.',mod:'m3'},
+ {q:'Quanto à Norma Regulamentadora nº 35 (NR-35) – Trabalho em Altura, assinale a alternativa correta:',o:['Cabe ao trabalhador desenvolver procedimento operacional para as atividades rotineiras de trabalho em altura.','O treinamento periódico bienal deve ter carga horária mínima de 40 horas, conforme conteúdo programático definido pelo empregador.','Cabe ao trabalhador zelar pela sua segurança e saúde e a de outras pessoas que possam ser afetadas por suas ações ou omissões no trabalho.','A equipe de Salvamento e Emergência deve ser – necessariamente – externa, não podendo ser composta pelo quadro de trabalhadores em altura.'],a:2,why:'O procedimento operacional é do empregador, o periódico exige mínimo de 8 h e a equipe de salvamento pode ser interna.',mod:'m2'},
+ {tf:true,q:'Assinale V para verdadeira e F para falso. De acordo com a NR-35 – Trabalho em altura:',items:[
+   ['Esta Norma estabelece os requisitos mínimos e as medidas de proteção para o trabalho em altura, envolvendo o planejamento, a organização e a execução, de forma a garantir a segurança e a saúde dos trabalhadores envolvidos direta ou indiretamente com esta atividade.',true],
+   ['Apenas o trabalho em altura não rotineiro deve ser precedido de Análise de Risco.',false],
+   ['O trabalhador deve zelar pela sua segurança e saúde e a de outras pessoas que possam ser afetadas por suas ações ou omissões no trabalho.',true],
+   ['Todo trabalho em altura deve ser realizado sob supervisão, cuja forma será definida pela análise de risco de acordo com as peculiaridades da atividade.',true]],
+  why:'Sequência correta: V, F, V, V. Toda atividade em altura, rotineira ou não, precisa de Análise de Risco.',mod:'m4'},
+ {q:'De acordo com a NR-35, há um documento que, além dos riscos inerentes ao trabalho em altura, considera, entre outros fatores, o local em que os serviços serão executados e seu entorno; o isolamento e a sinalização no entorno da área de trabalho; o estabelecimento dos sistemas e pontos de ancoragem e o risco de queda de materiais e ferramentas. O referido documento denomina-se:',o:['Programa de Controle Médico de Saúde Ocupacional − PCMSO.','Sistema de Proteção Coletiva Contra Quedas − SPCQ.','Sistema de Proteção Individual Contra Quedas − SPIQ.','Procedimento Operacional − PO.','Análise de Risco − AR.'],a:4,why:'É a Análise de Risco.',mod:'m4'},
+ {q:'Marque a alternativa ERRADA. A Análise de Risco prevista na NR-35 deve considerar para o SPIQ (Sistema de proteção individual contra quedas), minimamente os seguintes aspectos:',o:['que não é necessário o trabalhador permanecer conectado ao sistema durante todo o período de exposição ao risco de queda;','distância de queda livre;','o fator de queda;','a zona livre de queda;','compatibilidade entre os elementos do SPIQ.'],a:0,why:'O trabalhador deve permanecer conectado durante todo o período de exposição.',mod:'m8'},
+ {q:'Quais dos itens NÃO FAZEM parte do Sistema de Proteção Coletiva Contra Quedas (SPCQ):',o:['Rede e Guarda Corpo.','Cinto de Segurança e Talabarte.','Cabo Guia e Grades.','Rodapés e Pranchas.','Escadas e sinalização.'],a:1,why:'Cinto e talabarte são proteção individual (SPIQ). Observação: tecnicamente o cabo-guia é elemento de ancoragem do SPIQ, mas o gabarito da questão é Cinto e Talabarte.',mod:'m6'},
+ {q:'De acordo com a NR 35, talabarte significa:',o:['Dispositivo de conexão de um sistema de segurança, regulável ou não, para sustentar, posicionar e/ou limitar a movimentação do trabalhador.','Dispositivo de segurança para proteção do usuário contra quedas em operações com movimentação vertical ou horizontal, quando conectado com cinturão de segurança para proteção contra quedas.','Equipamento de proteção individual utilizado para trabalhos em altura onde haja risco de queda, constituída de sustentação na parte inferior do peitoral, acima dos ombros e envolta nas coxas.','Elemento fixado de forma permanente na estrutura, no qual um dispositivo de ancoragem ou um equipamento de proteção individual pode ser conectado.'],a:0,why:'A 2ª define trava-quedas, a 3ª o cinturão e a 4ª a ancoragem.',mod:'m7'}
+];
+const PASS=0.7;
+
+/* ======================= AVALIAÇÕES DE MÓDULO (4 questões, aprovação com 3 acertos) ======================= */
+const EVQ={
+m1:[['Segundo a NR-35, trabalho em altura é a atividade executada:',['Acima de 1,50 m sem risco de queda','Acima de 2,00 m do nível inferior, com risco de queda','Somente acima de 3 m','Apenas em torres e edifícios'],1,'O critério é 2,00 m do nível inferior com risco de queda.'],
+ ['A NR-35 protege:',['Somente quem executa a tarefa','Somente supervisores','Trabalhadores envolvidos direta ou indiretamente','Apenas terceirizados'],2,'Alcança quem executa e quem é afetado, direta ou indiretamente.'],
+ ['Trocar uma lâmpada em escada a 2,5 m do piso, com risco de queda, é:',['Trabalho em altura','Não é trabalho em altura','Só é se durar mais de 1 hora','Depende do peso da ferramenta'],0,'2,5 m passa de 2,00 m e há risco de queda.'],
+ ['A NR-35 organiza:',['Somente o treinamento','Planejamento, organização e execução do trabalho em altura','Somente o uso de EPI','Somente o resgate'],1,'É o objetivo da norma.']],
+m2:[['Elaborar a Análise de Risco cabe ao:',['Trabalhador','Empregador','Colega de equipe','Fabricante do EPI'],1,'Planejamento é responsabilidade do empregador.'],
+ ['Zelar pela própria segurança e pela de outros afetados por suas ações ou omissões é dever do:',['Empregador','Trabalhador','Sindicato','Fabricante'],1,'Dever do trabalhador.'],
+ ['Diante de risco grave e iminente, o trabalhador deve:',['Continuar e avisar depois','Interromper e informar o superior','Esperar ordem escrita','Pedir hora extra'],1,'Interromper e comunicar.'],
+ ['A equipe de salvamento e emergência:',['Deve ser sempre externa','Pode ser própria ou externa, desde que preparada','É dispensável em atividade rápida','É responsabilidade de quem caiu'],1,'A norma admite equipe interna ou externa.']],
+m3:[['O treinamento periódico de trabalho em altura ocorre a cada:',['6 meses','1 ano','2 anos','3 anos'],2,'É bienal.'],
+ ['A carga horária mínima da capacitação inicial é de:',['4 horas','8 horas','16 horas','40 horas'],1,'Mínimo de 8 horas, teóricas e práticas.'],
+ ['Qual situação exige novo treinamento?',['Férias de 30 dias','Afastamento de 100 dias','Troca de turno','Mudança de horário de almoço'],1,'Afastamento superior a 90 dias.'],
+ ['Só executa trabalho em altura quem:',['Tem apenas o certificado','É capacitado, tem ASO apto e autorização formal do empregador','Tem mais de 5 anos de empresa','É indicado por um colega'],1,'Capacitação, aptidão e anuência formal.']],
+m4:[['Atividades não rotineiras de trabalho em altura exigem:',['Permissão de Trabalho (PT)','Permissão de Entrada e Trabalho (PET)','Apenas o ASO','Nenhum documento'],0,'PT. A PET é da NR-33.'],
+ ['A Análise de Risco é exigida para:',['Só atividades não rotineiras','Só atividades rotineiras','Toda atividade de trabalho em altura','Só acima de 10 m'],2,'Rotineira ou não.'],
+ ['A validade da PT é:',['De um ano','Limitada à duração da atividade, restrita ao turno','Indeterminada','Mensal'],1,'Pode ser revalidada se nada mudar.'],
+ ['A PET pertence a qual norma?',['NR-35','NR-33','NR-10','NR-18'],1,'Espaço confinado: NR-33.']],
+m5:[['Qual a primeira medida na ordem de prioridade?',['Usar cinturão','Evitar o trabalho em altura','Treinar o resgate','Aumentar a sinalização'],1,'Evitar sempre que houver meio alternativo.'],
+ ['Quando não é possível evitar, adotam-se primeiro:',['Somente EPI','Medidas que eliminem o risco de queda (coletivas)','Redução de horário','Apenas sinalização'],1,'Depois, as que minimizam as consequências.'],
+ ['Antes de se expor ao risco de queda, o trabalhador deve:',['Conectar-se ao sistema','Retirar o cinturão','Trocar de função','Descansar'],0,'E permanecer conectado durante toda a exposição.'],
+ ['O primeiro passo antes de subir é:',['Subir e depois ler a AR','Ler a AR e conferir PO ou PT','Inspecionar só depois','Ignorar o clima'],1,'Planejamento antes da execução.']],
+m6:[['SPCQ significa:',['Sistema de Proteção Coletiva Contra Quedas','Sistema de Proteção Individual Contra Quedas','Serviço de Prevenção e Controle Químico','Sistema de Proteção Contra Queda de Quadros'],0,'Coletivo.'],
+ ['Qual item é proteção coletiva?',['Cinturão','Guarda-corpo com rodapé','Trava-quedas','Talabarte'],1,'Os demais são individuais.'],
+ ['Qual NÃO faz parte do SPCQ?',['Rede de proteção','Plataforma com fechamento','Cinto de segurança e talabarte','Rodapé'],2,'Cinto e talabarte são SPIQ.'],
+ ['A proteção coletiva é preferida porque:',['Custa sempre menos','Protege todos sem depender de ação individual','Dispensa treinamento','Dispensa a AR'],1,'Não depende de cada trabalhador.']],
+m7:[['Talabarte é:',['Dispositivo de conexão, regulável ou não, para sustentar, posicionar e/ou limitar a movimentação do trabalhador','Estrutura fixa permanente de ancoragem','EPI de sustentação no peito, ombros e coxas','Rede de proteção coletiva'],0,'As outras alternativas definem ancoragem, cinturão e proteção coletiva.'],
+ ['O cinturão tipo paraquedista tem sustentação:',['Só na cintura','No peito, ombros e coxas','Somente nos pés','Apenas no pescoço'],1,'Distribui a força e mantém posição segura.'],
+ ['Absorvedor de energia com capa rasgada deve:',['Ser liberado','Ser retirado de uso','Ser costurado','Ser usado só em altura baixa'],1,'Absorvedor danificado nunca é reutilizado.'],
+ ['Antes do uso é obrigatório verificar:',['Só a cor','CA, etiqueta legível e inspeção visual completa','Só o preço','Apenas o cinturão'],1,'Inspeção de todo o conjunto.']],
+m8:[['Fator de queda é:',['Altura de queda livre dividida pelo comprimento do talabarte','Peso do trabalhador dividido pela altura','Comprimento do talabarte dividido pela altura','Idade do equipamento em anos'],0,'Definição usada na AR.'],
+ ['O fator de queda varia de:',['0 a 2','0 a 10','1 a 5','-1 a 1'],0,'Quanto maior, mais forte o impacto.'],
+ ['A zona livre de queda é:',['O espaço livre abaixo do trabalhador para ele parar sem bater em solo ou obstáculo','A área sinalizada em volta','O peso máximo do trabalhador','O comprimento da linha de vida'],0,'Calculada na AR.'],
+ ['Qual ancoragem reduz o fator de queda?',['Abaixo dos pés','Acima da cabeça','No cinto de um colega','Qualquer ponto serve'],1,'Ancoragem acima reduz a queda livre.']],
+m9:[['Escada instável, sem fixação, deve ser:',['Usada rapidamente','Fixada ou substituída por outro acesso antes de subir','Segurada com uma mão','Ignorada'],1,'Corrigir antes de iniciar.'],
+ ['Andaime sem guarda-corpo no último nível:',['Trabalhar conectado e seguir','Interromper e solicitar correção','Improvisar corda solta','Trabalhar só de manhã'],1,'Sem proteção coletiva completa, interrompe-se.'],
+ ['Rede elétrica próxima ao poste exige:',['Ignorar o risco','Controle do risco elétrico (NR-10) antes de qualquer subida','Apenas luvas comuns','Trabalhar à noite'],1,'Risco adicional na AR.'],
+ ['Ferramentas usadas em altura devem:',['Ficar soltas no piso de trabalho','Ser presas ou transportadas com segurança, com a área abaixo isolada','Ser jogadas ao colega','Ficar no bolso'],1,'Queda de materiais é risco previsto.']],
+m10:[['Condição impeditiva é:',['Situação que impede ou obriga a interromper a atividade','Um tipo de EPI','Um documento médico','Um tipo de treinamento'],0,'Definição prática.'],
+ ['Descargas atmosféricas se aproximando:',['Continuar a tarefa','Interromper a atividade','Subir mais rápido','Trocar de ancoragem'],1,'Condição impeditiva.'],
+ ['Trabalhador com tontura antes de subir:',['Sobe devagar','Não deve executar a atividade','Toma café e sobe','Trabalha só 1 hora'],1,'Mal-estar impede a atividade.'],
+ ['Atividade não rotineira sem PT emitida:',['Iniciar e emitir depois','Não iniciar','Iniciar se for rápida','Iniciar se o colega autorizar'],1,'Sem autorização prévia não se inicia.']],
+m11:[['O resgate deve ser rápido porque:',['Ficar suspenso e imóvel no cinturão pode causar síndrome da suspensão','É uma questão de estética','Economiza material','Não há urgência'],0,'A circulação nas pernas é prejudicada.'],
+ ['O plano de resgate deve existir:',['Depois do acidente','Antes de iniciar a atividade','Só se pedirem','Somente em torres'],1,'Faz parte do planejamento.'],
+ ['Após o resgate de uma vítima suspensa:',['Dispensar sem avaliação','Encaminhar a avaliação médica, mesmo sem sintomas','Voltar ao trabalho','Só avisar o RH'],1,'Avaliação médica é necessária.'],
+ ['Os números de emergência do SAMU e dos Bombeiros são:',['190 e 191','192 e 193','180 e 181','198 e 199'],1,'SAMU 192 e Bombeiros 193.']]
+};
+const EV={};Object.keys(EVQ).forEach(k=>EV[k]=EVQ[k].map(([q,o,a,why])=>({q,o,a,why})));
+
+/* ======================= PROGRESSO E BLOQUEIO ======================= */
+const idx=id=>M.findIndex(x=>x.id===id);
+function keysOf(mod){const k=[];mod.blocks.forEach((b,i)=>{if(['text','cards','order','zlq'].includes(b.t))k.push('b'+i);else if(['flash','quiz','classify'].includes(b.t))b.items.forEach((_,j)=>k.push(`b${i}.${j}`))});return k}
+function missing(id){const u=S.units[id]||{};return keysOf(M[idx(id)]).filter(k=>!u[k]).length}
+function pctOf(id){const ks=keysOf(M[idx(id)]);return ks.length?Math.round((ks.length-missing(id))/ks.length*100):0}
+function firstOpen(){const i=M.findIndex(x=>!S.passed[x.id]);return i<0?M.length-1:i}
+function unlocked(i){return i<=firstOpen()}
+let CUR=null,NOTICE='';
+function unit(id,key){const u=S.units[id]=S.units[id]||{};if(u[key])return;u[key]=true;save();if(CUR===id)refreshProg()}
+function refreshProg(){if(!CUR)return;const p=pctOf(CUR);const a=$('#mpct'),b=$('#mbar');if(a){a.textContent=p+'%';b.style.width=p+'%'}
+ const st=$('#mstat');if(st)st.textContent=evalStatus(CUR);drawTop();drawNav(CUR);
+ const box=$('#evalbox');if(box&&p===100&&box.dataset.open!=='1')box._draw()}
+function evalStatus(id){if(S.passed[id])return `Avaliação: aprovado com ${Math.round(S.score[id]*100)}%`;return pctOf(id)===100?'Avaliação: liberada':`Avaliação: bloqueada até 100% do conteúdo (faltam ${missing(id)} atividades)`}
+
+/* ======================= RENDERIZADORES ======================= */
+function readBtn(mod,key){const done=(S.units[mod]||{})[key];const b=h('button',{class:'act alt rd'+(done?' done':''),type:'button',onclick:()=>{unit(mod,key);b.classList.add('done');b.textContent='Lido';b.disabled=true}},done?'Lido':'Marcar como lido');if(done)b.disabled=true;return b}
+function bQuiz(b,mod,bi){const w=h('div',{class:'block'},h('h3',{},b.h||'Mini-quiz'));
+ b.items.forEach((it,qi)=>{const card=h('div',{class:'q'});const fb=h('p',{class:'fb',hidden:''});
+  const two=it.o.length===2;const box=h('div',{class:'opts'+(two?' two':'')});
+  const btns=it.o.map((o,oi)=>h('button',{class:'opt',type:'button',onclick:()=>{if(card.dataset.d)return;card.dataset.d=1;const ok=oi===it.a;btns.forEach((x,i)=>{x.disabled=true;if(i===it.a)x.classList.add('right');else if(i===oi)x.classList.add('wrong')});fb.hidden=false;fb.className='fb '+(ok?'ok':'bad');fb.textContent=(ok?'Correto. ':'Não é essa. ')+(it.why||'');rec(mod,ok,it.q);unit(mod,`b${bi}.${qi}`)}},o));
+  btns.forEach(x=>box.append(x));card.append(h('p',{class:'qt'},`${qi+1}. ${it.q}`),box,fb);w.append(card)});return w}
+function bClassify(b,mod,bi){const w=h('div',{class:'block'},h('h3',{},b.h));
+ b.items.forEach(([t,bk,why],ri)=>{const row=h('div',{class:'crow'});const fb=h('p',{class:'fb',hidden:''});
+  const btns=b.buckets.map((bn,i)=>h('button',{class:'opt',type:'button',onclick:()=>{if(row.dataset.d)return;row.dataset.d=1;const ok=i===bk;btns.forEach((x,j)=>{x.disabled=true;if(j===bk)x.classList.add('right');else if(j===i)x.classList.add('wrong')});fb.hidden=false;fb.className='fb '+(ok?'ok':'bad');fb.textContent=(ok?'Correto. ':`Resposta: ${b.buckets[bk]}. `)+why;rec(mod,ok,t);unit(mod,`b${bi}.${ri}`)}},bn));
+  row.append(h('span',{},t),h('div',{class:'btns'},btns),fb);w.append(row)});return w}
+function bOrder(b,mod,bi){const w=h('div',{class:'block'},h('h3',{},b.h),h('p',{},'Use as setas para colocar as etapas na ordem correta e clique em Verificar.'));
+ let arr=b.steps.map((s,i)=>({s,i}));
+ do{arr.sort(()=>Math.random()-.5)}while(arr.every((x,i)=>x.i===i)&&arr.length>1);
+ const ul=h('ol',{class:'ord'});const fb=h('p',{class:'fb',hidden:''});let locked=false;
+ function draw(res){ul.innerHTML='';arr.forEach((x,i)=>{const li=h('li',{},h('span',{},`${i+1}. ${x.s}`));
+  if(res)li.classList.add(x.i===i?'right':'wrong');
+  if(!locked){li.append(h('button',{class:'mv',type:'button','aria-label':'Subir',onclick:()=>{if(i>0){[arr[i-1],arr[i]]=[arr[i],arr[i-1]];draw()}}},'▲'),h('button',{class:'mv',type:'button','aria-label':'Descer',onclick:()=>{if(i<arr.length-1){[arr[i+1],arr[i]]=[arr[i],arr[i+1]];draw()}}},'▼'))}
+  ul.append(li)})}
+ draw();
+ const btn=h('button',{class:'act',type:'button',onclick:()=>{const ok=arr.every((x,i)=>x.i===i);locked=true;btn.disabled=true;draw(true);fb.hidden=false;fb.className='fb '+(ok?'ok':'bad');fb.innerHTML=ok?'Ordem correta.':'Ordem correta: '+b.steps.map((s,i)=>`${i+1}. ${s}`).join(' → ');rec(mod,ok,b.h);unit(mod,'b'+bi)}},'Verificar ordem');
+ w.append(ul,btn,fb);return w}
+function bCards(b,mod,bi){return h('div',{class:'block'},h('h3',{},b.h),h('div',{class:'cards'},b.items.map(([t,x])=>h('div',{class:'card'},h('h4',{},t),h('p',{},x)))),readBtn(mod,'b'+bi))}
+function bText(b,mod,bi){return h('div',{class:'block'},h('h3',{},b.h),h('div',{html:b.html}),readBtn(mod,'b'+bi))}
+function bFlash(b,mod,bi){return h('div',{class:'block'},h('h3',{},b.h),h('p',{},'Toque em cada cartão para virar. Todos precisam ser virados.'),h('div',{class:'flash'},b.items.map(([f,bk],j)=>{let back=false;const c=h('button',{class:'fc',type:'button',onclick:()=>{back=!back;c.classList.toggle('back',back);c.innerHTML=back?`<small>Resposta</small>${bk}`:`<small>Conceito</small><strong>${f}</strong>`;unit(mod,`b${bi}.${j}`)}});c.innerHTML=`<small>Conceito</small><strong>${f}</strong>`;return c})))}
+
+function bZLQ(b,mod,bi){const w=h('div',{class:'block'},h('h3',{},'Calculadora de zona livre de queda'),
+ h('p',{},'Valores de exemplo. No cálculo real, use os dados do manual do seu talabarte e absorvedor. Teste as duas posições de ancoragem para concluir esta etapa.'));
+ const st={L:1.5,A:1.75,H:1.5,S:1.0,f:2.0,G:4.0};const tried=new Set();
+ const num=(k,l,step)=>{const i=h('input',{type:'number',id:'z'+k,step:step||'0.05',min:'0',value:st[k]});i.addEventListener('input',()=>{st[k]=parseFloat(i.value)||0;calc()});return h('label',{},l,i)};
+ const rng=h('input',{type:'range',id:'zf',min:'0',max:'3',step:'0.1',value:st.f});rng.addEventListener('input',()=>{st.f=parseFloat(rng.value);calc()});
+ const fl=h('label',{},'Altura da ancoragem acima dos pés (m): ',h('strong',{id:'zfv'},'2,0'),rng);
+ const inputs=h('div',{class:'calc'},num('L','Comprimento do talabarte (m)'),num('A','Extensão do absorvedor aberto (m)'),num('H','Argola dorsal acima dos pés (m)'),num('S','Folga de segurança (m)'),num('G','Distância livre disponível até o solo (m)','0.1'),fl);
+ const pre=h('div',{style:'display:flex;gap:8px;flex-wrap:wrap;margin-top:12px'},
+  h('button',{class:'act alt',type:'button',onclick:()=>{rng.value=2;st.f=2;tried.add('a');calc();chk()}},'Ancoragem acima da cabeça'),
+  h('button',{class:'act alt',type:'button',onclick:()=>{rng.value=0;st.f=0;tried.add('b');calc();chk()}},'Ancoragem na altura dos pés'));
+ function chk(){if(tried.size>=2)unit(mod,'b'+bi)}
+ const res=h('div',{class:'res'}),gauge=h('div',{class:'gauge'}),msg=h('p',{class:'fb'});
+ const f2=n=>n.toFixed(2).replace('.',',');
+ function calc(){const y=st.H-st.f;const fall=Math.max(0,y+st.L);const fq=st.L>0?Math.min(2,fall/st.L):0;const req=fall+st.A+st.S;
+  $('#zfv').textContent=st.f.toFixed(1).replace('.',',');
+  res.innerHTML='';[['Queda livre',f2(fall)+' m'],['Fator de queda',f2(fq)],['ZLQ necessária',f2(req)+' m']].forEach(([k,v])=>res.append(h('div',{},h('small',{},k),h('strong',{},v))));
+  const mx=Math.max(req,st.G,1);gauge.innerHTML='';
+  gauge.append(h('div',{class:'row'},h('span',{},'Necessária'),h('div',{class:'trk'},h('div',{class:'fill need',style:`width:${req/mx*100}%`}))),h('div',{class:'row'},h('span',{},'Disponível'),h('div',{class:'trk'},h('div',{class:'fill '+(st.G>=req?'':'bad'),style:`width:${st.G/mx*100}%`}))));
+  const okS=st.G>=req;const okF=fq<=1;
+  msg.className='fb '+(okS&&okF?'ok':'bad');
+  msg.textContent=(okS?'Espaço suficiente: a ZLQ cabe na distância disponível. ':'Espaço INSUFICIENTE: em uma queda o trabalhador bateria no solo ou obstáculo. ')+(okF?'Fator de queda aceitável.':'Fator de queda acima de 1: reposicione a ancoragem para cima do trabalhador.')}
+ w.append(inputs,pre,res,gauge,msg,h('div',{class:'note'},h('strong',{},'Como se calcula: '),'queda livre = (altura da argola − altura da ancoragem) + comprimento do talabarte, nunca menor que zero. ZLQ = queda livre + extensão do absorvedor + folga. Fator de queda = queda livre ÷ comprimento do talabarte.'));
+ setTimeout(calc,0);return w}
+
+/* ======================= AVALIAÇÃO DO MÓDULO ======================= */
+function evalSection(modId){
+ const i=idx(modId),final=modId==='m12',qs=final?EXAM:EV[modId];
+ const box=h('div',{class:'block evalbox',id:'evalbox'});
+ function head(){box.append(h('span',{class:'tag'},final?'Avaliação final':'Avaliação do módulo'),h('h3',{},final?'Avaliação NR-35':`Avaliação do módulo ${i+1}`))}
+ function draw(retake){box.innerHTML='';head();
+  if(pctOf(modId)<100){box.dataset.open='0';box.classList.add('locked');box.append(h('p',{},`Bloqueada. Conclua 100% do conteúdo deste módulo para liberar a avaliação. Faltam ${missing(modId)} atividades.`));return}
+  box.dataset.open='1';box.classList.remove('locked');
+  if(S.passed[modId]&&!retake){box.append(h('div',{class:'result pass'},h('strong',{},`${Math.round(S.score[modId]*100)}%`),h('p',{},'Módulo aprovado.')),h('button',{class:'act alt',type:'button',onclick:()=>draw(true)},'Refazer avaliação'));return}
+  const ans={};
+  box.append(h('p',{},`Mínimo para aprovação: ${Math.round(PASS*100)}% de acertos. Ao ser aprovado, o próximo módulo é liberado.`));
+  if(final)box.append(h('div',{class:'id'},h('label',{},'Nome',h('input',{id:'exNome',type:'text',autocomplete:'name'})),h('label',{},'Empresa',h('input',{id:'exEmp',type:'text'})),h('label',{},'Data',h('input',{id:'exData',type:'date'}))));
+  qs.forEach((e,qi)=>{const card=h('div',{class:'q',id:'eq'+qi});card.append(h('p',{class:'qt'},`${qi+1}. ${e.q}`));
+   if(e.tf){ans[qi]=[null,null,null,null];e.items.forEach(([t],ii)=>{const row=h('div',{class:'crow'});const bs=['V','F'].map((l,li)=>h('button',{class:'opt',type:'button',onclick:()=>{ans[qi][ii]=li===0;bs.forEach((x,j)=>x.classList.toggle('sel',j===li))}},l));row.append(h('span',{},t),h('div',{class:'btns'},bs));card.append(row)})}
+   else{const bs=e.o.map((o,oi)=>h('button',{class:'opt',type:'button',onclick:()=>{ans[qi]=oi;bs.forEach((x,j)=>x.classList.toggle('sel',j===oi))}},`${'abcde'[oi]}) ${o}`));card.append(h('div',{class:'opts'},bs))}
+   box.append(card)});
+  const out=h('div',{});
+  const btn=h('button',{class:'act',type:'button',onclick:()=>{
+   let pts=0;out.innerHTML='';const miss=[];
+   qs.forEach((e,qi)=>{const card=$('#eq'+qi);let ok;
+    if(e.tf)ok=e.items.every(([,v],ii)=>ans[qi][ii]===v);else ok=ans[qi]===e.a;
+    if(ok)pts++;else miss.push(qi);logResp(modId,'[Avaliação] '+e.q,ok);
+    card.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+    if(e.tf){card.querySelectorAll('.crow').forEach((row,ii)=>{row.querySelectorAll('.opt').forEach((x,j)=>{if((j===0)===e.items[ii][1])x.classList.add('right');else if(x.classList.contains('sel'))x.classList.add('wrong')})})}
+    else{card.querySelectorAll('.opt').forEach((x,j)=>{x.classList.remove('sel');if(j===e.a)x.classList.add('right');else if(ans[qi]===j)x.classList.add('wrong')})}
+    const blank=ans[qi]==null||(e.tf&&ans[qi].includes(null));
+    card.append(h('p',{class:'gab'},(ok?'Correto. ':(blank?'Sem resposta completa. ':'Incorreto. '))+e.why))});
+   const pct=pts/qs.length;const pass=pct>=PASS;
+   const revIds=final?[...new Set(miss.map(q=>EXAM[q].mod))]:[];
+   const rev=final&&miss.length?h('p',{},'Reveja os módulos: ',revIds.map(id=>h('button',{class:'act alt',type:'button',style:'margin:4px 6px 0 0',onclick:()=>go(id)},`Módulo ${idx(id)+1}`))):null;
+   out.append(h('div',{class:'result '+(pass?'pass':'fail')},h('strong',{},`${pts} de ${qs.length}`),
+    h('p',{},`${Math.round(pct*100)}% de acerto. ${pass?(final?'Aprovado no curso.':'Aprovado. O próximo módulo foi liberado.'):'Abaixo do mínimo de 70%. Revise o conteúdo e tente novamente.'}${final&&$('#exNome').value?' Participante: '+$('#exNome').value+'.':''}`),rev,
+    pass?null:h('button',{class:'act alt',type:'button',onclick:()=>draw(true)},'Tentar novamente')));
+   btn.disabled=true;
+   (S.attempts[modId]=S.attempts[modId]||[]).push({pct:Math.round(pct*100),pts,total:qs.length,at:new Date().toISOString()});
+   if(pass){S.passed[modId]=true;S.score[modId]=pct;if(final){S.finishedAt=new Date().toISOString();S.summary=summaryOf(S)}}
+   save();drawTop();drawNav(modId);drawFoot();
+   if(pass&&final&&MODE==='aluno'){push();out.append(h('button',{class:'act',type:'button',onclick:()=>go('resumo')},'Ver resumo do treinamento'))}
+   out.scrollIntoView({behavior:'smooth',block:'nearest'})}},'Corrigir avaliação');
+  box.append(btn,out)}
+ box._draw=draw;draw();return box}
+
+/* ======================= PÁGINAS ======================= */
+function drawTop(){const p=$('#prog');const n=M.filter(m=>S.passed[m.id]).length;p.innerHTML='';
+ p.append(h('small',{},`${n} de 12 módulos aprovados · ${Math.round(n/12*100)}% do curso`));
+ const bar=h('div',{class:'bar'});for(let i=0;i<12;i++)bar.append(h('i',{class:i<n?'on':''}));p.append(bar);
+ if(CUR){const pc=pctOf(CUR);p.append(h('small',{},`Módulo ${idx(CUR)+1}: ${pc}% do conteúdo`),h('div',{class:'bar cont'},h('i',{style:`width:${pc}%`})))}
+ $('#instBtn').setAttribute('aria-pressed',S.inst)}
+function drawNav(cur){const nav=$('#nav');nav.innerHTML='';
+ if(['reg','block','boot','auth','newpass'].includes(MODE))return;
+ const pb=$('#panelBtn');if(pb)pb.hidden=!(ISOWNER&&MODE!=='panel');
+ if(ISOWNER)nav.append(h('button',{class:'home',type:'button','aria-current':cur==='panel',onclick:()=>go('panel')},h('span',{class:'tt'},'Painel do instrutor')));
+ if(MODE==='panel'){nav.append(h('button',{type:'button',onclick:()=>go('home')},h('span',{class:'n'},'>>'),h('span',{class:'tt'},'Ver o curso (prévia)')));return}
+ nav.append(h('button',{class:'home',type:'button','aria-current':cur==='home',onclick:()=>go('home')},h('span',{class:'tt'},'Visão geral do curso')));
+ let day=0;M.forEach((m,i)=>{if(m.day!==day){day=m.day;nav.append(h('h4',{},`Dia ${day} · ${M.filter(x=>x.day===day).length} horas`))}
+  const lock=!unlocked(i);const lab=S.passed[m.id]?'ok':lock?'bloq.':pctOf(m.id)+'%';
+  nav.append(h('button',{type:'button','aria-current':cur===m.id,title:m.title,disabled:lock?'':null,onclick:()=>go(m.id)},h('span',{class:'n'},String(i+1).padStart(2,'0')),h('span',{class:'tt'},m.title),h('span',{class:'pc'+(S.passed[m.id]?' ck':'')},lab)))});
+ if(MODE==='aluno')nav.append(h('button',{class:'home',type:'button','aria-current':cur==='resumo',onclick:()=>go('resumo')},h('span',{class:'tt'},'Meu resumo')))}
+function go(id){try{history.replaceState(null,'','#'+id)}catch(e){}render(id);window.scrollTo({top:0,behavior:'smooth'})}
+function renderHome(){CUR=null;drawTop();const m=$('#main');m.innerHTML='';
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Curso de 12 horas · Dia 1 (4 h) e Dia 2 (8 h)'+(ME?' · '+ME.nome:'')),h('h1',{},'NR-35: Trabalho em Altura'),h('p',{},'Doze módulos de uma hora, cada um com conteúdo, atividades interativas e uma avaliação no final. O último módulo aplica a prova de 10 questões.')));
+ m.append(h('div',{class:'block'},h('h3',{},'Como o curso funciona'),h('ul',{},
+  h('li',{html:'<strong>Dia 1 (4 horas):</strong> módulos 1 a 4. <strong>Dia 2 (8 horas):</strong> módulos 5 a 12, sugerindo manhã (5 a 8) e tarde (9 a 12) com pausa para almoço.'}),
+  h('li',{html:'Cada módulo tem uma <strong>barra de percentual</strong> que sobe conforme as atividades e leituras são concluídas.'}),
+  h('li',{html:'A <strong>avaliação do módulo só é liberada com 100% do conteúdo</strong>.'}),
+  h('li',{html:'O <strong>próximo módulo só abre após a aprovação</strong> (mínimo 70%) na avaliação do anterior.'}),
+  h('li',{html:'O progresso fica salvo neste navegador. Ative o <strong>Modo instrutor</strong> para ver o roteiro de cada hora.'}))));
+ const rows=M.map((x,i)=>h('tr',{},h('td',{class:'n'},String(i+1).padStart(2,'0')),h('td',{},`Dia ${x.day}`),h('td',{},unlocked(i)?h('button',{type:'button',class:'act alt',style:'margin:0;padding:6px 10px;text-transform:none;font-family:var(--f-body)',onclick:()=>go(x.id)},x.title):h('span',{style:'color:var(--muted)'},x.title)),h('td',{},x.exam),h('td',{class:'n'},pctOf(x.id)+'%'),h('td',{},S.passed[x.id]?`Aprovado (${Math.round(S.score[x.id]*100)}%)`:unlocked(i)?'Liberado':'Bloqueado')));
+ m.append(h('div',{class:'block'},h('h3',{},'Grade e ligação com a prova'),h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['#','Dia','Módulo','Prova','Conteúdo','Situação'].map(t=>h('th',{},t)))),h('tbody',{},rows)))));
+ const first=M[firstOpen()];
+ const rst=h('button',{class:'act alt',type:'button',style:'margin-left:8px',onclick:()=>{if(rst.dataset.c!=='1'){rst.dataset.c='1';rst.textContent='Clique de novo para apagar todo o progresso';return}S={units:{},passed:{},score:{},inst:S.inst};save();render('home')}},'Reiniciar progresso');
+ m.append(h('button',{class:'act',type:'button',onclick:()=>go(first.id)},Object.keys(S.passed).length?`Continuar no módulo ${firstOpen()+1}`:'Começar pelo módulo 1'),MODE==='aluno'?null:rst)}
+function drawFoot(){const f=$('#foot');if(!f)return;const i=idx(CUR),mod=M[i];f.innerHTML='';
+ const nextOk=!!S.passed[mod.id];
+ f.append(h('div',{class:'sc',id:'sc'},scoreTxt(mod.id)),h('div',{class:'row'},i>0?h('button',{class:'act alt',type:'button',onclick:()=>go(M[i-1].id)},'Anterior'):null,
+  i<M.length-1?h('button',{class:'act'+(nextOk?'':' alt'),type:'button',disabled:nextOk?null:'',onclick:()=>go(M[i+1].id)},nextOk?'Próximo módulo':'Próximo (bloqueado)'):null))}
+function render(id){
+ if(ISOWNER&&id==='panel'){return showPanel()}
+ if(ISOWNER&&MODE==='panel'){MODE='preview';loadLocal()}
+ if(id==='resumo'&&MODE==='aluno')return renderResumo();
+ if(['reg','block','boot','auth','newpass'].includes(MODE))return;
+ let i=idx(id);if(id==='home'||i<0){drawNav('home');return renderHome()}
+ NOTICE='';const k=firstOpen();if(i>k){NOTICE='Este módulo está bloqueado. Conclua e seja aprovado na avaliação do módulo anterior.';i=k;id=M[k].id}
+ CUR=id;S.current=id;save();const mod=M[i];drawNav(id);drawTop();const m=$('#main');m.innerHTML='';
+ const inDay=M.filter(x=>x.day===mod.day),p=pctOf(id);
+ if(NOTICE)m.append(h('div',{class:'note warn'},NOTICE));
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},`Dia ${mod.day} · Hora ${inDay.indexOf(mod)+1} de ${inDay.length} · Módulo ${i+1} de 12`),h('h1',{},mod.title),h('p',{},mod.sub),
+  h('div',{class:'mprog'},h('div',{class:'mrow'},h('span',{},'Conteúdo do módulo'),h('strong',{id:'mpct'},p+'%')),h('div',{class:'bar2'},h('i',{id:'mbar',style:`width:${p}%`})),h('div',{class:'mrow sm',id:'mstat'},evalStatus(id)))));
+ if(S.inst&&(ISOWNER||MODE==='local'))m.append(h('div',{class:'inst'},h('h3',{},'Roteiro do instrutor (60 min)'),h('ul',{},mod.inst.map(t=>h('li',{},t)))));
+ m.append(h('div',{class:'goals'},h('h3',{},'Ao final você será capaz de'),h('ul',{},mod.goals.map(g=>h('li',{},g)))));
+ mod.blocks.forEach((b,bi)=>{const f={text:bText,cards:bCards,flash:bFlash,quiz:bQuiz,classify:bClassify,order:bOrder,zlq:bZLQ}[b.t];m.append(f(b,id,bi))});
+ m.append(evalSection(id));
+ m.append(h('div',{class:'foot',id:'foot'}));drawFoot()}
+/* ======================= FORMATAÇÃO E RESUMO ======================= */
+const fmtNota=p=>(p/10).toFixed(1).replace('.',',');
+const fmtNotaFull=p=>p==null?'—':`${fmtNota(p)} (${p}%)`;
+function fmtDate(iso){try{return iso?new Date(iso).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'—'}catch(e){return iso||'—'}}
+function fmtMin(s){const m=Math.round((s||0)/60);return m>=60?`${Math.floor(m/60)} h ${String(m%60).padStart(2,'0')} min`:`${m} min`}
+function agoTxt(iso){if(!iso)return '—';const s=(Date.now()-new Date(iso))/1000;if(s<120)return 'agora';if(s<3600)return `há ${Math.round(s/60)} min`;if(s<86400)return `há ${Math.round(s/3600)} h`;return `há ${Math.round(s/86400)} d`}
+const isOnline=a=>!!a.lastSeen&&!a.finishedAt&&Date.now()-new Date(a.lastSeen)<130000;
+const digits=c=>(c||'').replace(/\D/g,'');
+function fmtCpf(c){c=digits(c);return c.length===11?`${c.slice(0,3)}.${c.slice(3,6)}.${c.slice(6,9)}-${c.slice(9)}`:c}
+function maskCpf(c){c=digits(c);return c.length===11?`***.${c.slice(3,6)}.${c.slice(6,9)}-**`:c}
+function cpfOk(c){c=digits(c);if(c.length!==11||/^(\d)\1+$/.test(c))return false;const d=n=>{let s=0;for(let i=0;i<n;i++)s+=+c[i]*(n+1-i);const r=s*10%11;return r===10?0:r};return d(9)===+c[9]&&d(10)===+c[10]}
+function pctFrom(units,id){const ks=keysOf(M[idx(id)]);const u=(units&&units[id])||{};return ks.length?Math.round(ks.filter(k=>u[k]).length/ks.length*100):0}
+function overallPct(st){let t=0;M.forEach(m=>{t+=0.5*pctFrom(st.units,m.id)/100+((st.passed||{})[m.id]?0.5:0)});return Math.round(t/M.length*100)}
+function summaryOf(st){const sc=st.score||{};const notas=M.map(m=>sc[m.id]).filter(v=>v!=null).map(v=>Math.round(v*100));const media=notas.length?Math.round(notas.reduce((a,b)=>a+b,0)/notas.length):0;const tot=Object.values(st.secs||{}).reduce((a,b)=>a+b,0);return{media,notaFinal:sc.m12!=null?Math.round(sc.m12*100):null,minutos:Math.round(tot/60),aprovado:!!(st.passed&&st.passed.m12)}}
+function totals(st){let r=0,t=0;Object.values(st.stats||{}).forEach(x=>{r+=x.r;t+=x.t});return{r,t}}
+function rowsOf(st){return M.map((m,i)=>{const sc=st.score&&st.score[m.id],ss=st.stats&&st.stats[m.id];return{n:i+1,titulo:m.title,nota:sc!=null?Math.round(sc*100):null,tent:((st.attempts||{})[m.id]||[]).length,seg:(st.secs||{})[m.id]||0,cont:pctFrom(st.units,m.id),r:ss?ss.r:0,t:ss?ss.t:0}})}
+function emailOf(a){const s=summaryOf(a),rows=rowsOf(a);
+ const linhas=rows.map(r=>`${String(r.n).padStart(2,'0')}. ${r.titulo} | nota ${fmtNotaFull(r.nota)} | ${r.tent} tentativa(s) | ${fmtMin(r.seg)}`).join('\n');
+ return{para:a.email||'',assunto:`Resumo do treinamento NR-35 - ${a.nome}`,
+ corpo:`Olá, ${a.nome}.\n\nSegue o resumo do seu treinamento NR-35 – Trabalho em Altura (12 horas).\n\nResultado: ${s.aprovado?'APROVADO':'EM ANDAMENTO / NÃO APROVADO'}\nNota da avaliação final: ${fmtNotaFull(s.notaFinal)}\nMédia das avaliações dos módulos: ${fmtNotaFull(s.media)}\nTempo de estudo na plataforma: ${fmtMin(s.minutos*60)}\nInício: ${fmtDate(a.registeredAt)}\nConclusão: ${fmtDate(a.finishedAt)}\nCPF: ${maskCpf(a.cpf)}\n\nDesempenho por módulo:\n${linhas}\n\nGuarde este resumo como comprovante do treinamento.`}}
+function resumoTxt(a){const e=emailOf(a);return `RESUMO DO TREINAMENTO NR-35\n\n${e.corpo.split('\n').slice(2).join('\n')}\nParticipante: ${a.nome}\nE-mail: ${a.email||'—'}`}
+
+/* ======================= SUPABASE: sessão, dados e sincronização ======================= */
+let SB=null,SESSION=null,RECOVERY=false,RQ=[];
+const toDoc=r=>{const st=r.state||{};return{id:r.user_id,nome:r.nome,cpf:r.cpf,email:r.email,registeredAt:r.registered_at,lastSeen:r.last_seen,current:r.current_module,finishedAt:r.finished_at,units:st.units||{},passed:st.passed||{},score:st.score||{},attempts:st.attempts||{},stats:st.stats||{},secs:st.secs||{},summary:st.summary||null}};
+const stateOf=d=>({units:d.units,passed:d.passed,score:d.score,attempts:d.attempts,stats:d.stats,secs:d.secs,summary:d.summary});
+function makeRef(uid){return{
+ get:async()=>{const{data,error}=await SB.from('alunos').select('*').eq('user_id',uid).maybeSingle();if(error)throw error;return{exists:!!data,data:()=>data?toDoc(data):undefined}},
+ set:async d=>{const{error}=await SB.from('alunos').insert({user_id:uid,nome:d.nome,cpf:d.cpf,email:d.email,registered_at:d.registeredAt,last_seen:d.lastSeen,current_module:d.current,finished_at:d.finishedAt,state:stateOf(d)});if(error)throw error},
+ update:async d=>{const{error}=await SB.from('alunos').update({last_seen:d.lastSeen,current_module:d.current,finished_at:d.finishedAt,state:stateOf(d)}).eq('user_id',uid);if(error)throw error}}}
+function logResp(mod,pergunta,ok){if(MODE!=='aluno'||!SB||!UID)return;if(RQ.length<500)RQ.push({user_id:UID,modulo:mod,pergunta:String(pergunta).slice(0,300),correta:!!ok});if(RQ.length>=10)flushResp()}
+async function flushResp(){if(!RQ.length||!SB)return;const b=RQ;RQ=[];try{const{error}=await SB.from('respostas').insert(b);if(error)throw error}catch(e){RQ=b.concat(RQ).slice(0,500)}}
+setInterval(flushResp,8000);
+
+let pushing=false,dirty=false,pushT=null,lastAct=Date.now();
+['pointerdown','keydown','scroll','touchstart'].forEach(ev=>addEventListener(ev,()=>{lastAct=Date.now()},{passive:true}));
+function setSync(t,bad){const e=$('#sync');if(!e)return;e.textContent=t;e.style.color=bad?'var(--accent)':''}
+function schedulePush(){dirty=true;clearTimeout(pushT);pushT=setTimeout(()=>{pushT=null;push()},700)}
+async function push(){if(MODE!=='aluno'||!MYREF||!dirty||pushing)return;pushing=true;dirty=false;
+ try{await MYREF.update({units:S.units,passed:S.passed,score:S.score,attempts:S.attempts,stats:S.stats,secs:S.secs,current:S.current||null,finishedAt:S.finishedAt||null,summary:S.summary||null,lastSeen:new Date().toISOString()});setSync('Progresso enviado ao instrutor')}
+ catch(e){dirty=true;setSync('Sem conexão: tentando reenviar',true)}
+ pushing=false}
+setInterval(()=>{if(MODE!=='aluno'||document.hidden)return;if(CUR&&Date.now()-lastAct<120000){S.secs[CUR]=(S.secs[CUR]||0)+5;dirty=true}},5000);
+setInterval(()=>{if(MODE==='aluno'&&!document.hidden){dirty=true;push()}},45000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&MODE==='aluno'){dirty=true;push();flushResp()}});
+addEventListener('pagehide',()=>{if(MODE==='aluno'){dirty=true;push();flushResp()}});
+
+async function copyTxt(text,anchor){try{await navigator.clipboard.writeText(text);anchor.textContent='Copiado';return}catch(e){}
+ const ta=h('textarea',{readonly:'',rows:'8',style:'width:100%;margin-top:8px'});ta.value=text;anchor.after(ta);ta.select();anchor.textContent='Selecione e copie o texto abaixo'}
+function baixar(nome,data,btn){const type=nome.endsWith('.csv')?'text/csv;charset=utf-8':'text/plain;charset=utf-8';const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=nome;document.body.append(a);a.click();a.remove();btn.textContent='Arquivo baixado'}
+
+/* ======================= TELAS: login, registro, recuperação ======================= */
+function renderBloqueio(msg){CUR=null;MODE='block';drawNav('none');drawTop();const m=$('#main');m.innerHTML='';m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Acesso'),h('h1',{},'Não foi possível abrir o curso'),h('p',{},msg)))}
+const traduz=m=>{m=String(m||'');if(/Invalid login/i.test(m))return 'E-mail ou senha incorretos.';if(/not confirmed/i.test(m))return 'Confirme o seu e-mail antes de entrar.';if(/already registered|already been registered/i.test(m))return 'Este e-mail já tem conta. Use a aba Entrar.';if(/rate limit/i.test(m))return 'Muitas tentativas. Aguarde alguns minutos.';if(/Password should/i.test(m))return 'A senha precisa ter pelo menos 8 caracteres.';if(/network|fetch/i.test(m))return 'Sem conexão com a internet.';return 'Não foi possível concluir. Tente novamente.'};
+function renderLogin(aba){MODE='auth';CUR=null;aba=aba||'entrar';drawNav('none');drawTop();$('#outBtn').hidden=true;const m=$('#main');m.innerHTML='';
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Treinamento NR-35 · 12 horas'),h('h1',{},aba==='entrar'?'Entrar no curso':'Criar conta'),h('p',{},aba==='entrar'?'Use o e-mail e a senha que você cadastrou.':'Crie seu acesso com e-mail e senha. No passo seguinte você informa nome e CPF.')));
+ const tabs=h('div',{style:'display:flex;gap:8px;margin-bottom:16px'},h('button',{class:'act'+(aba==='entrar'?'':' alt'),type:'button',style:'margin:0',onclick:()=>renderLogin('entrar')},'Entrar'),h('button',{class:'act'+(aba==='criar'?'':' alt'),type:'button',style:'margin:0',onclick:()=>renderLogin('criar')},'Criar conta'));
+ const email=h('input',{type:'email',id:'lgMail',autocomplete:'email',placeholder:'voce@empresa.com.br'});
+ const pass=h('input',{type:'password',id:'lgPass',autocomplete:aba==='entrar'?'current-password':'new-password',placeholder:'Senha'});
+ const pass2=h('input',{type:'password',id:'lgPass2',autocomplete:'new-password',placeholder:'Repita a senha'});
+ const msg=h('p',{class:'err',role:'alert'},'');const ok=h('p',{class:'fb ok',hidden:''});
+ const btn=h('button',{class:'act',type:'submit'},aba==='entrar'?'Entrar':'Criar conta');
+ const form=h('form',{class:'block reg',novalidate:''},h('label',{},'E-mail',email),h('label',{},'Senha',pass),aba==='criar'?h('label',{},'Repita a senha',pass2):null,msg,ok,btn,
+  aba==='entrar'?h('button',{type:'button',class:'rowbtn',style:'font-weight:400',onclick:async()=>{msg.textContent='';const e=email.value.trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e))return msg.textContent='Digite o seu e-mail acima e toque novamente.';const{error}=await SB.auth.resetPasswordForEmail(e,{redirectTo:location.origin+location.pathname});if(error)msg.textContent=traduz(error.message);else{ok.hidden=false;ok.textContent='Se o e-mail existir, enviamos um link para criar uma nova senha.'}}},'Esqueci minha senha'):null);
+ form.addEventListener('submit',async ev=>{ev.preventDefault();msg.textContent='';ok.hidden=true;
+  const e=email.value.trim(),p=pass.value;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e))return msg.textContent='Informe um e-mail válido.';
+  if(aba==='criar'){if(p.length<8)return msg.textContent='A senha precisa ter pelo menos 8 caracteres.';if(p!==pass2.value)return msg.textContent='As senhas não conferem.'}
+  else if(!p)return msg.textContent='Informe a senha.';
+  btn.disabled=true;btn.textContent='Aguarde...';
+  try{let r;if(aba==='entrar')r=await SB.auth.signInWithPassword({email:e,password:p});else r=await SB.auth.signUp({email:e,password:p});
+   if(r.error)throw r.error;
+   if(r.data&&r.data.session){SESSION=r.data.session;await afterLogin()}
+   else{btn.disabled=false;btn.textContent='Criar conta';ok.hidden=false;ok.textContent='Conta criada. Enviamos um e-mail de confirmação: confirme e depois use a aba Entrar.'}}
+  catch(er){btn.disabled=false;btn.textContent=aba==='entrar'?'Entrar':'Criar conta';msg.textContent=traduz(er.message)}});
+ m.append(tabs,form)}
+function renderNovaSenha(){MODE='newpass';CUR=null;drawNav('none');drawTop();const m=$('#main');m.innerHTML='';
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Recuperação de acesso'),h('h1',{},'Criar nova senha')));
+ const p1=h('input',{type:'password',id:'npA',autocomplete:'new-password'}),p2=h('input',{type:'password',id:'npB',autocomplete:'new-password'}),msg=h('p',{class:'err',role:'alert'}),btn=h('button',{class:'act',type:'submit'},'Salvar nova senha');
+ const form=h('form',{class:'block reg',novalidate:''},h('label',{},'Nova senha',p1),h('label',{},'Repita a nova senha',p2),msg,btn);
+ form.addEventListener('submit',async ev=>{ev.preventDefault();if(p1.value.length<8)return msg.textContent='A senha precisa ter pelo menos 8 caracteres.';if(p1.value!==p2.value)return msg.textContent='As senhas não conferem.';btn.disabled=true;
+  const{error}=await SB.auth.updateUser({password:p1.value});if(error){btn.disabled=false;return msg.textContent=traduz(error.message)}
+  RECOVERY=false;const{data}=await SB.auth.getSession();SESSION=data.session;await afterLogin()});
+ m.append(form)}
+function renderRegistro(err){MODE='reg';CUR=null;drawNav('reg');drawTop();const m=$('#main');m.innerHTML='';
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Antes de começar'),h('h1',{},'Registro do participante'),h('p',{},'Informe seus dados para iniciar o treinamento NR-35. Eles identificam você no resumo do treinamento e ficam visíveis apenas para o instrutor.')));
+ const nome=h('input',{type:'text',id:'regNome',autocomplete:'name',placeholder:'Nome completo'});
+ const cpf=h('input',{type:'text',id:'regCpf',inputmode:'numeric',placeholder:'000.000.000-00',maxlength:'14'});
+ cpf.addEventListener('input',()=>{const d=digits(cpf.value).slice(0,11);cpf.value=d.length>9?`${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6,9)}-${d.slice(9)}`:d.length>6?`${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6)}`:d.length>3?`${d.slice(0,3)}.${d.slice(3)}`:d});
+ const mail=h('input',{type:'email',id:'regMail',readonly:'',value:SESSION.user.email});
+ const ok=h('input',{type:'checkbox',id:'regOk'});
+ const msg=h('p',{class:'err',role:'alert'},err||'');
+ const btn=h('button',{class:'act',type:'submit'},'Registrar e iniciar o curso');
+ const form=h('form',{class:'block reg',novalidate:''},h('label',{},'Nome completo',nome),h('label',{},'CPF',cpf),h('label',{},'E-mail da conta',mail),
+  h('label',{style:'display:flex;gap:10px;align-items:flex-start;color:var(--ink)'},ok,h('span',{},'Autorizo o uso destes dados para registrar minha participação e meu desempenho no treinamento NR-35. Os dados ficam visíveis ao instrutor responsável.')),msg,btn);
+ form.addEventListener('submit',async ev=>{ev.preventDefault();
+  const n=nome.value.trim().replace(/\s+/g,' '),c=digits(cpf.value);
+  if(n.split(' ').length<2||n.length<5)return msg.textContent='Informe o nome completo.';
+  if(!cpfOk(c))return msg.textContent='CPF inválido. Confira os números.';
+  if(!ok.checked)return msg.textContent='Marque a autorização para continuar.';
+  btn.disabled=true;msg.textContent='Registrando...';const now=new Date().toISOString();
+  try{await MYREF.set({nome:n,cpf:c,email:SESSION.user.email,registeredAt:now,lastSeen:now,units:{},passed:{},score:{},attempts:{},stats:{},secs:{},current:null,finishedAt:null,summary:null});
+   ME={nome:n,cpf:c,email:SESSION.user.email,registeredAt:now};S=newState();MODE='aluno';setSync('Registro salvo');go('home')}
+  catch(er){btn.disabled=false;msg.textContent=(er&&er.code==='23505')?'Este CPF já está registrado em outra conta. Fale com o instrutor.':'Não foi possível salvar o registro. Tente novamente.'}});
+ m.append(form)}
+function loadAluno(d){ME={nome:d.nome,cpf:d.cpf,email:d.email,registeredAt:d.registeredAt};
+ S=Object.assign(newState(),{units:d.units||{},passed:d.passed||{},score:d.score||{},attempts:d.attempts||{},stats:d.stats||{},secs:d.secs||{},current:d.current||null,finishedAt:d.finishedAt||null,summary:d.summary||null})}
+
+/* ======================= RESUMO ======================= */
+function resumoBloco(a){const s=summaryOf(a),rows=rowsOf(a),tt=totals(a);
+ const w=h('div',{class:'block'},h('span',{class:'tag'},'Resumo'),h('h3',{},'Desempenho no treinamento'));
+ w.append(h('div',{class:'result '+(s.aprovado?'pass':'fail')},h('strong',{},s.notaFinal==null?'—':fmtNota(s.notaFinal)),h('p',{},`Nota da avaliação final${s.notaFinal==null?'':' ('+s.notaFinal+'%)'} · ${s.aprovado?'Aprovado':'Ainda não aprovado'}`)));
+ w.append(h('div',{class:'res'},[['Média das avaliações',fmtNota(s.media)],['Tempo de estudo',fmtMin(s.minutos*60)],['Atividades certas',tt.t?`${tt.r} de ${tt.t}`:'—'],['Início',fmtDate(a.registeredAt)],['Conclusão',fmtDate(a.finishedAt)]].map(([k,v])=>h('div',{},h('small',{},k),h('strong',{style:'font-size:1.4rem'},v)))));
+ w.append(h('div',{class:'tbl',style:'margin-top:16px'},h('table',{},h('thead',{},h('tr',{},['#','Módulo','Conteúdo','Avaliação','Tentativas','Atividades certas','Tempo'].map(t=>h('th',{},t)))),
+  h('tbody',{},rows.map(r=>h('tr',{},h('td',{class:'n'},String(r.n).padStart(2,'0')),h('td',{},r.titulo),h('td',{class:'n'},r.cont+'%'),h('td',{class:'n'},fmtNotaFull(r.nota)),h('td',{class:'n'},String(r.tent)),h('td',{class:'n'},r.t?`${r.r}/${r.t}`:'—'),h('td',{class:'n'},fmtMin(r.seg))))))));
+ return w}
+function renderResumo(){CUR=null;drawNav('resumo');drawTop();const m=$('#main');m.innerHTML='';const a=Object.assign({},ME,S);
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},a.finishedAt?'Treinamento concluído':'Treinamento em andamento'),h('h1',{},'Resumo do seu treinamento'),h('p',{},`Participante: ${ME.nome}. CPF ${maskCpf(ME.cpf)}.`)));
+ m.append(resumoBloco(a));
+ const b1=h('button',{class:'act',type:'button',onclick:()=>baixar(`resumo-nr35-${digits(ME.cpf).slice(0,3)}.txt`,resumoTxt(a),b1)},'Baixar resumo (.txt)');
+ const b2=h('button',{class:'act alt',type:'button',style:'margin-left:8px',onclick:()=>copyTxt(resumoTxt(a),b2)},'Copiar resumo');
+ m.append(b1,b2)}
+
+/* ======================= PAINEL DO INSTRUTOR ======================= */
+let ALUNOS=[],LOADED=false,SEL=null,SHOWCPF=false,PANELERR='',RESP={},panelT=null;
+async function loadAlunos(){if(!SB)return;
+ const{data,error}=await SB.from('alunos').select('*').order('last_seen',{ascending:false,nullsFirst:false});
+ LOADED=true;if(error){PANELERR='Não foi possível ler os participantes. Verifique a internet e o arquivo 01-estrutura.sql.';return drawPanel()}
+ PANELERR='';ALUNOS=data.map(toDoc);if(SEL)await loadResp(SEL);drawPanel()}
+async function loadResp(id){const{data}=await SB.from('respostas').select('modulo,pergunta,correta,criado_em').eq('user_id',id).order('criado_em',{ascending:false}).limit(300);RESP[id]=data||[]}
+function showPanel(){MODE='panel';CUR=null;$('#main').innerHTML='';drawNav('panel');drawTop();drawPanel();loadAlunos();
+ if(!panelT)panelT=setInterval(()=>{if(MODE==='panel'&&!document.hidden)loadAlunos()},10000)}
+function chip(a){return a.finishedAt?h('span',{class:'chip fin'},a.passed&&a.passed.m12?'Aprovado':'Concluído'):isOnline(a)?h('span',{class:'chip on'},'Online'):h('span',{class:'chip'},'Offline')}
+function drawPanel(){if(MODE!=='panel')return;const m=$('#main');const sy=window.scrollY;m.innerHTML='';drawTop();
+ const sel=SEL&&ALUNOS.find(a=>a.id===SEL);if(sel)return drawDetalhe(sel,sy);SEL=null;
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Acompanhamento ao vivo · atualiza a cada 10 segundos'),h('h1',{},'Painel do instrutor')));
+ if(PANELERR)m.append(h('div',{class:'note warn'},PANELERR));
+ if(!LOADED){m.append(h('p',{},'Carregando participantes...'));return}
+ const on=ALUNOS.filter(isOnline).length,fin=ALUNOS.filter(a=>a.finishedAt).length,ap=ALUNOS.filter(a=>a.passed&&a.passed.m12).length;
+ const notas=ALUNOS.map(a=>summaryOf(a).notaFinal).filter(v=>v!=null);const mediaF=notas.length?Math.round(notas.reduce((x,y)=>x+y,0)/notas.length):null;
+ m.append(h('div',{class:'res',style:'margin-bottom:20px'},[['Registrados',ALUNOS.length],['Online agora',on],['Concluídos',fin],['Aprovados',ap],['Média da prova final',mediaF==null?'—':fmtNota(mediaF)]].map(([k,v])=>h('div',{},h('small',{},k),h('strong',{},String(v))))));
+ if(!ALUNOS.length){m.append(h('div',{class:'block'},h('h3',{},'Nenhum participante registrado ainda'),h('p',{},'Envie o endereço do site ao colaborador. Ele cria a conta, informa nome e CPF e começa o curso.')));return}
+ const sorted=[...ALUNOS].sort((a,b)=>(isOnline(b)-isOnline(a))||String(b.lastSeen).localeCompare(String(a.lastSeen)));
+ const rows=sorted.map(a=>{const p=overallPct(a),s=summaryOf(a),tt=totals(a),cm=a.current?M.find(x=>x.id===a.current):null;
+  return h('tr',{},h('td',{},h('button',{class:'rowbtn',type:'button',onclick:async()=>{SEL=a.id;SHOWCPF=false;await loadResp(a.id);drawPanel();window.scrollTo(0,0)}},a.nome||'(sem nome)'),h('div',{class:'n',style:'font-size:.8rem;color:var(--muted)'},maskCpf(a.cpf))),
+   h('td',{},chip(a)),h('td',{},cm?`${idx(cm.id)+1}. ${cm.title}`:'—'),
+   h('td',{style:'min-width:130px'},h('div',{style:'display:flex;gap:8px;align-items:center'},h('div',{class:'mini',style:'flex:1'},h('i',{style:`width:${p}%`})),h('span',{class:'n'},p+'%'))),
+   h('td',{class:'n'},tt.t?`${tt.r}/${tt.t}`:'—'),h('td',{class:'n'},fmtMin(s.minutos*60)),
+   h('td',{class:'n'},s.notaFinal!=null?fmtNota(s.notaFinal):(Object.keys(a.score||{}).length?'média '+fmtNota(s.media):'—')),h('td',{},agoTxt(a.lastSeen)))});
+ const bx=h('button',{class:'act alt',type:'button',onclick:()=>baixar('nr35-participantes.csv',csvAll(),bx)},'Baixar planilha (.csv)');
+ m.append(h('div',{class:'block'},h('h3',{},'Participantes'),h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['Participante','Situação','Módulo atual','Progresso','Respostas certas','Tempo','Nota','Última atividade'].map(t=>h('th',{},t)))),h('tbody',{},rows))),bx));
+ window.scrollTo(0,sy)}
+function csvAll(){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+ const head=['Nome','CPF','E-mail','Registro','Conclusão','Progresso %','Situação','Nota final %','Média %','Tempo (min)','Respostas certas','Respostas totais',...M.map((x,i)=>'Módulo '+(i+1)+' %')];
+ const rows=ALUNOS.map(a=>{const s=summaryOf(a),tt=totals(a);return[a.nome,fmtCpf(a.cpf),a.email,fmtDate(a.registeredAt),a.finishedAt?fmtDate(a.finishedAt):'',overallPct(a),a.finishedAt?(s.aprovado?'Aprovado':'Concluído'):'Em andamento',s.notaFinal,a.finishedAt?s.media:'',s.minutos,tt.r,tt.t,...M.map(x=>a.score&&a.score[x.id]!=null?Math.round(a.score[x.id]*100):'')]});
+ return '﻿'+[head,...rows].map(r=>r.map(q).join(';')).join('\n')}
+function drawDetalhe(a,sy){const m=$('#main');const s=summaryOf(a);
+ m.append(h('button',{class:'act alt',type:'button',style:'margin:0 0 16px',onclick:()=>{SEL=null;drawPanel()}},'Voltar à lista'));
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Participante'),h('h1',{},a.nome),h('div',{style:'display:flex;gap:8px;align-items:center;flex-wrap:wrap'},chip(a),h('span',{class:'kick'},`Última atividade ${agoTxt(a.lastSeen)}`))));
+ const cpfB=h('button',{class:'act alt',type:'button',style:'margin:0 0 0 8px;padding:4px 10px',onclick:()=>{SHOWCPF=!SHOWCPF;drawPanel()}},SHOWCPF?'Ocultar':'Mostrar');
+ m.append(h('div',{class:'block'},h('h3',{},'Identificação'),h('div',{class:'res',style:'margin-top:0'},
+  h('div',{},h('small',{},'CPF'),h('strong',{style:'font-size:1.3rem'},SHOWCPF?fmtCpf(a.cpf):maskCpf(a.cpf)),cpfB),
+  h('div',{},h('small',{},'E-mail'),h('strong',{style:'font-size:1.1rem;word-break:break-all'},a.email||'—')),
+  h('div',{},h('small',{},'Registro'),h('strong',{style:'font-size:1.3rem'},fmtDate(a.registeredAt))),
+  h('div',{},h('small',{},'Progresso do curso'),h('strong',{},overallPct(a)+'%')))));
+ m.append(resumoBloco(a));
+ const hist=[];Object.keys(a.attempts||{}).forEach(id=>(a.attempts[id]||[]).forEach(t=>hist.push(Object.assign({id},t))));hist.sort((x,y)=>String(y.at).localeCompare(String(x.at)));
+ m.append(h('div',{class:'block'},h('h3',{},'Histórico de avaliações'),hist.length?h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['Quando','Módulo','Acertos','Resultado'].map(t=>h('th',{},t)))),h('tbody',{},hist.map(t=>h('tr',{},h('td',{},fmtDate(t.at)),h('td',{},`${idx(t.id)+1}. ${M[idx(t.id)].title}`),h('td',{class:'n'},`${t.pts}/${t.total} (${t.pct}%)`),h('td',{},t.pct>=Math.round(PASS*100)?'Aprovado':'Reprovado')))))):h('p',{},'Nenhuma avaliação feita ainda.')));
+ const rs=RESP[a.id]||[];
+ m.append(h('div',{class:'block'},h('h3',{},'Respostas recentes'),h('p',{},'As 300 últimas perguntas respondidas, da mais nova para a mais antiga.'),rs.length?h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['Quando','Módulo','Pergunta','Resultado'].map(t=>h('th',{},t)))),h('tbody',{},rs.map(r=>{const i=idx(r.modulo);return h('tr',{},h('td',{},fmtDate(r.criado_em)),h('td',{class:'n'},i>=0?String(i+1).padStart(2,'0'):r.modulo),h('td',{},r.pergunta),h('td',{},r.correta?'Certa':'Errada'))})))):h('p',{},'Nenhuma resposta registrada ainda.')));
+ const em=emailOf(a);
+ const box=h('div',{class:'block'},h('h3',{},'E-mail com o resumo'),h('p',{},a.finishedAt?'Texto pronto para enviar ao participante.':'O treinamento ainda não foi concluído. O texto abaixo mostra o resumo até agora.'),
+  h('p',{class:'n'},`Para: ${em.para||'—'}`),h('p',{class:'n'},`Assunto: ${em.assunto}`),h('pre',{class:'mail'},em.corpo));
+ const c1=h('button',{class:'act',type:'button',onclick:()=>copyTxt(em.corpo,c1)},'Copiar texto do e-mail');
+ const c2=h('button',{class:'act alt',type:'button',style:'margin-left:8px',onclick:()=>copyTxt(em.para,c2)},'Copiar endereço');
+ const c3=h('button',{class:'act alt',type:'button',style:'margin-left:8px',onclick:()=>baixar(`resumo-nr35-${digits(a.cpf).slice(0,3)}.txt`,resumoTxt(a),c3)},'Baixar resumo (.txt)');
+ box.append(c1,c2,c3);m.append(box);
+ const del=h('button',{class:'act alt',type:'button',onclick:async()=>{if(del.dataset.c!=='1'){del.dataset.c='1';del.textContent='Clique de novo para excluir o registro';return}
+  try{await SB.from('respostas').delete().eq('user_id',a.id);const{error}=await SB.from('alunos').delete().eq('user_id',a.id);if(error)throw error;SEL=null;await loadAlunos()}catch(e){del.textContent='Não foi possível excluir'}}},'Excluir registro');
+ m.append(del);if(sy!=null)window.scrollTo(0,sy)}
+
+/* ======================= INICIALIZAÇÃO ======================= */
+async function afterLogin(){const uid=SESSION.user.id;UID=uid;ME=null;
+ let adm=false;try{const r=await SB.from('admins').select('user_id').eq('user_id',uid).maybeSingle();adm=!!r.data}catch(e){}
+ ISOWNER=adm;$('#outBtn').hidden=false;
+ if(adm){$('#instBtn').hidden=false;return showPanel()}
+ MYREF=makeRef(uid);let snap=null;
+ try{snap=await MYREF.get()}catch(e){return renderBloqueio('Não foi possível carregar o seu registro. Confira a internet e recarregue a página.')}
+ if(!snap.exists){return renderRegistro()}
+ loadAluno(snap.data());MODE='aluno';setSync('Progresso sincronizado');
+ const hsh=(location.hash||'#home').slice(1);render(M.find(x=>x.id===hsh)||hsh==='resumo'||hsh==='home'?hsh:'home')}
+async function sair(){try{await push();await flushResp()}catch(e){}
+ try{await SB.auth.signOut()}catch(e){}
+ SESSION=null;UID=null;MYREF=null;ME=null;ISOWNER=false;S=newState();ALUNOS=[];LOADED=false;SEL=null;RESP={};$('#instBtn').hidden=true;$('#panelBtn').hidden=true;try{history.replaceState(null,'','#')}catch(e){}renderLogin('entrar')}
+async function boot(){$('#main').append(h('p',{},'Carregando...'));
+ const cfg=window.APP_CONFIG;
+ if(!window.supabase||!cfg||!cfg.SUPABASE_URL||/SEU-PROJETO|COLE_AQUI/i.test(cfg.SUPABASE_URL)){return renderBloqueio('Configuração pendente: preencha o arquivo config.js com a URL e a chave do Supabase, como descrito no LEIA-ME.')}
+ SB=window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
+ SB.auth.onAuthStateChange(ev=>{if(ev==='PASSWORD_RECOVERY'){RECOVERY=true;if(MODE!=='boot')setTimeout(renderNovaSenha,0)}});
+ let sess=null;try{const r=await SB.auth.getSession();sess=r.data.session}catch(e){}
+ SESSION=sess;
+ if(RECOVERY&&sess)return renderNovaSenha();
+ if(!sess)return renderLogin('entrar');
+ await afterLogin()}
+$('#instBtn').addEventListener('click',()=>{S.inst=!S.inst;save();render((location.hash||'#home').slice(1))});
+$('#panelBtn').addEventListener('click',()=>go('panel'));
+$('#outBtn').addEventListener('click',sair);
+boot();
+</script>
+
+</body></html>
