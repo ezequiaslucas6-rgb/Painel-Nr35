@@ -439,10 +439,417 @@ m11:[['O resgate deve ser rápido porque:',['Ficar suspenso e imóvel no cintur�
  ['Após o resgate de uma vítima suspensa:',['Dispensar sem avaliação','Encaminhar a avaliação médica, mesmo sem sintomas','Voltar ao trabalho','Só avisar o RH'],1,'Avaliação médica é necessária.'],
  ['Os números de emergência do SAMU e dos Bombeiros são:',['190 e 191','192 e 193','180 e 181','198 e 199'],1,'SAMU 192 e Bombeiros 193.']]
 };
+/* ======================= ETAPA 2: MÓDULOS AVANÇADOS (A01 a A20) =======================
+   Liberada só depois da aprovação na avaliação final da etapa 1 (m12).
+   Os ids (a1...a20) são novos, então o progresso da etapa 1 não é alterado. */
+M.forEach(m=>{m.stage=1});
+M.push(
+{id:'a1',stage:2,day:3,title:'Da etapa 1 ao nível avançado',sub:'Revisão crítica e a ligação da NR-35 com o gerenciamento de riscos da NR-1.',
+ goals:['Revisar com olhar crítico os conceitos da etapa 1','Relacionar a NR-35 com o GRO e o PGR da NR-1','Reconhecer as normas que atuam junto com a NR-35 em cada situação'],
+ exam:'Questões 1 e 2',
+ inst:['0–15 min: rodada rápida: cada participante cita um erro que já viu em campo.','15–35 min: exposição sobre NR-1 (GRO/PGR) e normas complementares.','35–50 min: atividade de classificação das normas.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'O que muda no nível avançado',html:`<p>Na etapa 1 você aprendeu <strong>o que a norma exige</strong>. Nesta etapa o foco é <strong>decidir bem em campo</strong>: escolher o sistema certo, calcular espaço de queda, reconhecer quando parar e participar do resgate.</p><p>A NR-35 não trabalha sozinha. O trabalho em altura faz parte do <strong>Gerenciamento de Riscos Ocupacionais (GRO)</strong> da NR-1, registrado no <strong>Programa de Gerenciamento de Riscos (PGR)</strong>. A Análise de Risco da atividade deve ser coerente com o inventário de riscos da empresa.</p><div class="note"><strong>Regra de ouro do nível avançado:</strong> se o planejamento não responde "como eu paro uma queda" e "como eu tiro a pessoa de lá", o trabalho ainda não está pronto para começar.</div>`},
+ {t:'classify',h:'Qual norma trata principalmente do assunto?',buckets:['NR-35','NR-10','NR-18','NR-1'],items:[
+  ['Gerenciamento de riscos e inventário de riscos da empresa (PGR)',3,'O GRO e o PGR estão na NR-1.'],
+  ['Trabalho próximo a rede elétrica energizada',1,'Segurança em instalações e serviços em eletricidade: NR-10.'],
+  ['Montagem de andaimes em obra de construção',2,'Andaimes e construção civil: NR-18, junto com a NR-35.'],
+  ['Requisitos de capacitação para atividade acima de 2,00 m com risco de queda',0,'Capacitação para trabalho em altura: NR-35.'],
+  ['Permissão de Trabalho para atividade em altura não rotineira',0,'A PT para trabalho em altura está na NR-35.'],
+  ['Sistemas de ancoragem e acesso por cordas',0,'São anexos da própria NR-35.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'O trabalho em altura deve estar considerado em qual programa da NR-1?',o:['PCMSO','PGR','PPRA','CIPA'],a:1,why:'O PGR (Programa de Gerenciamento de Riscos) é o programa da NR-1. O PPRA deixou de existir.'},
+  {q:'Um eletricista vai trabalhar em um poste a 8 m com rede energizada próxima. Quais normas se aplicam?',o:['Só a NR-35','Só a NR-10','NR-35 e NR-10, juntas','Nenhuma, se for serviço rápido'],a:2,why:'Há risco de queda (NR-35) e risco elétrico (NR-10) ao mesmo tempo.'}]}
+ ]},
+{id:'a2',stage:2,day:3,title:'Análise de Risco avançada',sub:'Perigo, risco, probabilidade, severidade e escolha de controles.',
+ goals:['Diferenciar perigo de risco','Avaliar risco por probabilidade e severidade','Propor controles seguindo a hierarquia'],
+ exam:'Questões 3 e 4',
+ inst:['0–15 min: perigo x risco com exemplos do local de trabalho.','15–40 min: matriz de risco em grupos, com uma atividade real.','40–50 min: apresentação dos grupos.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'cards',h:'Conceitos que sustentam a AR',items:[['Perigo','Fonte com potencial de causar dano. Ex.: borda de laje sem proteção.'],['Risco','Combinação da probabilidade de o dano acontecer com a severidade desse dano.'],['Medida de controle','Ação que elimina o perigo ou reduz a probabilidade ou a severidade.'],['Risco residual','O que sobra depois dos controles. Precisa ser aceitável antes de começar.']]},
+ {t:'text',h:'O que uma boa AR de altura precisa responder',html:`<ul><li>Onde e como será o acesso, e qual o entorno (tráfego, rede elétrica, pessoas embaixo).</li><li>Quais sistemas de proteção serão usados: coletivo primeiro, individual depois.</li><li>Onde estão os pontos de ancoragem e qual a sua resistência conhecida.</li><li>Qual a zona livre de queda disponível e a necessária.</li><li>Quais são as condições impeditivas (clima, saúde, iluminação).</li><li>Como será a comunicação e o <strong>resgate</strong>, com tempo de resposta.</li><li>Como serão isoladas a área e a queda de materiais e ferramentas.</li></ul>`},
+ {t:'order',h:'Ordene as etapas da Análise de Risco',steps:['Descrever a atividade e o local','Identificar os perigos','Avaliar os riscos (probabilidade e severidade)','Definir as medidas de controle pela hierarquia','Verificar se o risco residual é aceitável','Comunicar a equipe e registrar']},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Uma borda de telhado sem proteção é:',o:['Um risco','Um perigo','Uma medida de controle','Um risco residual'],a:1,why:'É a fonte do dano possível: um perigo. O risco depende de probabilidade e severidade.'},
+  {q:'Depois de aplicar os controles, o risco residual continua alto. O que fazer?',o:['Começar com mais atenção','Rever o planejamento e adicionar controles antes de começar','Pedir ao trabalhador mais experiente para ir','Reduzir o tempo de exposição e começar'],a:1,why:'Só se inicia com risco residual aceitável.'},
+  {q:'Qual controle tem MAIOR eficácia?',o:['Placa de aviso','Treinamento','Guarda-corpo fixo','Fazer a tarefa no solo, sem subir'],a:3,why:'Eliminar a exposição está no topo da hierarquia.'}]}
+ ]},
+{id:'a3',stage:2,day:3,title:'Permissão de Trabalho na prática',sub:'Emissão, conteúdo, revalidação, encerramento e arquivo da PT.',
+ goals:['Reconhecer o conteúdo mínimo de uma PT','Saber quando a PT pode ser revalidada','Encerrar e arquivar a PT corretamente'],
+ exam:'Questões 5 e 6',
+ inst:['0–15 min: mostrar um modelo de PT da empresa.','15–40 min: preencher uma PT em duplas a partir de um caso.','40–50 min: discutir revalidação e encerramento.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'Ciclo de vida da PT',html:`<p>A PT deve ser <strong>emitida</strong>, <strong>aprovada</strong> pelo responsável pela autorização, <strong>disponibilizada no local</strong> da atividade e, ao final, <strong>encerrada e arquivada</strong> de forma a permitir a rastreabilidade.</p><p>Ela deve conter, no mínimo: os <strong>requisitos mínimos</strong> a serem atendidos para a execução, as <strong>disposições e medidas da Análise de Risco</strong> e a <strong>relação de todos os envolvidos</strong> e suas autorizações.</p><p>A validade é <strong>limitada à duração da atividade e restrita ao turno</strong>. Ela pode ser <strong>revalidada</strong> pelo responsável pela aprovação quando <strong>não houver mudança</strong> nas condições estabelecidas nem na equipe.</p>`},
+ {t:'order',h:'Ordene o ciclo da PT',steps:['Planejar com base na Análise de Risco','Emitir a PT','Aprovar pelo responsável pela autorização','Disponibilizar no local da atividade','Executar o trabalho conforme a PT','Encerrar a PT','Arquivar para rastreabilidade']},
+ {t:'quiz',h:'Pode revalidar a PT?',items:[
+  {q:'O turno acabou, a atividade continua amanhã com a mesma equipe e as mesmas condições.',o:['Pode revalidar','Precisa de nova PT'],a:0,why:'Sem mudança de condições e de equipe, o responsável pela aprovação pode revalidar.'},
+  {q:'Um novo trabalhador vai entrar na equipe.',o:['Pode revalidar','Precisa de nova PT'],a:1,why:'Mudou a equipe: a relação de envolvidos e autorizações muda.'},
+  {q:'O ponto de ancoragem previsto foi danificado e será usado outro.',o:['Pode revalidar','Precisa de nova PT'],a:1,why:'Mudou uma condição da AR: nova análise e nova PT.'},
+  {q:'A atividade terminou. O que fazer com a PT?',o:['Jogar fora','Encerrar e arquivar','Guardar com o trabalhador','Reaproveitar na próxima tarefa'],a:1,why:'Encerrar e arquivar permite a rastreabilidade.'}]}
+ ]},
+{id:'a4',stage:2,day:3,title:'Sistemas de ancoragem',sub:'Anexo II da NR-35: tipos, projeto, instalação e inspeção.',
+ goals:['Diferenciar ancoragem definitiva de provisória','Reconhecer quem projeta e quem inspeciona','Escolher um ponto de ancoragem confiável em campo'],
+ exam:'Questões 7 e 8',
+ inst:['0–15 min: mostrar exemplos reais de ancoragens da empresa (placas, chumbadores, fitas).','15–35 min: exposição sobre o Anexo II.','35–50 min: PRÁTICA: avaliar pontos de ancoragem do local (aprova ou reprova?).','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'cards',h:'Tipos de sistema de ancoragem',items:[['Definitivo','Fica instalado de forma permanente na estrutura. Precisa de projeto e identificação, com inspeção periódica.'],['Provisório','Instalado para uma atividade e retirado depois. Ex.: fita de ancoragem em viga, tripé.'],['Ponto de ancoragem','Local onde o trabalhador conecta o seu sistema de proteção.'],['Dispositivo de ancoragem','Elemento que liga o sistema à estrutura: olhal, fita, cinta, chumbador.']]},
+ {t:'text',h:'Regras que não podem falhar',html:`<ul><li>O sistema de ancoragem deve ter <strong>projeto ou especificação técnica</strong> elaborados por <strong>profissional legalmente habilitado</strong>, com a resistência conhecida.</li><li>A instalação segue o projeto e as instruções do fabricante.</li><li>Ancoragens definitivas devem ser <strong>identificadas</strong> e ter <strong>inspeção periódica</strong> registrada.</li><li>Todo sistema é <strong>inspecionado antes do uso</strong>. Na dúvida, não se conecta.</li><li>Nunca use como ancoragem: tubulação, eletrocalha, corrimão comum, telha, andaime não projetado para isso ou o cinturão de um colega.</li></ul><div class="note warn"><strong>Após uma queda</strong>, o sistema de ancoragem que reteve o trabalhador deve ser retirado de uso até avaliação.</div>`},
+ {t:'classify',h:'Serve como ancoragem?',buckets:['Pode servir (com avaliação)','Nunca usar'],items:[
+  ['Olhal com placa de identificação e inspeção em dia',0,'Ancoragem identificada e inspecionada é a opção certa.'],
+  ['Tubulação de gás ou de água',1,'Tubulações não são projetadas para reter quedas.'],
+  ['Viga metálica estrutural com fita de ancoragem certificada',0,'Com avaliação da estrutura e fita adequada, é ancoragem provisória comum.'],
+  ['Eletrocalha de cabos',1,'Não tem resistência conhecida e pode ter risco elétrico.'],
+  ['Corrimão de escada comum',1,'Corrimão é para apoio da mão, não para reter queda.'],
+  ['Linha de vida definitiva instalada conforme projeto',0,'Sistema projetado para essa finalidade.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Quem deve elaborar o projeto de um sistema de ancoragem definitivo?',o:['Qualquer trabalhador capacitado','Profissional legalmente habilitado','O vendedor do EPI','O próprio usuário'],a:1,why:'Projeto e especificação são de profissional legalmente habilitado.'},
+  {q:'Um ponto de ancoragem segurou uma queda. O que fazer?',o:['Continuar usando','Retirar de uso até avaliação','Pintar de outra cor','Usar só para trabalhos leves'],a:1,why:'Pode ter sofrido dano invisível. Fica fora de uso até avaliação.'}]}
+ ]},
+{id:'a5',stage:2,day:3,title:'Linhas de vida horizontais e verticais',sub:'Flecha, número de usuários e o espaço extra que a linha exige.',
+ goals:['Entender a deflexão (flecha) da linha de vida','Respeitar o número máximo de usuários','Escolher entre linha flexível e rígida'],
+ exam:'Questão 9',
+ inst:['0–15 min: desenho no quadro de uma linha de vida horizontal antes e depois da queda.','15–35 min: exposição e cartões.','35–50 min: PRÁTICA: identificar a placa da linha de vida (usuários, vão, inspeção).','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'A flecha muda a conta',html:`<p>Quando alguém cai preso a uma <strong>linha de vida horizontal flexível</strong> (cabo de aço ou corda), o cabo se deforma e forma um "V". Essa deformação é a <strong>flecha</strong> ou <strong>deflexão</strong>.</p><p>A flecha <strong>aumenta a distância total de queda</strong>, então a <strong>zona livre de queda necessária é maior</strong> do que com um ponto fixo. O valor da flecha vem do projeto da linha e depende do vão, da tensão do cabo e do número de pessoas conectadas.</p><div class="note warn">Nunca conecte mais pessoas do que o número indicado no projeto ou na placa da linha. Cada usuário a mais aumenta a carga e a flecha.</div>`},
+ {t:'cards',h:'Tipos de linha de vida',items:[['Horizontal flexível','Cabo ou corda tensionada entre ancoragens. Tem flecha na queda.'],['Horizontal rígida','Trilho metálico. Pouca ou nenhuma deflexão.'],['Vertical flexível','Corda ou cabo vertical com trava-quedas guiado.'],['Vertical rígida','Trilho ou cabo fixo em escadas tipo marinheiro e torres, com trava-quedas próprio.']]},
+ {t:'flash',h:'Cartões de revisão',items:[['Flecha','Deformação da linha flexível durante a retenção da queda.'],['Efeito da flecha','Aumenta a ZLQ necessária.'],['Número de usuários','Nunca acima do previsto no projeto ou na placa.'],['Linha provisória','Também precisa de especificação técnica e montagem conforme o fabricante.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Comparado a um ponto fixo acima da cabeça, a linha de vida horizontal flexível exige:',o:['Menos zona livre de queda','A mesma zona livre de queda','Mais zona livre de queda, por causa da flecha','Nenhuma zona livre de queda'],a:2,why:'A deflexão do cabo soma-se à distância de queda.'},
+  {q:'A placa da linha de vida indica no máximo 2 usuários. Chegou um terceiro trabalhador. O que fazer?',o:['Conectar os três com cuidado','Usar outro sistema para o terceiro','Conectar o terceiro só por alguns minutos','Prender o terceiro no cinturão de um colega'],a:1,why:'O limite de usuários do projeto não pode ser ultrapassado.'}]}
+ ]},
+{id:'a6',stage:2,day:3,title:'Trava-quedas retrátil e guiado',sub:'Uso correto, teste antes do uso e cuidado com bordas.',
+ goals:['Diferenciar trava-quedas retrátil de guiado','Fazer o teste funcional antes do uso','Reconhecer o risco de uso horizontal sobre bordas'],
+ exam:'Questão 10',
+ inst:['0–10 min: mostrar um trava-quedas retrátil e um guiado.','10–30 min: exposição e teste funcional demonstrado.','30–50 min: PRÁTICA: cada participante faz a inspeção e o teste de travamento.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'cards',h:'Dois equipamentos, dois usos',items:[['Retrátil','O cabo ou fita recolhe e solta conforme o movimento e trava em velocidade de queda. Normalmente instalado ACIMA do usuário.'],['Guiado','Corre em uma linha vertical (rígida ou flexível) e trava quando o trabalhador cai. Deve ser compatível com a linha usada.']]},
+ {t:'text',h:'Cuidados que evitam acidentes',html:`<ul><li><strong>Teste funcional antes de cada uso:</strong> puxe o cabo de forma brusca. Ele deve travar. Depois, deve recolher sem travar sozinho.</li><li>O retrátil deve ficar, em regra, <strong>acima do usuário</strong>. Uso na horizontal ou com ancoragem nos pés só com modelo próprio para isso, conforme o fabricante.</li><li><strong>Bordas</strong>: o cabo passando sobre aresta viva pode ser cortado na queda. Só use sobre borda o modelo indicado pelo fabricante para essa situação.</li><li>Nunca solte o cabo retrátil de uma vez. Acompanhe o recolhimento.</li><li>O trava-quedas guiado deve ser do tipo e do diâmetro compatíveis com a linha. Não se mistura marca e modelo sem indicação do fabricante.</li></ul>`},
+ {t:'order',h:'Ordene a verificação do retrátil',steps:['Conferir CA, etiqueta e data da última inspeção','Inspecionar a carcaça, o cabo ou fita e o conector','Fazer o teste de travamento puxando de forma brusca','Verificar se recolhe sem travar sozinho','Conectar ao ponto de ancoragem acima do usuário','Conectar à argola dorsal do cinturão']},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'O retrátil não travou no teste de puxão. O que fazer?',o:['Usar com cuidado','Retirar de uso e encaminhar para avaliação','Lubrificar e usar','Usar só em baixa altura'],a:1,why:'Falha no teste funcional retira o equipamento de uso.'},
+  {q:'Onde se instala, em regra, o trava-quedas retrátil?',o:['Abaixo dos pés','Acima do usuário','Na cintura','Em qualquer posição'],a:1,why:'Acima do usuário reduz a queda livre. Outras posições só com modelo próprio.'}]}
+ ]},
+{id:'a7',stage:2,day:3,title:'Progressão com 100% de conexão',sub:'Talabarte duplo (em Y) e a regra de nunca ficar desconectado.',
+ goals:['Progredir em estruturas sem ficar desconectado','Usar corretamente o talabarte em Y','Evitar conexões erradas no cinturão'],
+ exam:'Questão 11',
+ inst:['0–10 min: mostrar o talabarte em Y e os pontos do cinturão.','10–25 min: exposição.','25–50 min: PRÁTICA: progressão horizontal em estrutura baixa trocando os conectores.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'A regra dos 100%',html:`<p>Durante toda a exposição ao risco de queda o trabalhador deve <strong>permanecer conectado</strong>. Ao passar por um obstáculo, a técnica é usar o <strong>talabarte duplo (em Y)</strong>: conecta-se a perna livre no novo ponto <strong>antes</strong> de soltar a perna anterior.</p><div class="note warn"><strong>Erro comum:</strong> prender a perna livre do talabarte em Y na argola lateral ou frontal do cinturão. Em uma queda, isso pode transferir a força pelo caminho errado e anular o absorvedor. A perna sem uso fica no <strong>ponto de descanso</strong> indicado pelo fabricante.</div>`},
+ {t:'order',h:'Ordene a passagem por um obstáculo',steps:['Estar conectado com a perna A no ponto 1','Conectar a perna B no ponto 2, depois do obstáculo','Conferir que o conector da perna B está fechado e travado','Soltar a perna A do ponto 1','Guardar a perna A no ponto de descanso do cinturão']},
+ {t:'cards',h:'Pontos do cinturão',items:[['Argola dorsal','Retenção de queda. É onde se conecta o talabarte com absorvedor e o trava-quedas.'],['Argola frontal (peitoral)','Retenção de queda quando indicada pelo fabricante, como em linha vertical.'],['Argolas laterais','Posicionamento no trabalho (ex.: poste). Não servem para retenção de queda.'],['Argola ventral','Posicionamento e acesso por corda, conforme o fabricante.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Ao passar por uma viga, qual a sequência correta?',o:['Soltar a perna A e depois conectar a perna B','Conectar a perna B e depois soltar a perna A','Soltar as duas e passar rápido','Segurar a viga e passar sem conexão'],a:1,why:'Primeiro conecta a nova, depois solta a anterior: 100% conectado.'},
+  {q:'As argolas laterais do cinturão servem para:',o:['Retenção de queda','Posicionamento no trabalho','Pendurar ferramentas pesadas','Resgate'],a:1,why:'Laterais são para posicionamento. Retenção é na argola dorsal (ou frontal, se indicada).'}]}
+ ]},
+{id:'a8',stage:2,day:4,title:'Cálculo de zona livre de queda',sub:'Exercícios com fator de queda e espaço livre necessário.',
+ goals:['Calcular queda livre, fator de queda e ZLQ','Comparar posições de ancoragem','Decidir se o espaço disponível é suficiente'],
+ exam:'Questões 12 e 13',
+ inst:['0–10 min: relembrar as fórmulas.','10–40 min: calculadora em duplas com os 3 exercícios.','40–50 min: correção no quadro.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'As três contas',html:`<p><strong>Queda livre</strong> = (altura da argola dorsal − altura da ancoragem) + comprimento do talabarte. Nunca é menor que zero.</p><p><strong>Fator de queda</strong> = queda livre ÷ comprimento do talabarte.</p><p><strong>ZLQ necessária</strong> = queda livre + extensão do absorvedor aberto + folga de segurança.</p><div class="note">Exemplo com talabarte de 1,5 m, argola a 1,5 m dos pés, absorvedor de 1,75 m e folga de 1,0 m: com ancoragem nos pés, a queda livre é 3,0 m, o fator é 2 e a ZLQ é 5,75 m. Com ancoragem a 2,0 m dos pés, a queda livre cai para 1,0 m e a ZLQ para 3,75 m.</div>`},
+ {t:'zlq'},
+ {t:'quiz',h:'Exercícios',items:[
+  {q:'Queda livre de 3,0 m com talabarte de 1,5 m. Qual o fator de queda?',o:['0,5','1','2','3'],a:2,why:'3,0 ÷ 1,5 = 2. É o pior caso.'},
+  {q:'Queda livre 1,0 m, absorvedor aberto 1,75 m, folga 1,0 m. Qual a ZLQ necessária?',o:['2,75 m','3,75 m','4,75 m','1,75 m'],a:1,why:'1,0 + 1,75 + 1,0 = 3,75 m.'},
+  {q:'A ZLQ necessária é 5,75 m e há 4,0 m livres até o solo. O que fazer?',o:['Trabalhar assim mesmo','Reposicionar a ancoragem mais alto ou mudar de sistema','Usar um talabarte mais longo','Diminuir a folga para zero'],a:1,why:'Espaço insuficiente: reduza a queda livre (ancoragem acima) ou use outro sistema, como retrátil.'},
+  {q:'Usar um talabarte mais longo, com o mesmo ponto de ancoragem, faz a ZLQ necessária:',o:['Diminuir','Aumentar','Ficar igual','Zerar'],a:1,why:'O comprimento do talabarte entra na queda livre.'}]}
+ ]},
+{id:'a9',stage:2,day:4,title:'Força de impacto e absorvedor de energia',sub:'Por que o absorvedor existe e quando ele precisa ser descartado.',
+ goals:['Explicar a função do absorvedor de energia','Relacionar fator de queda com força de impacto','Reconhecer absorvedor acionado'],
+ exam:'Questão 14',
+ inst:['0–15 min: demonstração com um absorvedor de treino (aberto e fechado).','15–35 min: exposição.','35–50 min: classificar situações de uso e descarte.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'Parar a queda sem machucar',html:`<p>Parar uma pessoa em queda gera uma <strong>força de impacto</strong> no corpo e na ancoragem. Quanto maior o <strong>fator de queda</strong>, maior essa força.</p><p>O <strong>absorvedor de energia</strong> se abre (rasga as costuras internas) durante a retenção e <strong>limita a força transmitida ao corpo</strong> a um valor tolerável, em geral até cerca de <strong>6 kN</strong>, conforme a norma técnica do equipamento. Em troca, ele <strong>aumenta a distância de parada</strong>, e por isso entra no cálculo da ZLQ.</p><div class="note warn">Absorvedor que foi acionado, mesmo parcialmente, <strong>não pode ser reutilizado</strong>. Ele já cumpriu a sua função.</div>`},
+ {t:'classify',h:'Uso ou descarte?',buckets:['Pode usar','Retirar de uso'],items:[
+  ['Capa do absorvedor rasgada e costuras internas aparentes',1,'Sinal de acionamento ou dano.'],
+  ['Etiqueta legível, CA válido e inspeção sem defeitos',0,'Condição normal de uso.'],
+  ['Absorvedor que reteve uma queda na semana passada',1,'Após uma queda, sai de uso.'],
+  ['Fita com queimadura de solda',1,'Dano térmico compromete a resistência.'],
+  ['Talabarte guardado seco, longe do sol, sem defeitos',0,'Armazenamento correto e sem dano.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'O que acontece com a força de impacto quando o fator de queda aumenta?',o:['Diminui','Aumenta','Não muda','Zera'],a:1,why:'Mais queda livre gera mais energia a ser absorvida.'},
+  {q:'O absorvedor de energia:',o:['Reduz a distância de queda','Limita a força no corpo, mas aumenta a distância de parada','Dispensa o cálculo da ZLQ','Pode ser reutilizado após a queda'],a:1,why:'Ele troca força por distância. Por isso a extensão dele entra na ZLQ.'}]}
+ ]},
+{id:'a10',stage:2,day:4,title:'Efeito pêndulo e bordas cortantes',sub:'Dois riscos escondidos na hora de escolher a ancoragem.',
+ goals:['Reconhecer o risco de queda pendular','Escolher ancoragem que reduza o pêndulo','Proteger cordas e fitas contra arestas'],
+ exam:'Questão 15',
+ inst:['0–10 min: demonstração do pêndulo com um peso e um barbante.','10–30 min: exposição.','30–50 min: casos em duplas.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'Efeito pêndulo',html:`<p>Se o trabalhador se afasta lateralmente do ponto de ancoragem e cai, ele <strong>balança como um pêndulo</strong>. Pode bater em paredes, pilares ou equipamentos, e o cabo pode <strong>arrastar sobre a borda</strong>.</p><p>Para reduzir o risco: manter a ancoragem <strong>o mais próximo possível da vertical</strong> acima do trabalhador, reposicionar a ancoragem ao se deslocar, ou usar linha de vida horizontal ao longo do percurso.</p>`},
+ {t:'text',h:'Bordas e arestas',html:`<p>Fitas, cordas e cabos podem ser <strong>cortados</strong> ao passar sobre arestas vivas durante a retenção da queda. Em borda de laje, viga metálica ou telha, use <strong>protetor de borda</strong> e equipamentos indicados pelo fabricante para uso sobre bordas.</p><div class="note warn">A borda também conta na ZLQ: a queda sobre uma aresta pode mudar o ponto de giro e a distância percorrida.</div>`},
+ {t:'quiz',h:'Qual a melhor decisão?',items:[
+  {q:'O trabalhador precisa andar 6 m ao longo da borda de uma laje e só há um ponto de ancoragem no início.',o:['Usar o mesmo ponto e andar com cuidado','Instalar linha de vida horizontal ou reposicionar a ancoragem ao longo do trajeto','Andar sem conexão','Usar talabarte mais longo'],a:1,why:'Afastar-se lateralmente do ponto cria queda pendular.'},
+  {q:'A corda do sistema vai passar sobre a quina de uma viga metálica.',o:['Ignorar','Usar protetor de borda e equipamento indicado para borda','Enrolar fita isolante','Usar corda mais fina'],a:1,why:'Aresta viva pode cortar a corda na queda.'},
+  {q:'Qual posição de ancoragem reduz o efeito pêndulo?',o:['Bem ao lado do trabalhador','Na vertical, acima do trabalhador','Abaixo dos pés','Atrás de um pilar'],a:1,why:'Na vertical não há balanço lateral.'}]}
+ ]},
+{id:'a11',stage:2,day:4,title:'Inspeção, guarda e vida útil do EPI',sub:'Rotina de inspeção, registro e critérios de descarte.',
+ goals:['Fazer inspeção completa do SPIQ','Registrar a inspeção periódica','Aplicar critérios de descarte'],
+ exam:'Questão 16',
+ inst:['0–10 min: distribuir kits de EPI (alguns com defeitos plantados).','10–40 min: PRÁTICA: inspeção em duplas com ficha.','40–50 min: discussão dos defeitos encontrados.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'Dois tipos de inspeção',html:`<p><strong>Inspeção antes do uso:</strong> feita pelo próprio trabalhador, todas as vezes. Visual e tátil, em todo o conjunto.</p><p><strong>Inspeção periódica:</strong> feita conforme a periodicidade definida pela empresa e pelo fabricante, por pessoa designada, com <strong>registro</strong>. Equipamentos reprovados são <strong>inutilizados e descartados</strong>, para não voltarem ao uso por engano.</p><p>A <strong>vida útil</strong> e os critérios de descarte vêm do <strong>manual do fabricante</strong>. Calor, produtos químicos, sol, umidade e quedas reduzem essa vida.</p>`},
+ {t:'classify',h:'Aprovado ou reprovado na inspeção?',buckets:['Aprovado','Reprovado'],items:[
+  ['Fita do cinturão com fios puxados e desgaste nas bordas',1,'Desgaste na fita compromete a resistência.'],
+  ['Conector com trava que não fecha sozinha',1,'Trava deve fechar e travar automaticamente.'],
+  ['Costuras íntegras, fivelas sem deformação, etiqueta legível',0,'Sem defeitos encontrados.'],
+  ['Cinturão com etiqueta ilegível e sem identificação',1,'Sem rastreabilidade, não é usado.'],
+  ['Conector com corrosão leve superficial que não sai',1,'Corrosão em conector reprova o equipamento.'],
+  ['Talabarte limpo, seco e sem cortes',0,'Condição normal.']]},
+ {t:'flash',h:'Cartões de revisão',items:[['Antes do uso','Inspeção pelo trabalhador, sempre.'],['Periódica','Por pessoa designada, com registro.'],['Reprovado','Inutilizar e descartar.'],['Vida útil','Definida pelo manual do fabricante.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Um cinturão foi reprovado na inspeção periódica. O que fazer?',o:['Guardar como reserva','Inutilizar e descartar','Doar para outro setor','Usar só em treinamento de altura real'],a:1,why:'Inutilizar evita que volte ao uso por engano.'},
+  {q:'Onde estão os critérios de vida útil do equipamento?',o:['No manual do fabricante','Na nota fiscal','No crachá do trabalhador','Em nenhum lugar'],a:0,why:'O fabricante define vida útil, inspeção e descarte.'}]}
+ ]},
+{id:'a12',stage:2,day:4,title:'Andaimes',sub:'Montagem, liberação e uso seguro com a NR-18.',
+ goals:['Reconhecer um andaime liberado para uso','Identificar defeitos que impedem o uso','Saber onde se conectar em um andaime'],
+ exam:'Questão 17',
+ inst:['0–15 min: fotos de andaimes certos e errados.','15–35 min: exposição.','35–50 min: PRÁTICA: inspeção de um andaime do local, com lista de verificação.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'Andaime pronto para uso',html:`<ul><li>Montado por trabalhadores <strong>capacitados</strong>, conforme projeto ou manual do fabricante.</li><li><strong>Base</strong> nivelada e firme, com sapatas; rodízios travados em andaime móvel.</li><li><strong>Estaiamento ou ancoragem</strong> à estrutura conforme o projeto.</li><li><strong>Piso</strong> completo, sem vãos, com pranchas travadas.</li><li><strong>Guarda-corpo e rodapé</strong> em todo o perímetro das plataformas de trabalho.</li><li>Acesso seguro por escada própria. Não se sobe pelos travamentos.</li><li><strong>Liberação</strong> registrada antes do uso, conforme o procedimento da empresa.</li></ul><div class="note warn">Nunca se desloca andaime móvel com trabalhador em cima.</div>`},
+ {t:'classify',h:'Pode subir?',buckets:['Pode subir','Não pode subir'],items:[
+  ['Plataforma com uma prancha faltando',1,'Vão no piso é risco de queda.'],
+  ['Andaime móvel com rodízios destravados',1,'O andaime pode se deslocar.'],
+  ['Andaime liberado, com guarda-corpo, rodapé e piso completo',0,'Atende às condições de uso.'],
+  ['Base apoiada em tijolos soltos',1,'Base precisa ser firme e nivelada, com sapatas.'],
+  ['Acesso pela escada interna do andaime',0,'Acesso correto.'],
+  ['Último nível sem guarda-corpo',1,'Sem proteção coletiva completa, não se usa.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'É permitido deslocar um andaime móvel com o trabalhador em cima?',o:['Sim, devagar','Não','Sim, se ele estiver conectado','Sim, se for menos de 2 m'],a:1,why:'Desloca-se o andaime sempre sem ninguém em cima.'},
+  {q:'O acesso à plataforma do andaime deve ser feito:',o:['Pelos travamentos diagonais','Por escada própria ou acesso previsto','Pela janela do prédio','Escalando a estrutura por fora'],a:1,why:'Travamentos não são escada.'}]}
+ ]},
+{id:'a13',stage:2,day:4,title:'Plataformas elevatórias e cestos',sub:'PEMT, cesto aéreo e onde conectar o cinturão.',
+ goals:['Reconhecer os riscos da plataforma elevatória','Conectar-se no ponto correto do cesto','Fazer a verificação antes da operação'],
+ exam:'Questão 18',
+ inst:['0–10 min: vídeo ou foto de uma PEMT e do ponto de ancoragem do cesto.','10–30 min: exposição.','30–50 min: verificação pré-uso com lista do fabricante (se houver equipamento).','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'Plataforma não é desculpa para ficar sem conexão',html:`<p>Na <strong>Plataforma Elevatória Móvel de Trabalho (PEMT)</strong> e no cesto aéreo, o trabalhador deve estar conectado ao <strong>ponto de ancoragem indicado pelo fabricante no cesto</strong>, com talabarte de comprimento adequado, de preferência <strong>curto, para restrição de movimento</strong> (impedir que o corpo saia do cesto).</p><ul><li>Operação só por <strong>operador capacitado</strong> e autorizado.</li><li>Verificação pré-operacional conforme o fabricante (comandos, emergência, nivelamento, pneus, alarmes).</li><li>Terreno firme e nivelado; respeitar a carga máxima e o limite de vento do fabricante.</li><li>Distância segura de redes elétricas.</li><li>Nunca sair do cesto em altura para uma estrutura, nem subir no guarda-corpo do cesto.</li></ul>`},
+ {t:'quiz',h:'Qual a decisão certa?',items:[
+  {q:'Onde o trabalhador conecta o talabarte dentro do cesto?',o:['No guarda-corpo do cesto','No ponto de ancoragem indicado pelo fabricante','Na estrutura do prédio ao lado','Não precisa conectar'],a:1,why:'O ponto do fabricante é projetado para isso.'},
+  {q:'Para alcançar um ponto mais alto, o trabalhador pensa em subir no guarda-corpo do cesto.',o:['Pode, se estiver conectado','Não pode','Pode, se for rápido','Pode, se outro segurar'],a:1,why:'Subir no guarda-corpo anula a proteção do cesto. Reposicione a plataforma.'},
+  {q:'O vento está acima do limite do manual da PEMT.',o:['Operar devagar','Não operar','Operar com dois trabalhadores','Operar só até meia altura'],a:1,why:'Limite do fabricante é condição impeditiva.'},
+  {q:'Qual tipo de talabarte é preferível no cesto?',o:['Talabarte longo com absorvedor','Talabarte curto que impeça o corpo de sair do cesto','Corda comum','Nenhum'],a:1,why:'Restrição de movimento: o trabalhador nem chega a cair.'}]}
+ ]},
+{id:'a14',stage:2,day:4,title:'Telhados e coberturas',sub:'Telhas frágeis, claraboias, passarelas e linhas de vida.',
+ goals:['Reconhecer coberturas que não suportam peso','Planejar caminho seguro sobre o telhado','Escolher a proteção certa para cada cobertura'],
+ exam:'Questão 19',
+ inst:['0–15 min: casos reais de queda através de telha.','15–35 min: exposição.','35–50 min: planejamento em grupo: desenhar o caminho seguro em uma planta de telhado.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'O perigo está embaixo dos pés',html:`<p>Muitos acidentes graves em telhado acontecem <strong>através da cobertura</strong>, e não pela borda. Telhas de fibrocimento, translúcidas e claraboias <strong>não suportam o peso de uma pessoa</strong>.</p><ul><li>Nunca pise diretamente em telha frágil: use <strong>passarelas ou tábuas</strong> apoiadas na estrutura.</li><li>Proteja ou sinalize <strong>claraboias e aberturas</strong>.</li><li>Use <strong>linha de vida</strong> ou ancoragens previstas na AR; considere a ZLQ, inclusive para queda através da telha.</li><li>Não trabalhe em telhado com chuva, vento forte ou superfície escorregadia.</li><li>Isole a área abaixo contra queda de materiais.</li></ul>`},
+ {t:'classify',h:'Seguro ou inseguro?',buckets:['Seguro','Inseguro'],items:[
+  ['Andar sobre telha de fibrocimento entre as terças',1,'A telha pode quebrar entre os apoios.'],
+  ['Usar passarela apoiada na estrutura, conectado à linha de vida',0,'Caminho e proteção corretos.'],
+  ['Pisar em telha translúcida para cortar caminho',1,'Telha translúcida é frágil.'],
+  ['Claraboia protegida com tela e sinalizada',0,'Abertura protegida.'],
+  ['Trabalhar no telhado molhado logo após a chuva',1,'Superfície escorregadia é condição impeditiva.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Qual a causa frequente de queda em telhados?',o:['Somente a borda','Ruptura da telha ou claraboia sob o trabalhador','Excesso de EPI','Sinalização demais'],a:1,why:'A queda através da cobertura é muito comum.'},
+  {q:'Como se caminha sobre telhado de telha frágil?',o:['Pisando nas ondas mais altas','Por passarelas apoiadas na estrutura','Descalço','Rapidamente'],a:1,why:'Passarelas distribuem o peso na estrutura.'}]}
+ ]},
+{id:'a15',stage:2,day:5,title:'Postes, torres e risco elétrico',sub:'Escalada, posicionamento e a combinação com a NR-10.',
+ goals:['Planejar a subida em poste ou torre','Combinar posicionamento com retenção de queda','Controlar o risco elétrico antes de subir'],
+ exam:'Questão 20',
+ inst:['0–15 min: tipos de estrutura da empresa (poste, torre autoportante, estaiada).','15–35 min: exposição.','35–50 min: PRÁTICA: ajuste do talabarte de posicionamento em poste-escola, se houver.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'Posicionamento não é retenção',html:`<p>O <strong>talabarte de posicionamento</strong> (nas argolas laterais) deixa as mãos livres, mas <strong>não foi feito para reter queda</strong>. Em poste e torre, ele é usado <strong>junto</strong> com um sistema de retenção de queda (trava-quedas em linha vertical, talabarte com absorvedor na argola dorsal ou dispositivo indicado pelo fabricante).</p><p>Na torre, a subida é feita pela <strong>escada com linha de vida vertical</strong> e trava-quedas guiado, mantendo conexão durante todo o percurso.</p>`},
+ {t:'text',h:'Risco elétrico antes de tudo',html:`<p>Com rede elétrica próxima, o trabalho só começa com o <strong>risco elétrico controlado conforme a NR-10</strong>: desenergização quando possível, distâncias de segurança, trabalhadores autorizados para serviços em eletricidade e ferramentas e EPIs adequados.</p><div class="note warn">Escada metálica, corda molhada e cabos de aço conduzem eletricidade. A AR deve tratar o choque elétrico e a queda causada por ele.</div>`},
+ {t:'order',h:'Ordene a subida em poste',steps:['Ler a AR e conferir a PT','Verificar rede elétrica e condições do poste (base, trincas)','Isolar e sinalizar a área','Inspecionar EPI e ferramentas','Subir com sistema de retenção de queda conectado','Posicionar-se com o talabarte de posicionamento, mantendo a retenção']},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'O talabarte de posicionamento sozinho protege contra queda?',o:['Sim','Não, precisa de sistema de retenção junto','Só em poste de madeira','Só abaixo de 5 m'],a:1,why:'Posicionamento e retenção são funções diferentes.'},
+  {q:'Antes de subir em poste com rede próxima, o primeiro controle é:',o:['Usar luva de raspa','Controlar o risco elétrico conforme a NR-10','Subir rápido','Avisar o colega'],a:1,why:'Choque pode causar a queda. O risco elétrico vem antes.'}]}
+ ]},
+{id:'a16',stage:2,day:5,title:'Acesso por cordas',sub:'Anexo I da NR-35: quando usar, equipe e sistema duplo.',
+ goals:['Reconhecer quando o acesso por cordas é adequado','Explicar o sistema de duas cordas independentes','Saber os requisitos de equipe e certificação'],
+ exam:'Questão 21',
+ inst:['0–15 min: vídeo de acesso por cordas em fachada.','15–40 min: exposição do Anexo I.','40–50 min: casos de decisão.','50–60 min: mini-prova e avaliação.','Esta aula não habilita para acesso por cordas: a certificação é específica.'],
+ blocks:[
+ {t:'text',h:'Técnica especializada',html:`<p>O <strong>acesso por cordas</strong> é usado para chegar e trabalhar em locais elevados com cordas, como fachadas e estruturas onde outros meios são inviáveis. Ele é tratado no <strong>Anexo I da NR-35</strong>.</p><ul><li>Os trabalhadores devem ser <strong>certificados</strong> conforme norma técnica específica (no Brasil, ABNT NBR 15475).</li><li>O trabalho é feito em <strong>equipe</strong>, com supervisão de profissional qualificado em acesso por cordas.</li><li>Cada trabalhador usa <strong>duas cordas</strong>: a <strong>de trabalho</strong> e a <strong>de segurança</strong>, com <strong>ancoragens independentes</strong>.</li><li>Deve haver <strong>plano de resgate</strong> com a equipe capaz de executá-lo no local.</li><li>Condições climáticas (vento, chuva, raios) são avaliadas e podem impedir o trabalho.</li></ul><div class="note warn">Este módulo é informativo. A capacitação em NR-35 <strong>não habilita</strong> ninguém para acesso por cordas.</div>`},
+ {t:'flash',h:'Cartões de revisão',items:[['Anexo I','Acesso por cordas.'],['Duas cordas','Trabalho e segurança, com ancoragens independentes.'],['Certificação','Específica, conforme norma técnica (ABNT NBR 15475).'],['Resgate','Plano e equipe prontos no local.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'No acesso por cordas, cada trabalhador usa:',o:['Uma corda só','Duas cordas com ancoragens independentes','Duas cordas na mesma ancoragem','Corda e escada'],a:1,why:'Corda de trabalho e corda de segurança, independentes.'},
+  {q:'Um trabalhador com capacitação NR-35 de 8 h pode fazer acesso por cordas?',o:['Sim','Não, precisa de certificação específica','Sim, se for supervisor','Sim, se tiver experiência em escada'],a:1,why:'Acesso por cordas exige certificação própria.'}]}
+ ]},
+{id:'a17',stage:2,day:5,title:'Escadas',sub:'Escada de mão, extensível e marinheiro: inclinação, fixação e uso.',
+ goals:['Posicionar corretamente uma escada de mão','Reconhecer defeitos que impedem o uso','Usar escada tipo marinheiro com proteção contra queda'],
+ exam:'Questão 22',
+ inst:['0–10 min: mostrar escadas da empresa.','10–25 min: exposição.','25–50 min: PRÁTICA: posicionar a escada na inclinação 1:4 e fazer a inspeção.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'text',h:'Escada de mão bem posicionada',html:`<ul><li><strong>Inclinação 1 para 4:</strong> a base fica afastada da parede cerca de 1/4 da altura do apoio. Ex.: apoio a 4 m, base a 1 m da parede.</li><li>Deve <strong>ultrapassar em cerca de 1 m</strong> o nível de desembarque, para servir de apoio na transição.</li><li>Apoiada em piso firme, com <strong>sapatas antiderrapantes</strong>, e <strong>amarrada ou fixada</strong> no topo ou segurada na base.</li><li>Subir e descer <strong>de frente para a escada</strong>, com <strong>três pontos de contato</strong> (duas mãos e um pé, ou dois pés e uma mão).</li><li>Ferramentas em bolsa ou içadas por corda, nunca na mão durante a subida.</li><li>Escada de mão é para <strong>acesso</strong> e serviços leves e rápidos. Trabalho prolongado pede plataforma ou andaime.</li></ul>`},
+ {t:'classify',h:'Pode usar a escada?',buckets:['Pode usar','Não pode'],items:[
+  ['Degrau trincado',1,'Defeito estrutural reprova a escada.'],
+  ['Escada com sapatas antiderrapantes, sem defeitos, amarrada no topo',0,'Condição correta.'],
+  ['Escada metálica perto de rede elétrica energizada',1,'Risco de choque: use escada isolante e controle o risco conforme a NR-10.'],
+  ['Escada emendada com arame para ficar mais alta',1,'Emenda improvisada é proibida.'],
+  ['Escada apoiada sobre caixas para alcançar mais alto',1,'Base deve ser firme e nivelada.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Escada apoiada a 4 m de altura. A base deve ficar a cerca de quanto da parede?',o:['0,5 m','1 m','2 m','3 m'],a:1,why:'Inclinação 1:4: 4 ÷ 4 = 1 m.'},
+  {q:'Quantos pontos de contato manter ao subir?',o:['1','2','3','4'],a:2,why:'Duas mãos e um pé, ou dois pés e uma mão.'}]}
+ ]},
+{id:'a18',stage:2,day:5,title:'Fatores humanos e condições impeditivas',sub:'Fadiga, pressa, excesso de confiança e quando dizer "pare".',
+ goals:['Reconhecer fatores humanos que causam acidentes','Aplicar o direito de recusa diante de risco grave e iminente','Fazer uma boa comunicação de segurança antes de subir'],
+ exam:'Questão 23',
+ inst:['0–15 min: depoimento ou caso real sobre pressa e excesso de confiança.','15–35 min: exposição.','35–50 min: simulação de diálogo de segurança antes da tarefa.','50–60 min: mini-prova e avaliação.'],
+ blocks:[
+ {t:'cards',h:'Armadilhas do dia a dia',items:[['Pressa e prazo','Pular etapas "só desta vez" é a origem de muitos acidentes.'],['Excesso de confiança','Anos de experiência não substituem a conexão e a inspeção.'],['Fadiga e mal-estar','Sono ruim, remédios, álcool, tontura e calor reduzem a atenção e o equilíbrio.'],['Comunicação falha','Equipe sem combinar sinais e sem saber o plano de resgate.']]},
+ {t:'text',h:'O direito de parar',html:`<p>Diante de <strong>risco grave e iminente</strong>, o trabalhador deve <strong>interromper</strong> a atividade e <strong>comunicar</strong> o superior. A NR-1 garante ao trabalhador o <strong>direito de recusa</strong> nessas situações, e o empregador deve assegurar a suspensão do trabalho.</p><div class="note">Antes de subir, faça a pergunta em equipe: <strong>"O que pode dar errado aqui e o que faremos se acontecer?"</strong></div>`},
+ {t:'classify',h:'Para ou continua?',buckets:['Pode continuar','Interromper'],items:[
+  ['Trovões se aproximando',1,'Descarga atmosférica é condição impeditiva.'],
+  ['Colega relata tontura depois do almoço',1,'Mal-estar impede o trabalho em altura.'],
+  ['Encerramento da PT, com tudo em ordem',0,'Fim normal da atividade.'],
+  ['A iluminação caiu e já está escurecendo',1,'Iluminação insuficiente impede o trabalho.'],
+  ['Encarregado pede para soltar a conexão para ganhar tempo',1,'Ninguém pode exigir trabalho sem proteção.']]},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'O encarregado manda voltar ao trabalho mesmo com risco grave e iminente. O trabalhador:',o:['Deve obedecer','Pode exercer o direito de recusa e comunicar','Deve ir embora sem avisar','Deve chamar a polícia'],a:1,why:'O direito de recusa protege o trabalhador em risco grave e iminente.'},
+  {q:'Qual destes é fator humano de risco?',o:['Linha de vida certificada','Fadiga por noite mal dormida','Guarda-corpo','Placa de ancoragem'],a:1,why:'Fadiga reduz atenção e equilíbrio.'}]}
+ ]},
+{id:'a19',stage:2,day:5,title:'Resgate avançado',sub:'Plano de resgate, tempo de resposta e cuidados com a vítima suspensa.',
+ goals:['Montar um plano de resgate para uma atividade','Entender por que o tempo é crítico','Saber os cuidados com a vítima após a suspensão'],
+ exam:'Questão 24',
+ inst:['0–10 min: relembrar a síndrome da suspensão.','10–30 min: exposição do plano de resgate.','30–55 min: PRÁTICA: simulado de resgate cronometrado com boneco.','55–60 min: avaliação.','Técnicas de resgate e primeiros socorros seguem o instrutor habilitado e o plano da empresa.'],
+ blocks:[
+ {t:'text',h:'Um plano antes da subida',html:`<p>O <strong>plano de resgate</strong> faz parte do planejamento e precisa existir <strong>antes</strong> do início da atividade. Ele responde:</p><ul><li><strong>Quem</strong> faz o resgate e se a equipe é própria ou externa, treinada e disponível no horário.</li><li><strong>Como</strong>: técnica e equipamentos (kit de resgate, tripé, descensor), já no local.</li><li><strong>Em quanto tempo</strong> a vítima é alcançada. Ficar suspenso e imóvel no cinturão pode levar à <strong>síndrome da suspensão</strong> em poucos minutos.</li><li><strong>Comunicação</strong>: como acionar a equipe, SAMU (192) e Bombeiros (193), com endereço e acesso definidos.</li></ul><div class="note warn">Contar só com o Corpo de Bombeiros não é plano de resgate quando o tempo de chegada deles é maior que o tempo seguro de suspensão.</div>`},
+ {t:'order',h:'Ordene a resposta a uma queda retida',steps:['Dar o alarme e acionar a equipe de resgate','Garantir a segurança do local e de quem vai resgatar','Executar o resgate conforme o plano','Descer a vítima ao solo','Prestar os primeiros socorros conforme o protocolo','Encaminhar a avaliação médica, mesmo sem sintomas','Retirar de uso o equipamento envolvido e registrar a ocorrência']},
+ {t:'quiz',h:'Mini-quiz',items:[
+  {q:'Qual o maior inimigo no resgate de vítima suspensa?',o:['O custo','O tempo','A papelada','O uniforme'],a:1,why:'A síndrome da suspensão pode surgir em poucos minutos.'},
+  {q:'Depois de uma queda retida pelo sistema, o equipamento usado deve:',o:['Voltar ao estoque','Ser retirado de uso e avaliado','Ser lavado e reutilizado','Ser doado'],a:1,why:'O equipamento que reteve queda sai de uso.'},
+  {q:'O plano de resgate deve estar pronto:',o:['Depois do acidente','Antes de iniciar a atividade','Só em atividades acima de 10 m','Só se houver PT'],a:1,why:'Resgate é parte do planejamento de toda atividade.'}]}
+ ]},
+{id:'a20',stage:2,day:5,title:'Estudos de caso e avaliação avançada',sub:'Análise de acidentes reais e a prova da etapa 2.',
+ goals:['Analisar causas de acidentes de trabalho em altura','Propor medidas que teriam evitado cada acidente','Responder a avaliação final avançada'],
+ exam:'Todas',
+ inst:['0–20 min: estudos de caso em grupos.','20–50 min: aplicação da avaliação avançada.','50–60 min: correção comentada.','Critério de aprovação sugerido: 70%.'],
+ blocks:[
+ {t:'text',h:'Caso 1: a telha que quebrou',html:`<p>Um trabalhador subiu ao telhado de um galpão para trocar uma telha. Andou sobre as telhas de fibrocimento, sem passarela e sem linha de vida, porque "era rápido". Uma telha quebrou e ele caiu 6 m.</p><p><strong>Falhas:</strong> sem Análise de Risco, sem PT, sem passarela, sem ancoragem, pressa.</p>`},
+ {t:'text',h:'Caso 2: conectado no lugar errado',html:`<p>Em uma plataforma elevatória, o trabalhador prendeu o talabarte na viga do prédio ao lado para alcançar um ponto. A plataforma desceu por comando de outro operador e ele ficou suspenso, preso à viga, até o resgate.</p><p><strong>Falhas:</strong> conexão fora do ponto do cesto, saída da plataforma em altura, comunicação falha entre operadores e plano de resgate sem tempo de resposta definido.</p>`},
+ {t:'text',h:'Caso 3: espaço livre insuficiente',html:`<p>Um trabalhador ancorou o talabarte com absorvedor na altura dos pés, em uma estrutura a 4 m do solo. Ao cair, o sistema funcionou, mas ele tocou o solo antes de ser totalmente freado.</p><p><strong>Falhas:</strong> ancoragem abaixo da argola (fator de queda 2) e ZLQ não calculada. Com talabarte de 1,5 m e absorvedor de 1,75 m, seriam necessários cerca de 5,75 m.</p>`},
+ {t:'classify',h:'Que medida teria evitado?',buckets:['Caso 1 (telha)','Caso 2 (cesto)','Caso 3 (ZLQ)'],items:[
+  ['Passarela apoiada na estrutura e linha de vida',0,'Distribui o peso e protege contra queda através da telha.'],
+  ['Conectar no ponto de ancoragem do cesto e não sair da plataforma',1,'O cesto tem ponto próprio de ancoragem.'],
+  ['Ancoragem acima da cabeça ou trava-quedas retrátil',2,'Reduz a queda livre e a ZLQ necessária.'],
+  ['Calcular a ZLQ na Análise de Risco',2,'O cálculo mostraria que 4 m não bastavam.'],
+  ['Comunicação clara entre operadores da plataforma',1,'Evita movimento inesperado do cesto.']]}
+ ]}
+);
+
+/* Avaliações dos módulos da etapa 2 (4 questões, aprovação com 70%) */
+Object.assign(EVQ,{
+a1:[['O programa da NR-1 que deve considerar o trabalho em altura é o:',['PCMSO','PGR','PPRA','LTCAT'],1,'O PGR faz parte do GRO da NR-1.'],
+ ['Trabalho em poste com rede energizada próxima envolve:',['Só a NR-35','NR-35 e NR-10','Só a NR-18','Nenhuma norma'],1,'Risco de queda e risco elétrico.'],
+ ['Andaimes na construção civil são tratados também pela:',['NR-10','NR-18','NR-33','NR-7'],1,'NR-18 junto com a NR-35.'],
+ ['Antes de começar, o planejamento precisa responder:',['Só o horário do serviço','Como a queda será retida e como será o resgate','Só quem é o encarregado','Qual a cor do EPI'],1,'Retenção e resgate são essenciais.']],
+a2:[['Perigo é:',['A combinação de probabilidade e severidade','A fonte com potencial de causar dano','O EPI','O documento da PT'],1,'Risco é que combina probabilidade e severidade.'],
+ ['O risco residual é:',['O risco antes de qualquer controle','O risco que sobra depois dos controles','O risco de outra empresa','Inexistente'],1,'Precisa ser aceitável para começar.'],
+ ['Qual controle está mais alto na hierarquia?',['EPI','Sinalização','Eliminar a exposição em altura','Treinamento'],2,'Evitar o trabalho em altura vem primeiro.'],
+ ['Risco residual alto antes de começar:',['Começar com atenção','Rever o planejamento e adicionar controles','Começar mais cedo','Trocar o trabalhador'],1,'Só se começa com risco aceitável.']],
+a3:[['A PT deve ficar:',['No escritório','Disponível no local da atividade','Com o RH','Na gaveta do supervisor'],1,'Disponibilizada no local.'],
+ ['Ao final da atividade, a PT é:',['Descartada','Encerrada e arquivada','Reutilizada','Entregue ao trabalhador'],1,'Para permitir rastreabilidade.'],
+ ['Entrou um novo trabalhador na equipe. A PT:',['Pode ser revalidada','Precisa ser emitida de novo','Continua igual','Perde só a assinatura'],1,'Mudança na equipe exige nova PT.'],
+ ['A validade da PT é:',['Uma semana','Limitada à duração da atividade e restrita ao turno','Um mês','Indeterminada'],1,'Pode ser revalidada sem mudanças.']],
+a4:[['O projeto de ancoragem definitiva é feito por:',['Qualquer trabalhador','Profissional legalmente habilitado','O usuário','O almoxarifado'],1,'Exigência do Anexo II.'],
+ ['Qual NÃO serve como ancoragem?',['Olhal identificado e inspecionado','Tubulação de gás','Linha de vida projetada','Viga estrutural avaliada com fita certificada'],1,'Tubulação não é projetada para reter queda.'],
+ ['Ancoragem que reteve uma queda:',['Continua em uso','Sai de uso até avaliação','É pintada','É usada só por leves'],1,'Pode ter dano oculto.'],
+ ['Ancoragem provisória é:',['Instalada para uma atividade e retirada depois','Proibida','A mesma que definitiva','Uma placa de aviso'],0,'Ex.: fita em viga, tripé.']],
+a5:[['A flecha da linha de vida flexível:',['Reduz a ZLQ','Aumenta a ZLQ necessária','Não muda nada','Dispensa a ancoragem'],1,'Soma-se à distância de queda.'],
+ ['O número máximo de usuários da linha vem:',['Do projeto ou placa da linha','Da vontade da equipe','Do tamanho da equipe','Não existe limite'],0,'Nunca ultrapassar.'],
+ ['Linha de vida rígida em trilho tem:',['Grande flecha','Pouca ou nenhuma deflexão','Sempre corda','Nenhum uso'],1,'Trilho metálico quase não deforma.'],
+ ['Chegou um usuário além do limite da linha:',['Conectar mesmo assim','Usar outro sistema para ele','Conectar no colega','Esperar sem conexão em altura'],1,'Limite não pode ser ultrapassado.']],
+a6:[['Antes de usar o retrátil, é obrigatório:',['Pintar','Fazer o teste de travamento','Lavar','Nada'],1,'Teste funcional antes de cada uso.'],
+ ['O retrátil é instalado em regra:',['Acima do usuário','Nos pés','Na cintura do colega','No chão'],0,'Reduz a queda livre.'],
+ ['Retrátil sobre aresta viva:',['Sempre pode','Só com modelo indicado pelo fabricante para borda','Nunca tem risco','Só à noite'],1,'Cabo pode ser cortado.'],
+ ['Trava-quedas guiado deve ser:',['Compatível com a linha usada','De qualquer marca','Sem CA','Sem inspeção'],0,'Compatibilidade definida pelo fabricante.']],
+a7:[['Na progressão com talabarte em Y:',['Solta primeiro e conecta depois','Conecta a nova perna e depois solta a anterior','Fica desconectado um instante','Usa só uma perna'],1,'100% conectado.'],
+ ['A perna livre do talabarte em Y fica:',['Na argola lateral','No ponto de descanso indicado pelo fabricante','Pendurada na estrutura','No colega'],1,'Na lateral pode anular o absorvedor.'],
+ ['As argolas laterais servem para:',['Retenção de queda','Posicionamento','Resgate obrigatório','Nada'],1,'Retenção é na dorsal.'],
+ ['O talabarte com absorvedor para retenção é conectado na:',['Argola dorsal','Argola lateral','Fivela da perna','Alça da bolsa'],0,'Ou frontal, se o fabricante indicar.']],
+a8:[['Queda livre 3 m, talabarte 1,5 m. Fator de queda:',['1','2','3','0,5'],1,'3 ÷ 1,5 = 2.'],
+ ['ZLQ = queda livre 1 m + absorvedor 1,75 m + folga 1 m =',['2,75 m','3,75 m','4,75 m','1,75 m'],1,'Soma simples.'],
+ ['ZLQ necessária maior que o espaço disponível:',['Trabalhar assim','Subir a ancoragem ou mudar de sistema','Usar talabarte maior','Tirar a folga'],1,'Espaço insuficiente não é aceitável.'],
+ ['Ancoragem nos pés, comparada à ancoragem acima da cabeça:',['Reduz a queda','Aumenta a queda livre e a ZLQ','Não muda','Elimina a queda'],1,'Pior posição.']],
+a9:[['O absorvedor de energia:',['Aumenta a força no corpo','Limita a força no corpo e aumenta a distância de parada','Elimina a queda','Dispensa o cinturão'],1,'Troca força por distância.'],
+ ['Absorvedor acionado parcialmente:',['Pode ser reutilizado','Deve ser retirado de uso','Pode ser costurado','Serve para treino em altura'],1,'Já cumpriu a função.'],
+ ['Maior fator de queda gera:',['Menor força de impacto','Maior força de impacto','A mesma força','Nenhuma força'],1,'Mais energia para dissipar.'],
+ ['Fita com queimadura de solda:',['Uso normal','Retirar de uso','Usar só em baixa altura','Lavar'],1,'Dano térmico reduz a resistência.']],
+a10:[['Efeito pêndulo acontece quando:',['A ancoragem está na vertical acima','O trabalhador está afastado lateralmente da ancoragem','O talabarte é curto','Não há queda'],1,'Ele balança e pode bater em obstáculos.'],
+ ['Para reduzir o pêndulo:',['Ancorar ao lado','Manter a ancoragem na vertical acima ou usar linha de vida','Usar talabarte longo','Andar mais rápido'],1,'Sem afastamento lateral.'],
+ ['Corda sobre aresta viva exige:',['Nada','Protetor de borda e equipamento indicado','Corda mais fina','Fita adesiva'],1,'Evita o corte na queda.'],
+ ['Borda pode alterar:',['A cor do EPI','O ponto de giro e a distância de queda','O CA','O horário'],1,'Entra na AR e na ZLQ.']],
+a11:[['A inspeção antes do uso é feita:',['Uma vez por ano','Pelo trabalhador, sempre antes de usar','Só pelo fabricante','Só após queda'],1,'Todas as vezes.'],
+ ['EPI reprovado deve ser:',['Guardado de reserva','Inutilizado e descartado','Emprestado','Pintado'],1,'Para não voltar ao uso.'],
+ ['Conector com trava que não fecha sozinha:',['Aprovado','Reprovado','Aprovado com fita','Só para posicionamento'],1,'Trava deve fechar e travar.'],
+ ['Os critérios de vida útil vêm:',['Do manual do fabricante','Do colega mais antigo','Da cor da fita','Do preço'],0,'Fabricante define.']],
+a12:[['Andaime móvel com trabalhador em cima:',['Pode ser deslocado devagar','Nunca deve ser deslocado','Pode, se conectado','Pode, abaixo de 2 m'],1,'Desloca-se sem ninguém em cima.'],
+ ['Plataforma com prancha faltando:',['Pode usar com cuidado','Não pode usar','Pode, se pular o vão','Pode, de manhã'],1,'Vão no piso é risco de queda.'],
+ ['O acesso ao andaime é feito:',['Pelos travamentos','Por escada própria','Pela fachada','Por corda solta'],1,'Travamentos não são escada.'],
+ ['Base do andaime deve ser:',['Sobre tijolos soltos','Firme, nivelada e com sapatas','Sobre rodízios destravados','Qualquer uma'],1,'Estabilidade é obrigatória.']],
+a13:[['No cesto da PEMT, o talabarte é conectado:',['No guarda-corpo','No ponto de ancoragem indicado pelo fabricante','Na estrutura vizinha','Não precisa'],1,'Ponto projetado para isso.'],
+ ['Subir no guarda-corpo do cesto:',['Permitido se conectado','Proibido','Permitido se rápido','Permitido com ajudante'],1,'Reposicione a plataforma.'],
+ ['Vento acima do limite do fabricante:',['Operar devagar','Não operar','Operar a meia altura','Operar com dois'],1,'Condição impeditiva.'],
+ ['A PEMT só pode ser operada por:',['Qualquer pessoa','Operador capacitado e autorizado','O cliente','O visitante'],1,'Capacitação e autorização.']],
+a14:[['Telha de fibrocimento:',['Suporta peso de uma pessoa em qualquer ponto','Não suporta o peso de uma pessoa com segurança','É proteção coletiva','É ancoragem'],1,'Use passarela.'],
+ ['Caminho seguro sobre telhado frágil:',['Nas ondas altas','Passarela apoiada na estrutura','Na telha translúcida','Descalço'],1,'Distribui o peso.'],
+ ['Claraboia deve ser:',['Usada como apoio','Protegida e sinalizada','Ignorada','Coberta com papelão'],1,'Abertura com risco de queda.'],
+ ['Telhado molhado logo após a chuva:',['Trabalhar normalmente','Condição impeditiva','Trabalhar só de tênis','Trabalhar mais rápido'],1,'Superfície escorregadia.']],
+a15:[['Talabarte de posicionamento sozinho:',['Retém queda','Não substitui a retenção de queda','É proteção coletiva','Dispensa o cinturão'],1,'Usado junto com retenção.'],
+ ['Rede elétrica próxima ao poste:',['Ignorar','Controlar o risco conforme a NR-10 antes de subir','Subir mais rápido','Usar luva comum'],1,'Choque pode causar a queda.'],
+ ['Na torre, a subida é feita:',['Sem conexão','Com trava-quedas guiado na linha vertical','Pela estrutura externa sem proteção','Com talabarte de posicionamento só'],1,'Conexão durante todo o percurso.'],
+ ['Corda molhada e escada metálica perto de rede:',['Não conduzem','Podem conduzir eletricidade','São isolantes','São proteção coletiva'],1,'Risco elétrico na AR.']],
+a16:[['O acesso por cordas é tratado no:',['Anexo I da NR-35','Anexo da NR-10','Anexo da NR-33','Não é regulamentado'],0,'Anexo I.'],
+ ['Cada trabalhador no acesso por cordas usa:',['Uma corda','Corda de trabalho e corda de segurança com ancoragens independentes','Escada e corda','Só trava-quedas'],1,'Sistema duplo independente.'],
+ ['Para fazer acesso por cordas é preciso:',['Só a capacitação NR-35 de 8 h','Certificação específica conforme norma técnica','Só experiência','Só o ASO'],1,'Ex.: ABNT NBR 15475.'],
+ ['O plano de resgate no acesso por cordas:',['É dispensável','Deve existir com equipe capaz no local','É feito depois','É só telefonar'],1,'Equipe pronta no local.']],
+a17:[['Escada apoiada a 4 m: a base fica a cerca de:',['0,5 m','1 m','2 m','3 m'],1,'Inclinação 1:4.'],
+ ['A escada deve ultrapassar o nível de desembarque em cerca de:',['10 cm','1 m','3 m','Não precisa'],1,'Apoio na transição.'],
+ ['Pontos de contato ao subir:',['1','2','3','Nenhum'],2,'Duas mãos e um pé, ou dois pés e uma mão.'],
+ ['Escada emendada com arame:',['Pode usar','Não pode usar','Pode, se for curta','Pode, com fita'],1,'Improviso é proibido.']],
+a18:[['Diante de risco grave e iminente, o trabalhador:',['Continua','Interrompe, comunica e pode exercer o direito de recusa','Espera o fim do turno','Pede hora extra'],1,'Direito de recusa (NR-1).'],
+ ['Qual é fator humano de risco?',['Fadiga','Guarda-corpo','Linha de vida','Placa de ancoragem'],0,'Reduz atenção e equilíbrio.'],
+ ['Trovões se aproximando:',['Continuar','Interromper a atividade','Subir mais rápido','Trocar de ancoragem'],1,'Condição impeditiva.'],
+ ['Encarregado pede para soltar a conexão para ganhar tempo:',['Obedecer','Recusar e comunicar','Soltar só um pouco','Pedir por escrito e soltar'],1,'Ninguém pode exigir trabalho sem proteção.']],
+a19:[['O plano de resgate deve existir:',['Após o acidente','Antes de iniciar a atividade','Só se houver PT','Só acima de 10 m'],1,'Faz parte do planejamento.'],
+ ['O maior risco para a vítima suspensa é:',['O tempo de suspensão','O frio do metal','A cor do cinturão','O barulho'],0,'Síndrome da suspensão em poucos minutos.'],
+ ['Depois do resgate, a vítima:',['Volta ao trabalho','É encaminhada a avaliação médica, mesmo sem sintomas','Vai para casa','Assina um termo'],1,'Avaliação médica é necessária.'],
+ ['Contar só com os Bombeiros é adequado quando:',['Sempre','Nunca, se o tempo de chegada for maior que o tempo seguro de suspensão','Só à noite','Só em torre'],1,'O plano define tempo de resposta.']]
+});
+
+/* Prova final da etapa 2 (módulo A20) */
+const EXAM2=[
+ {q:'Em relação à NR-1, o trabalho em altura deve ser considerado:',o:['Apenas no PCMSO','No Gerenciamento de Riscos Ocupacionais, registrado no PGR','Somente na CIPA','Em nenhum programa'],a:1,why:'O GRO e o PGR da NR-1 abrangem todos os riscos, inclusive o de queda.',mod:'a1'},
+ {q:'Um eletricista vai trocar um equipamento em poste com rede energizada próxima. Assinale a correta:',o:['Basta a NR-35','Basta a NR-10','A NR-35 e a NR-10 se aplicam juntas','Nenhuma norma se aplica a serviços rápidos'],a:2,why:'Há risco de queda e risco elétrico.',mod:'a1'},
+ {q:'Na Análise de Risco, "risco" é:',o:['A fonte do dano','A combinação da probabilidade de ocorrer um dano com a sua severidade','O EPI usado','A assinatura da PT'],a:1,why:'Perigo é a fonte; risco combina probabilidade e severidade.',mod:'a2'},
+ {q:'Após definir os controles, o risco residual continua alto. A conduta correta é:',o:['Iniciar com mais atenção','Rever o planejamento e adicionar controles antes de iniciar','Iniciar com o trabalhador mais experiente','Iniciar e reavaliar depois'],a:1,why:'Só se inicia com risco residual aceitável.',mod:'a2'},
+ {q:'Sobre a Permissão de Trabalho, assinale a correta:',o:['Pode ficar guardada no escritório','Deve ser disponibilizada no local, encerrada e arquivada ao final','Tem validade de uma semana','Não precisa listar os envolvidos'],a:1,why:'A PT fica no local e, ao final, é encerrada e arquivada para rastreabilidade.',mod:'a3'},
+ {tf:true,q:'Assinale V ou F sobre a revalidação da PT:',items:[
+   ['Pode ser revalidada quando não há mudança nas condições nem na equipe.',true],
+   ['Pode ser revalidada mesmo que um novo trabalhador entre na equipe.',false],
+   ['Mudança no ponto de ancoragem previsto exige nova análise e nova PT.',true],
+   ['A validade da PT é restrita ao turno.',true]],
+  why:'Sequência correta: V, F, V, V.',mod:'a3'},
+ {q:'O projeto de um sistema de ancoragem definitivo deve ser elaborado por:',o:['Qualquer trabalhador capacitado','Profissional legalmente habilitado','O próprio usuário','O fornecedor do cinturão'],a:1,why:'Exigência do Anexo II da NR-35.',mod:'a4'},
+ {q:'Qual destes pode ser usado como ponto de ancoragem?',o:['Tubulação de gás','Eletrocalha','Corrimão comum','Olhal identificado e com inspeção em dia'],a:3,why:'Os demais não têm resistência conhecida para reter queda.',mod:'a4'},
+ {q:'Em uma linha de vida horizontal flexível, a flecha (deflexão) durante a queda:',o:['Reduz a zona livre de queda necessária','Aumenta a zona livre de queda necessária','Não influencia a queda','Elimina o uso do absorvedor'],a:1,why:'A deformação do cabo soma-se à distância de queda.',mod:'a5'},
+ {q:'O teste funcional do trava-quedas retrátil antes do uso consiste em:',o:['Puxar o cabo de forma brusca e verificar se trava','Pesar o equipamento','Lavar o cabo','Soltar o cabo de uma vez'],a:0,why:'Se não travar, sai de uso.',mod:'a6'},
+ {q:'Ao progredir com talabarte em Y por um obstáculo:',o:['Solta-se a perna A e depois conecta-se a perna B','Conecta-se a perna B e depois solta-se a perna A','Soltam-se as duas pernas por segurança','Prende-se a perna livre na argola lateral'],a:1,why:'Permanecer 100% conectado.',mod:'a7'},
+ {q:'Queda livre de 3,0 m com talabarte de 1,5 m resulta em fator de queda:',o:['0,5','1','2','4,5'],a:2,why:'3,0 ÷ 1,5 = 2.',mod:'a8'},
+ {q:'Queda livre de 1,0 m, absorvedor aberto de 1,75 m e folga de 1,0 m. A zona livre de queda necessária é:',o:['2,75 m','3,75 m','4,75 m','5,75 m'],a:1,why:'1,0 + 1,75 + 1,0 = 3,75 m.',mod:'a8'},
+ {q:'Sobre o absorvedor de energia, assinale a correta:',o:['Pode ser reutilizado após acionado','Limita a força de impacto no corpo, mas aumenta a distância de parada','Dispensa o cálculo da ZLQ','Só é usado em andaimes'],a:1,why:'Ele troca força por distância e, acionado, sai de uso.',mod:'a9'},
+ {q:'O efeito pêndulo é reduzido quando:',o:['A ancoragem fica bem ao lado do trabalhador','A ancoragem fica na vertical, acima do trabalhador','Usa-se talabarte mais longo','Trabalha-se mais rápido'],a:1,why:'Sem afastamento lateral não há balanço.',mod:'a10'},
+ {q:'Um cinturão foi reprovado na inspeção periódica. Deve ser:',o:['Guardado como reserva','Inutilizado e descartado','Usado só em baixa altura','Devolvido ao trabalhador'],a:1,why:'Inutilizar evita o retorno ao uso por engano.',mod:'a11'},
+ {q:'Sobre andaimes, assinale a correta:',o:['Pode ser deslocado com trabalhador em cima, se ele estiver conectado','O acesso pode ser feito pelos travamentos diagonais','Plataforma com vão no piso não deve ser usada','A base pode ser apoiada em tijolos soltos'],a:2,why:'Piso completo é obrigatório; as demais estão erradas.',mod:'a12'},
+ {q:'Na plataforma elevatória (PEMT), o trabalhador deve conectar o talabarte:',o:['No guarda-corpo do cesto','No ponto de ancoragem indicado pelo fabricante do cesto','Na estrutura do prédio ao lado','Não precisa conectar'],a:1,why:'O ponto do fabricante é projetado para isso.',mod:'a13'},
+ {q:'Em telhado com telhas de fibrocimento, o deslocamento seguro é feito:',o:['Pisando nas ondas mais altas','Sobre passarelas apoiadas na estrutura, conectado a linha de vida','Pelas telhas translúcidas','Sem conexão, para ter mobilidade'],a:1,why:'Telha frágil não suporta o peso de uma pessoa.',mod:'a14'},
+ {q:'Em trabalho em poste, o talabarte de posicionamento:',o:['Substitui o sistema de retenção de queda','Deve ser usado junto com um sistema de retenção de queda','É proibido','Dispensa o cinturão'],a:1,why:'Posicionamento não retém queda.',mod:'a15'},
+ {q:'No acesso por cordas (Anexo I da NR-35), cada trabalhador utiliza:',o:['Uma única corda','Corda de trabalho e corda de segurança, com ancoragens independentes','Duas cordas na mesma ancoragem','Apenas escada'],a:1,why:'Sistema duplo independente.',mod:'a16'},
+ {q:'Uma escada de mão apoiada a 4 m de altura deve ter a base afastada da parede cerca de:',o:['0,5 m','1 m','2 m','3 m'],a:1,why:'Inclinação 1:4.',mod:'a17'},
+ {q:'O encarregado pede ao trabalhador que solte a conexão para terminar mais rápido. O trabalhador deve:',o:['Obedecer','Recusar, interromper e comunicar o risco','Soltar por poucos minutos','Pedir a ordem por escrito e soltar'],a:1,why:'Direito de recusa diante de risco grave e iminente.',mod:'a18'},
+ {q:'Sobre o resgate de vítima suspensa, assinale a correta:',o:['O plano de resgate pode ser feito depois do acidente','O tempo de resposta é crítico por causa da síndrome da suspensão','A vítima sem sintomas dispensa avaliação médica','O equipamento que reteve a queda pode ser reutilizado'],a:1,why:'O plano existe antes, a vítima vai a avaliação médica e o equipamento sai de uso.',mod:'a19'}
+];
+const FINALS={m12:EXAM,a20:EXAM2};
 const EV={};Object.keys(EVQ).forEach(k=>EV[k]=EVQ[k].map(([q,o,a,why])=>({q,o,a,why})));
 
 /* ======================= PROGRESSO E BLOQUEIO ======================= */
 const idx=id=>M.findIndex(x=>x.id===id);
+const inStage=s=>M.filter(m=>m.stage===s);
+const stageOf=id=>(M[idx(id)]||{}).stage||1;
+function cod(id){const m=M[idx(id)];if(!m)return String(id);const n=String(inStage(m.stage).indexOf(m)+1).padStart(2,'0');return m.stage===2?'A'+n:n}
 function keysOf(mod){const k=[];mod.blocks.forEach((b,i)=>{if(['text','cards','order','zlq'].includes(b.t))k.push('b'+i);else if(['flash','quiz','classify'].includes(b.t))b.items.forEach((_,j)=>k.push(`b${i}.${j}`))});return k}
 function missing(id){const u=S.units[id]||{};return keysOf(M[idx(id)]).filter(k=>!u[k]).length}
 function pctOf(id){const ks=keysOf(M[idx(id)]);return ks.length?Math.round((ks.length-missing(id))/ks.length*100):0}
@@ -507,9 +914,9 @@ function bZLQ(b,mod,bi){const w=h('div',{class:'block'},h('h3',{},'Calculadora d
 
 /* ======================= AVALIAÇÃO DO MÓDULO ======================= */
 function evalSection(modId){
- const i=idx(modId),final=modId==='m12',qs=final?EXAM:EV[modId];
+ const final=!!FINALS[modId],qs=final?FINALS[modId]:EV[modId],adv=stageOf(modId)===2;
  const box=h('div',{class:'block evalbox',id:'evalbox'});
- function head(){box.append(h('span',{class:'tag'},final?'Avaliação final':'Avaliação do módulo'),h('h3',{},final?'Avaliação NR-35':`Avaliação do módulo ${i+1}`))}
+ function head(){box.append(h('span',{class:'tag'},final?'Avaliação final':'Avaliação do módulo'),h('h3',{},final?(adv?'Avaliação avançada NR-35 (etapa 2)':'Avaliação NR-35 (etapa 1)'):`Avaliação do módulo ${cod(modId)}`))}
  function draw(retake){box.innerHTML='';head();
   if(pctOf(modId)<100){box.dataset.open='0';box.classList.add('locked');box.append(h('p',{},`Bloqueada. Conclua 100% do conteúdo deste módulo para liberar a avaliação. Faltam ${missing(modId)} atividades.`));return}
   box.dataset.open='1';box.classList.remove('locked');
@@ -533,25 +940,26 @@ function evalSection(modId){
     const blank=ans[qi]==null||(e.tf&&ans[qi].includes(null));
     card.append(h('p',{class:'gab'},(ok?'Correto. ':(blank?'Sem resposta completa. ':'Incorreto. '))+e.why))});
    const pct=pts/qs.length;const pass=pct>=PASS;
-   const revIds=final?[...new Set(miss.map(q=>EXAM[q].mod))]:[];
-   const rev=final&&miss.length?h('p',{},'Reveja os módulos: ',revIds.map(id=>h('button',{class:'act alt',type:'button',style:'margin:4px 6px 0 0',onclick:()=>go(id)},`Módulo ${idx(id)+1}`))):null;
+   const revIds=final?[...new Set(miss.map(q=>qs[q].mod))]:[];
+   const rev=final&&miss.length?h('p',{},'Reveja os módulos: ',revIds.map(id=>h('button',{class:'act alt',type:'button',style:'margin:4px 6px 0 0',onclick:()=>go(id)},`Módulo ${cod(id)}`))):null;
    out.append(h('div',{class:'result '+(pass?'pass':'fail')},h('strong',{},`${pts} de ${qs.length}`),
-    h('p',{},`${Math.round(pct*100)}% de acerto. ${pass?(final?'Aprovado no curso.':'Aprovado. O próximo módulo foi liberado.'):'Abaixo do mínimo de 70%. Revise o conteúdo e tente novamente.'}${final&&$('#exNome').value?' Participante: '+$('#exNome').value+'.':''}`),rev,
+    h('p',{},`${Math.round(pct*100)}% de acerto. ${pass?(final?(adv?'Aprovado na etapa 2 (avançada).':'Aprovado na etapa 1. A etapa 2 (avançada) foi liberada.'):'Aprovado. O próximo módulo foi liberado.'):'Abaixo do mínimo de 70%. Revise o conteúdo e tente novamente.'}${final&&$('#exNome').value?' Participante: '+$('#exNome').value+'.':''}`),rev,
     pass?null:h('button',{class:'act alt',type:'button',onclick:()=>draw(true)},'Tentar novamente')));
    btn.disabled=true;
    (S.attempts[modId]=S.attempts[modId]||[]).push({pct:Math.round(pct*100),pts,total:qs.length,at:new Date().toISOString()});
-   if(pass){S.passed[modId]=true;S.score[modId]=pct;if(final){S.finishedAt=new Date().toISOString();S.summary=summaryOf(S)}}
+   if(pass){S.passed[modId]=true;S.score[modId]=pct;if(final){if(modId==='m12')S.finishedAt=new Date().toISOString();S.summary=summaryOf(S)}}
    save();drawTop();drawNav(modId);drawFoot();
    if(pass&&final&&MODE==='aluno'){push();out.append(h('button',{class:'act',type:'button',onclick:()=>go('resumo')},'Ver resumo do treinamento'))}
+   if(pass&&modId==='m12')out.append(h('button',{class:'act alt',type:'button',style:'margin-left:8px',onclick:()=>go('a1')},'Começar a etapa 2 (avançada)'));
    out.scrollIntoView({behavior:'smooth',block:'nearest'})}},'Corrigir avaliação');
   box.append(btn,out)}
  box._draw=draw;draw();return box}
 
 /* ======================= PÁGINAS ======================= */
-function drawTop(){const p=$('#prog');const n=M.filter(m=>S.passed[m.id]).length;p.innerHTML='';
- p.append(h('small',{},`${n} de 12 módulos aprovados · ${Math.round(n/12*100)}% do curso`));
- const bar=h('div',{class:'bar'});for(let i=0;i<12;i++)bar.append(h('i',{class:i<n?'on':''}));p.append(bar);
- if(CUR){const pc=pctOf(CUR);p.append(h('small',{},`Módulo ${idx(CUR)+1}: ${pc}% do conteúdo`),h('div',{class:'bar cont'},h('i',{style:`width:${pc}%`})))}
+function drawTop(){const p=$('#prog');const st=CUR?stageOf(CUR):M[firstOpen()].stage,L=inStage(st);const n=L.filter(m=>S.passed[m.id]).length;p.innerHTML='';
+ p.append(h('small',{},`Etapa ${st}${st===2?' (avançada)':''} · ${n} de ${L.length} módulos aprovados · ${Math.round(n/L.length*100)}%`));
+ const bar=h('div',{class:'bar'});for(let i=0;i<L.length;i++)bar.append(h('i',{class:i<n?'on':''}));p.append(bar);
+ if(CUR){const pc=pctOf(CUR);p.append(h('small',{},`Módulo ${cod(CUR)}: ${pc}% do conteúdo`),h('div',{class:'bar cont'},h('i',{style:`width:${pc}%`})))}
  $('#instBtn').setAttribute('aria-pressed',S.inst)}
 function drawNav(cur){const nav=$('#nav');nav.innerHTML='';
  if(['reg','block','boot','auth','newpass'].includes(MODE))return;
@@ -559,24 +967,25 @@ function drawNav(cur){const nav=$('#nav');nav.innerHTML='';
  if(ISOWNER)nav.append(h('button',{class:'home',type:'button','aria-current':cur==='panel',onclick:()=>go('panel')},h('span',{class:'tt'},'Painel do instrutor')));
  if(MODE==='panel'){nav.append(h('button',{type:'button',onclick:()=>go('home')},h('span',{class:'n'},'>>'),h('span',{class:'tt'},'Ver o curso (prévia)')));return}
  nav.append(h('button',{class:'home',type:'button','aria-current':cur==='home',onclick:()=>go('home')},h('span',{class:'tt'},'Visão geral do curso')));
- let day=0;M.forEach((m,i)=>{if(m.day!==day){day=m.day;nav.append(h('h4',{},`Dia ${day} · ${M.filter(x=>x.day===day).length} horas`))}
+ let day=0,stg=0;M.forEach((m,i)=>{if(m.stage!==stg){stg=m.stage;nav.append(h('h4',{style:'color:var(--ink)'},stg===2?'Etapa 2 · Avançado (20 h)':'Etapa 1 · Básico (12 h)'))}if(m.day!==day){day=m.day;nav.append(h('h4',{},`Dia ${day} · ${M.filter(x=>x.day===day).length} horas`))}
   const lock=!unlocked(i);const lab=S.passed[m.id]?'ok':lock?'bloq.':pctOf(m.id)+'%';
-  nav.append(h('button',{type:'button','aria-current':cur===m.id,title:m.title,disabled:lock?'':null,onclick:()=>go(m.id)},h('span',{class:'n'},String(i+1).padStart(2,'0')),h('span',{class:'tt'},m.title),h('span',{class:'pc'+(S.passed[m.id]?' ck':'')},lab)))});
+  nav.append(h('button',{type:'button','aria-current':cur===m.id,title:m.title,disabled:lock?'':null,onclick:()=>go(m.id)},h('span',{class:'n'},cod(m.id)),h('span',{class:'tt'},m.title),h('span',{class:'pc'+(S.passed[m.id]?' ck':'')},lab)))});
  if(MODE==='aluno')nav.append(h('button',{class:'home',type:'button','aria-current':cur==='resumo',onclick:()=>go('resumo')},h('span',{class:'tt'},'Meu resumo')))}
 function go(id){try{history.replaceState(null,'','#'+id)}catch(e){}render(id);window.scrollTo({top:0,behavior:'smooth'})}
 function renderHome(){CUR=null;drawTop();const m=$('#main');m.innerHTML='';
- m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Curso de 12 horas · Dia 1 (4 h) e Dia 2 (8 h)'+(ME?' · '+ME.nome:'')),h('h1',{},'NR-35: Trabalho em Altura'),h('p',{},'Doze módulos de uma hora, cada um com conteúdo, atividades interativas e uma avaliação no final. O último módulo aplica a prova de 10 questões.')));
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Etapa 1: 12 horas · Etapa 2 (avançada): 20 horas'+(ME?' · '+ME.nome:'')),h('h1',{},'NR-35: Trabalho em Altura'),h('p',{},'Etapa 1: doze módulos de uma hora, com a prova de 10 questões no final. Etapa 2: vinte módulos avançados, liberados após a aprovação na etapa 1, com a prova avançada no final.')));
  m.append(h('div',{class:'block'},h('h3',{},'Como o curso funciona'),h('ul',{},
-  h('li',{html:'<strong>Dia 1 (4 horas):</strong> módulos 1 a 4. <strong>Dia 2 (8 horas):</strong> módulos 5 a 12, sugerindo manhã (5 a 8) e tarde (9 a 12) com pausa para almoço.'}),
+  h('li',{html:'<strong>Etapa 1 · Dia 1 (4 horas):</strong> módulos 01 a 04. <strong>Dia 2 (8 horas):</strong> módulos 05 a 12.'}),
+  h('li',{html:'<strong>Etapa 2 (avançada, 20 horas):</strong> módulos A01 a A20, nos dias 3, 4 e 5. Ela só abre depois da aprovação na avaliação final da etapa 1, e o progresso da etapa 1 continua guardado.'}),
   h('li',{html:'Cada módulo tem uma <strong>barra de percentual</strong> que sobe conforme as atividades e leituras são concluídas.'}),
   h('li',{html:'A <strong>avaliação do módulo só é liberada com 100% do conteúdo</strong>.'}),
   h('li',{html:'O <strong>próximo módulo só abre após a aprovação</strong> (mínimo 70%) na avaliação do anterior.'}),
   h('li',{html:'O progresso fica salvo neste navegador. Ative o <strong>Modo instrutor</strong> para ver o roteiro de cada hora.'}))));
- const rows=M.map((x,i)=>h('tr',{},h('td',{class:'n'},String(i+1).padStart(2,'0')),h('td',{},`Dia ${x.day}`),h('td',{},unlocked(i)?h('button',{type:'button',class:'act alt',style:'margin:0;padding:6px 10px;text-transform:none;font-family:var(--f-body)',onclick:()=>go(x.id)},x.title):h('span',{style:'color:var(--muted)'},x.title)),h('td',{},x.exam),h('td',{class:'n'},pctOf(x.id)+'%'),h('td',{},S.passed[x.id]?`Aprovado (${Math.round(S.score[x.id]*100)}%)`:unlocked(i)?'Liberado':'Bloqueado')));
- m.append(h('div',{class:'block'},h('h3',{},'Grade e ligação com a prova'),h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['#','Dia','Módulo','Prova','Conteúdo','Situação'].map(t=>h('th',{},t)))),h('tbody',{},rows)))));
+ const rows=M.map((x,i)=>h('tr',{},h('td',{class:'n'},cod(x.id)),h('td',{},`Etapa ${x.stage} · Dia ${x.day}`),h('td',{},unlocked(i)?h('button',{type:'button',class:'act alt',style:'margin:0;padding:6px 10px;text-transform:none;font-family:var(--f-body)',onclick:()=>go(x.id)},x.title):h('span',{style:'color:var(--muted)'},x.title)),h('td',{},x.exam),h('td',{class:'n'},pctOf(x.id)+'%'),h('td',{},S.passed[x.id]?`Aprovado (${Math.round(S.score[x.id]*100)}%)`:unlocked(i)?'Liberado':'Bloqueado')));
+ m.append(h('div',{class:'block'},h('h3',{},'Grade e ligação com a prova'),h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['#','Quando','Módulo','Prova','Conteúdo','Situação'].map(t=>h('th',{},t)))),h('tbody',{},rows)))));
  const first=M[firstOpen()];
  const rst=h('button',{class:'act alt',type:'button',style:'margin-left:8px',onclick:()=>{if(rst.dataset.c!=='1'){rst.dataset.c='1';rst.textContent='Clique de novo para apagar todo o progresso';return}S={units:{},passed:{},score:{},inst:S.inst};save();render('home')}},'Reiniciar progresso');
- m.append(h('button',{class:'act',type:'button',onclick:()=>go(first.id)},Object.keys(S.passed).length?`Continuar no módulo ${firstOpen()+1}`:'Começar pelo módulo 1'),MODE==='aluno'?null:rst)}
+ m.append(h('button',{class:'act',type:'button',onclick:()=>go(first.id)},Object.keys(S.passed).length?`Continuar no módulo ${cod(first.id)}`:'Começar pelo módulo 1'),MODE==='aluno'?null:rst)}
 function drawFoot(){const f=$('#foot');if(!f)return;const i=idx(CUR),mod=M[i];f.innerHTML='';
  const nextOk=!!S.passed[mod.id];
  f.append(h('div',{class:'sc',id:'sc'},scoreTxt(mod.id)),h('div',{class:'row'},i>0?h('button',{class:'act alt',type:'button',onclick:()=>go(M[i-1].id)},'Anterior'):null,
@@ -589,9 +998,9 @@ function render(id){
  let i=idx(id);if(id==='home'||i<0){drawNav('home');return renderHome()}
  NOTICE='';const k=firstOpen();if(i>k){NOTICE='Este módulo está bloqueado. Conclua e seja aprovado na avaliação do módulo anterior.';i=k;id=M[k].id}
  CUR=id;S.current=id;save();const mod=M[i];drawNav(id);drawTop();const m=$('#main');m.innerHTML='';
- const inDay=M.filter(x=>x.day===mod.day),p=pctOf(id);
+ const inDay=M.filter(x=>x.day===mod.day),inSt=inStage(mod.stage),p=pctOf(id);
  if(NOTICE)m.append(h('div',{class:'note warn'},NOTICE));
- m.append(h('div',{class:'mhead'},h('div',{class:'kick'},`Dia ${mod.day} · Hora ${inDay.indexOf(mod)+1} de ${inDay.length} · Módulo ${i+1} de 12`),h('h1',{},mod.title),h('p',{},mod.sub),
+ m.append(h('div',{class:'mhead'},h('div',{class:'kick'},`Etapa ${mod.stage} · Dia ${mod.day} · Hora ${inDay.indexOf(mod)+1} de ${inDay.length} · Módulo ${inSt.indexOf(mod)+1} de ${inSt.length}`),h('h1',{},mod.title),h('p',{},mod.sub),
   h('div',{class:'mprog'},h('div',{class:'mrow'},h('span',{},'Conteúdo do módulo'),h('strong',{id:'mpct'},p+'%')),h('div',{class:'bar2'},h('i',{id:'mbar',style:`width:${p}%`})),h('div',{class:'mrow sm',id:'mstat'},evalStatus(id)))));
  if(S.inst&&(ISOWNER||MODE==='local'))m.append(h('div',{class:'inst'},h('h3',{},'Roteiro do instrutor (60 min)'),h('ul',{},mod.inst.map(t=>h('li',{},t)))));
  m.append(h('div',{class:'goals'},h('h3',{},'Ao final você será capaz de'),h('ul',{},mod.goals.map(g=>h('li',{},g)))));
@@ -604,20 +1013,22 @@ const fmtNotaFull=p=>p==null?'—':`${fmtNota(p)} (${p}%)`;
 function fmtDate(iso){try{return iso?new Date(iso).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'—'}catch(e){return iso||'—'}}
 function fmtMin(s){const m=Math.round((s||0)/60);return m>=60?`${Math.floor(m/60)} h ${String(m%60).padStart(2,'0')} min`:`${m} min`}
 function agoTxt(iso){if(!iso)return '—';const s=(Date.now()-new Date(iso))/1000;if(s<120)return 'agora';if(s<3600)return `há ${Math.round(s/60)} min`;if(s<86400)return `há ${Math.round(s/3600)} h`;return `há ${Math.round(s/86400)} d`}
-const isOnline=a=>!!a.lastSeen&&!a.finishedAt&&Date.now()-new Date(a.lastSeen)<130000;
+const isOnline=a=>!!a.lastSeen&&Date.now()-new Date(a.lastSeen)<130000;
 const digits=c=>(c||'').replace(/\D/g,'');
 function fmtCpf(c){c=digits(c);return c.length===11?`${c.slice(0,3)}.${c.slice(3,6)}.${c.slice(6,9)}-${c.slice(9)}`:c}
 function maskCpf(c){c=digits(c);return c.length===11?`***.${c.slice(3,6)}.${c.slice(6,9)}-**`:c}
 function cpfOk(c){c=digits(c);if(c.length!==11||/^(\d)\1+$/.test(c))return false;const d=n=>{let s=0;for(let i=0;i<n;i++)s+=+c[i]*(n+1-i);const r=s*10%11;return r===10?0:r};return d(9)===+c[9]&&d(10)===+c[10]}
 function pctFrom(units,id){const ks=keysOf(M[idx(id)]);const u=(units&&units[id])||{};return ks.length?Math.round(ks.filter(k=>u[k]).length/ks.length*100):0}
-function overallPct(st){let t=0;M.forEach(m=>{t+=0.5*pctFrom(st.units,m.id)/100+((st.passed||{})[m.id]?0.5:0)});return Math.round(t/M.length*100)}
-function summaryOf(st){const sc=st.score||{};const notas=M.map(m=>sc[m.id]).filter(v=>v!=null).map(v=>Math.round(v*100));const media=notas.length?Math.round(notas.reduce((a,b)=>a+b,0)/notas.length):0;const tot=Object.values(st.secs||{}).reduce((a,b)=>a+b,0);return{media,notaFinal:sc.m12!=null?Math.round(sc.m12*100):null,minutos:Math.round(tot/60),aprovado:!!(st.passed&&st.passed.m12)}}
+function overallPct(st,stage){const L=inStage(stage||1);let t=0;L.forEach(m=>{t+=0.5*pctFrom(st.units,m.id)/100+((st.passed||{})[m.id]?0.5:0)});return Math.round(t/L.length*100)}
+const started2=st=>inStage(2).some(m=>pctFrom(st.units,m.id)>0||(st.attempts||{})[m.id]);
+function summaryOf(st){const sc=st.score||{};const notas=M.map(m=>sc[m.id]).filter(v=>v!=null).map(v=>Math.round(v*100));const media=notas.length?Math.round(notas.reduce((a,b)=>a+b,0)/notas.length):0;const tot=Object.values(st.secs||{}).reduce((a,b)=>a+b,0);const ok2=((st.attempts||{}).a20||[]).filter(t=>t.pct>=Math.round(PASS*100));
+ return{media,notaFinal:sc.m12!=null?Math.round(sc.m12*100):null,minutos:Math.round(tot/60),aprovado:!!(st.passed&&st.passed.m12),notaFinal2:sc.a20!=null?Math.round(sc.a20*100):null,aprovado2:!!(st.passed&&st.passed.a20),fim2:ok2.length?ok2[0].at:null}}
 function totals(st){let r=0,t=0;Object.values(st.stats||{}).forEach(x=>{r+=x.r;t+=x.t});return{r,t}}
-function rowsOf(st){return M.map((m,i)=>{const sc=st.score&&st.score[m.id],ss=st.stats&&st.stats[m.id];return{n:i+1,titulo:m.title,nota:sc!=null?Math.round(sc*100):null,tent:((st.attempts||{})[m.id]||[]).length,seg:(st.secs||{})[m.id]||0,cont:pctFrom(st.units,m.id),r:ss?ss.r:0,t:ss?ss.t:0}})}
+function rowsOf(st){return M.map((m,i)=>{const sc=st.score&&st.score[m.id],ss=st.stats&&st.stats[m.id];return{n:i+1,cod:cod(m.id),titulo:m.title,nota:sc!=null?Math.round(sc*100):null,tent:((st.attempts||{})[m.id]||[]).length,seg:(st.secs||{})[m.id]||0,cont:pctFrom(st.units,m.id),r:ss?ss.r:0,t:ss?ss.t:0}})}
 function emailOf(a){const s=summaryOf(a),rows=rowsOf(a);
- const linhas=rows.map(r=>`${String(r.n).padStart(2,'0')}. ${r.titulo} | nota ${fmtNotaFull(r.nota)} | ${r.tent} tentativa(s) | ${fmtMin(r.seg)}`).join('\n');
+ const linhas=rows.filter(r=>M[r.n-1].stage===1||started2(a)).map(r=>`${r.cod}. ${r.titulo} | nota ${fmtNotaFull(r.nota)} | ${r.tent} tentativa(s) | ${fmtMin(r.seg)}`).join('\n');
  return{para:a.email||'',assunto:`Resumo do treinamento NR-35 - ${a.nome}`,
- corpo:`Olá, ${a.nome}.\n\nSegue o resumo do seu treinamento NR-35 – Trabalho em Altura (12 horas).\n\nResultado: ${s.aprovado?'APROVADO':'EM ANDAMENTO / NÃO APROVADO'}\nNota da avaliação final: ${fmtNotaFull(s.notaFinal)}\nMédia das avaliações dos módulos: ${fmtNotaFull(s.media)}\nTempo de estudo na plataforma: ${fmtMin(s.minutos*60)}\nInício: ${fmtDate(a.registeredAt)}\nConclusão: ${fmtDate(a.finishedAt)}\nCPF: ${maskCpf(a.cpf)}\n\nDesempenho por módulo:\n${linhas}\n\nGuarde este resumo como comprovante do treinamento.`}}
+ corpo:`Olá, ${a.nome}.\n\nSegue o resumo do seu treinamento NR-35 – Trabalho em Altura.\n\nEtapa 1 (12 horas): ${s.aprovado?'APROVADO':'EM ANDAMENTO / NÃO APROVADO'}\nNota da avaliação final da etapa 1: ${fmtNotaFull(s.notaFinal)}\n${started2(a)?`Etapa 2 - avançada (20 horas): ${s.aprovado2?'APROVADO':'EM ANDAMENTO / NÃO APROVADO'}\nNota da avaliação avançada: ${fmtNotaFull(s.notaFinal2)}\nConclusão da etapa 2: ${fmtDate(s.fim2)}\n`:''}Média das avaliações dos módulos: ${fmtNotaFull(s.media)}\nTempo de estudo na plataforma: ${fmtMin(s.minutos*60)}\nInício: ${fmtDate(a.registeredAt)}\nConclusão da etapa 1: ${fmtDate(a.finishedAt)}\nCPF: ${maskCpf(a.cpf)}\n\nDesempenho por módulo:\n${linhas}\n\nGuarde este resumo como comprovante do treinamento.`}}
 function resumoTxt(a){const e=emailOf(a);return `RESUMO DO TREINAMENTO NR-35\n\n${e.corpo.split('\n').slice(2).join('\n')}\nParticipante: ${a.nome}\nE-mail: ${a.email||'—'}`}
 
 /* ======================= SUPABASE: sessão, dados e sincronização ======================= */
@@ -709,10 +1120,11 @@ function loadAluno(d){ME={nome:d.nome,cpf:d.cpf,email:d.email,registeredAt:d.reg
 /* ======================= RESUMO ======================= */
 function resumoBloco(a){const s=summaryOf(a),rows=rowsOf(a),tt=totals(a);
  const w=h('div',{class:'block'},h('span',{class:'tag'},'Resumo'),h('h3',{},'Desempenho no treinamento'));
- w.append(h('div',{class:'result '+(s.aprovado?'pass':'fail')},h('strong',{},s.notaFinal==null?'—':fmtNota(s.notaFinal)),h('p',{},`Nota da avaliação final${s.notaFinal==null?'':' ('+s.notaFinal+'%)'} · ${s.aprovado?'Aprovado':'Ainda não aprovado'}`)));
- w.append(h('div',{class:'res'},[['Média das avaliações',fmtNota(s.media)],['Tempo de estudo',fmtMin(s.minutos*60)],['Atividades certas',tt.t?`${tt.r} de ${tt.t}`:'—'],['Início',fmtDate(a.registeredAt)],['Conclusão',fmtDate(a.finishedAt)]].map(([k,v])=>h('div',{},h('small',{},k),h('strong',{style:'font-size:1.4rem'},v)))));
+ w.append(h('div',{class:'result '+(s.aprovado?'pass':'fail')},h('strong',{},s.notaFinal==null?'—':fmtNota(s.notaFinal)),h('p',{},`Etapa 1 · nota da avaliação final${s.notaFinal==null?'':' ('+s.notaFinal+'%)'} · ${s.aprovado?'Aprovado':'Ainda não aprovado'}`)));
+ if(started2(a))w.append(h('div',{class:'result '+(s.aprovado2?'pass':'fail')},h('strong',{},s.notaFinal2==null?'—':fmtNota(s.notaFinal2)),h('p',{},`Etapa 2 (avançada) · nota da avaliação avançada${s.notaFinal2==null?'':' ('+s.notaFinal2+'%)'} · ${s.aprovado2?'Aprovado em '+fmtDate(s.fim2):'Em andamento'}`)));
+ w.append(h('div',{class:'res'},[['Média das avaliações',fmtNota(s.media)],['Tempo de estudo',fmtMin(s.minutos*60)],['Atividades certas',tt.t?`${tt.r} de ${tt.t}`:'—'],['Início',fmtDate(a.registeredAt)],['Conclusão da etapa 1',fmtDate(a.finishedAt)]].map(([k,v])=>h('div',{},h('small',{},k),h('strong',{style:'font-size:1.4rem'},v)))));
  w.append(h('div',{class:'tbl',style:'margin-top:16px'},h('table',{},h('thead',{},h('tr',{},['#','Módulo','Conteúdo','Avaliação','Tentativas','Atividades certas','Tempo'].map(t=>h('th',{},t)))),
-  h('tbody',{},rows.map(r=>h('tr',{},h('td',{class:'n'},String(r.n).padStart(2,'0')),h('td',{},r.titulo),h('td',{class:'n'},r.cont+'%'),h('td',{class:'n'},fmtNotaFull(r.nota)),h('td',{class:'n'},String(r.tent)),h('td',{class:'n'},r.t?`${r.r}/${r.t}`:'—'),h('td',{class:'n'},fmtMin(r.seg))))))));
+  h('tbody',{},rows.filter(r=>M[r.n-1].stage===1||started2(a)).map(r=>h('tr',{},h('td',{class:'n'},r.cod),h('td',{},r.titulo),h('td',{class:'n'},r.cont+'%'),h('td',{class:'n'},fmtNotaFull(r.nota)),h('td',{class:'n'},String(r.tent)),h('td',{class:'n'},r.t?`${r.r}/${r.t}`:'—'),h('td',{class:'n'},fmtMin(r.seg))))))));
  return w}
 function renderResumo(){CUR=null;drawNav('resumo');drawTop();const m=$('#main');m.innerHTML='';const a=Object.assign({},ME,S);
  m.append(h('div',{class:'mhead'},h('div',{class:'kick'},a.finishedAt?'Treinamento concluído':'Treinamento em andamento'),h('h1',{},'Resumo do seu treinamento'),h('p',{},`Participante: ${ME.nome}. CPF ${maskCpf(ME.cpf)}.`)));
@@ -730,29 +1142,31 @@ async function loadAlunos(){if(!SB)return;
 async function loadResp(id){const{data}=await SB.from('respostas').select('modulo,pergunta,correta,criado_em').eq('user_id',id).order('criado_em',{ascending:false}).limit(300);RESP[id]=data||[]}
 function showPanel(){MODE='panel';CUR=null;$('#main').innerHTML='';drawNav('panel');drawTop();drawPanel();loadAlunos();
  if(!panelT)panelT=setInterval(()=>{if(MODE==='panel'&&!document.hidden)loadAlunos()},10000)}
-function chip(a){return a.finishedAt?h('span',{class:'chip fin'},a.passed&&a.passed.m12?'Aprovado':'Concluído'):isOnline(a)?h('span',{class:'chip on'},'Online'):h('span',{class:'chip'},'Offline')}
+function chip(a){const p=a.passed||{};const st=p.a20?'Etapa 2 aprovada':p.m12?'Etapa 1 aprovada':a.finishedAt?'Concluído':'';
+ return h('span',{},isOnline(a)?h('span',{class:'chip on'},'Online'):h('span',{class:'chip'},'Offline'),st?' ':null,st?h('span',{class:'chip fin'},st):null)}
 function drawPanel(){if(MODE!=='panel')return;const m=$('#main');const sy=window.scrollY;m.innerHTML='';drawTop();
  const sel=SEL&&ALUNOS.find(a=>a.id===SEL);if(sel)return drawDetalhe(sel,sy);SEL=null;
  m.append(h('div',{class:'mhead'},h('div',{class:'kick'},'Acompanhamento ao vivo · atualiza a cada 10 segundos'),h('h1',{},'Painel do instrutor')));
  if(PANELERR)m.append(h('div',{class:'note warn'},PANELERR));
  if(!LOADED){m.append(h('p',{},'Carregando participantes...'));return}
- const on=ALUNOS.filter(isOnline).length,fin=ALUNOS.filter(a=>a.finishedAt).length,ap=ALUNOS.filter(a=>a.passed&&a.passed.m12).length;
+ const on=ALUNOS.filter(isOnline).length,ap=ALUNOS.filter(a=>a.passed&&a.passed.m12).length,ap2=ALUNOS.filter(a=>a.passed&&a.passed.a20).length,em2=ALUNOS.filter(a=>started2(a)&&!(a.passed&&a.passed.a20)).length;
  const notas=ALUNOS.map(a=>summaryOf(a).notaFinal).filter(v=>v!=null);const mediaF=notas.length?Math.round(notas.reduce((x,y)=>x+y,0)/notas.length):null;
- m.append(h('div',{class:'res',style:'margin-bottom:20px'},[['Registrados',ALUNOS.length],['Online agora',on],['Concluídos',fin],['Aprovados',ap],['Média da prova final',mediaF==null?'—':fmtNota(mediaF)]].map(([k,v])=>h('div',{},h('small',{},k),h('strong',{},String(v))))));
+ m.append(h('div',{class:'res',style:'margin-bottom:20px'},[['Registrados',ALUNOS.length],['Online agora',on],['Aprovados etapa 1',ap],['Média prova etapa 1',mediaF==null?'—':fmtNota(mediaF)],['Na etapa 2',em2],['Aprovados etapa 2',ap2]].map(([k,v])=>h('div',{},h('small',{},k),h('strong',{},String(v))))));
  if(!ALUNOS.length){m.append(h('div',{class:'block'},h('h3',{},'Nenhum participante registrado ainda'),h('p',{},'Envie o endereço do site ao colaborador. Ele cria a conta, informa nome e CPF e começa o curso.')));return}
  const sorted=[...ALUNOS].sort((a,b)=>(isOnline(b)-isOnline(a))||String(b.lastSeen).localeCompare(String(a.lastSeen)));
- const rows=sorted.map(a=>{const p=overallPct(a),s=summaryOf(a),tt=totals(a),cm=a.current?M.find(x=>x.id===a.current):null;
+ const rows=sorted.map(a=>{const p=overallPct(a),p2=overallPct(a,2),s=summaryOf(a),tt=totals(a),cm=a.current?M.find(x=>x.id===a.current):null;
   return h('tr',{},h('td',{},h('button',{class:'rowbtn',type:'button',onclick:async()=>{SEL=a.id;SHOWCPF=false;await loadResp(a.id);drawPanel();window.scrollTo(0,0)}},a.nome||'(sem nome)'),h('div',{class:'n',style:'font-size:.8rem;color:var(--muted)'},maskCpf(a.cpf))),
-   h('td',{},chip(a)),h('td',{},cm?`${idx(cm.id)+1}. ${cm.title}`:'—'),
-   h('td',{style:'min-width:130px'},h('div',{style:'display:flex;gap:8px;align-items:center'},h('div',{class:'mini',style:'flex:1'},h('i',{style:`width:${p}%`})),h('span',{class:'n'},p+'%'))),
+   h('td',{},chip(a)),h('td',{},cm?`${cod(cm.id)}. ${cm.title}`:'—'),
+   h('td',{style:'min-width:130px'},h('div',{style:'display:flex;gap:8px;align-items:center'},h('div',{class:'mini',style:'flex:1'},h('i',{style:`width:${p}%`})),h('span',{class:'n'},'E1 '+p+'%')),
+    started2(a)?h('div',{style:'display:flex;gap:8px;align-items:center;margin-top:4px'},h('div',{class:'mini',style:'flex:1'},h('i',{style:`width:${p2}%`})),h('span',{class:'n'},'E2 '+p2+'%')):null),
    h('td',{class:'n'},tt.t?`${tt.r}/${tt.t}`:'—'),h('td',{class:'n'},fmtMin(s.minutos*60)),
-   h('td',{class:'n'},s.notaFinal!=null?fmtNota(s.notaFinal):(Object.keys(a.score||{}).length?'média '+fmtNota(s.media):'—')),h('td',{},agoTxt(a.lastSeen)))});
+   h('td',{class:'n'},s.notaFinal!=null?fmtNota(s.notaFinal)+(s.notaFinal2!=null?' · E2 '+fmtNota(s.notaFinal2):''):(Object.keys(a.score||{}).length?'média '+fmtNota(s.media):'—')),h('td',{},agoTxt(a.lastSeen)))});
  const bx=h('button',{class:'act alt',type:'button',onclick:()=>baixar('nr35-participantes.csv',csvAll(),bx)},'Baixar planilha (.csv)');
  m.append(h('div',{class:'block'},h('h3',{},'Participantes'),h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['Participante','Situação','Módulo atual','Progresso','Respostas certas','Tempo','Nota','Última atividade'].map(t=>h('th',{},t)))),h('tbody',{},rows))),bx));
  window.scrollTo(0,sy)}
 function csvAll(){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
- const head=['Nome','CPF','E-mail','Registro','Conclusão','Progresso %','Situação','Nota final %','Média %','Tempo (min)','Respostas certas','Respostas totais',...M.map((x,i)=>'Módulo '+(i+1)+' %')];
- const rows=ALUNOS.map(a=>{const s=summaryOf(a),tt=totals(a);return[a.nome,fmtCpf(a.cpf),a.email,fmtDate(a.registeredAt),a.finishedAt?fmtDate(a.finishedAt):'',overallPct(a),a.finishedAt?(s.aprovado?'Aprovado':'Concluído'):'Em andamento',s.notaFinal,a.finishedAt?s.media:'',s.minutos,tt.r,tt.t,...M.map(x=>a.score&&a.score[x.id]!=null?Math.round(a.score[x.id]*100):'')]});
+ const head=['Nome','CPF','E-mail','Registro','Conclusão','Progresso %','Situação','Nota final %','Média %','Tempo (min)','Respostas certas','Respostas totais','Progresso etapa 2 %','Situação etapa 2','Nota final etapa 2 %','Conclusão etapa 2',...M.map(x=>'Módulo '+cod(x.id)+' %')];
+ const rows=ALUNOS.map(a=>{const s=summaryOf(a),tt=totals(a);return[a.nome,fmtCpf(a.cpf),a.email,fmtDate(a.registeredAt),a.finishedAt?fmtDate(a.finishedAt):'',overallPct(a),a.finishedAt?(s.aprovado?'Aprovado':'Concluído'):'Em andamento',s.notaFinal,a.finishedAt?s.media:'',s.minutos,tt.r,tt.t,overallPct(a,2),s.aprovado2?'Aprovado':started2(a)?'Em andamento':'Não iniciada',s.notaFinal2,s.fim2?fmtDate(s.fim2):'',...M.map(x=>a.score&&a.score[x.id]!=null?Math.round(a.score[x.id]*100):'')]});
  return '﻿'+[head,...rows].map(r=>r.map(q).join(';')).join('\n')}
 function drawDetalhe(a,sy){const m=$('#main');const s=summaryOf(a);
  m.append(h('button',{class:'act alt',type:'button',style:'margin:0 0 16px',onclick:()=>{SEL=null;drawPanel()}},'Voltar à lista'));
@@ -762,12 +1176,13 @@ function drawDetalhe(a,sy){const m=$('#main');const s=summaryOf(a);
   h('div',{},h('small',{},'CPF'),h('strong',{style:'font-size:1.3rem'},SHOWCPF?fmtCpf(a.cpf):maskCpf(a.cpf)),cpfB),
   h('div',{},h('small',{},'E-mail'),h('strong',{style:'font-size:1.1rem;word-break:break-all'},a.email||'—')),
   h('div',{},h('small',{},'Registro'),h('strong',{style:'font-size:1.3rem'},fmtDate(a.registeredAt))),
-  h('div',{},h('small',{},'Progresso do curso'),h('strong',{},overallPct(a)+'%')))));
+  h('div',{},h('small',{},'Progresso etapa 1'),h('strong',{},overallPct(a)+'%')),
+  h('div',{},h('small',{},'Progresso etapa 2'),h('strong',{},overallPct(a,2)+'%')))));
  m.append(resumoBloco(a));
  const hist=[];Object.keys(a.attempts||{}).forEach(id=>(a.attempts[id]||[]).forEach(t=>hist.push(Object.assign({id},t))));hist.sort((x,y)=>String(y.at).localeCompare(String(x.at)));
- m.append(h('div',{class:'block'},h('h3',{},'Histórico de avaliações'),hist.length?h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['Quando','Módulo','Acertos','Resultado'].map(t=>h('th',{},t)))),h('tbody',{},hist.map(t=>h('tr',{},h('td',{},fmtDate(t.at)),h('td',{},`${idx(t.id)+1}. ${M[idx(t.id)].title}`),h('td',{class:'n'},`${t.pts}/${t.total} (${t.pct}%)`),h('td',{},t.pct>=Math.round(PASS*100)?'Aprovado':'Reprovado')))))):h('p',{},'Nenhuma avaliação feita ainda.')));
+ m.append(h('div',{class:'block'},h('h3',{},'Histórico de avaliações'),hist.length?h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['Quando','Módulo','Acertos','Resultado'].map(t=>h('th',{},t)))),h('tbody',{},hist.map(t=>h('tr',{},h('td',{},fmtDate(t.at)),h('td',{},idx(t.id)<0?t.id:`${cod(t.id)}. ${M[idx(t.id)].title}`),h('td',{class:'n'},`${t.pts}/${t.total} (${t.pct}%)`),h('td',{},t.pct>=Math.round(PASS*100)?'Aprovado':'Reprovado')))))):h('p',{},'Nenhuma avaliação feita ainda.')));
  const rs=RESP[a.id]||[];
- m.append(h('div',{class:'block'},h('h3',{},'Respostas recentes'),h('p',{},'As 300 últimas perguntas respondidas, da mais nova para a mais antiga.'),rs.length?h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['Quando','Módulo','Pergunta','Resultado'].map(t=>h('th',{},t)))),h('tbody',{},rs.map(r=>{const i=idx(r.modulo);return h('tr',{},h('td',{},fmtDate(r.criado_em)),h('td',{class:'n'},i>=0?String(i+1).padStart(2,'0'):r.modulo),h('td',{},r.pergunta),h('td',{},r.correta?'Certa':'Errada'))})))):h('p',{},'Nenhuma resposta registrada ainda.')));
+ m.append(h('div',{class:'block'},h('h3',{},'Respostas recentes'),h('p',{},'As 300 últimas perguntas respondidas, da mais nova para a mais antiga.'),rs.length?h('div',{class:'tbl'},h('table',{},h('thead',{},h('tr',{},['Quando','Módulo','Pergunta','Resultado'].map(t=>h('th',{},t)))),h('tbody',{},rs.map(r=>{const i=idx(r.modulo);return h('tr',{},h('td',{},fmtDate(r.criado_em)),h('td',{class:'n'},i>=0?cod(r.modulo):r.modulo),h('td',{},r.pergunta),h('td',{},r.correta?'Certa':'Errada'))})))):h('p',{},'Nenhuma resposta registrada ainda.')));
  const em=emailOf(a);
  const box=h('div',{class:'block'},h('h3',{},'E-mail com o resumo'),h('p',{},a.finishedAt?'Texto pronto para enviar ao participante.':'O treinamento ainda não foi concluído. O texto abaixo mostra o resumo até agora.'),
   h('p',{class:'n'},`Para: ${em.para||'—'}`),h('p',{class:'n'},`Assunto: ${em.assunto}`),h('pre',{class:'mail'},em.corpo));
