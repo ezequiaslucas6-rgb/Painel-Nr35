@@ -862,13 +862,13 @@ function keysOf(mod){const k=[];mod.blocks.forEach((b,i)=>{if(['text','cards','o
 function missing(id){const u=S.units[id]||{};return keysOf(M[idx(id)]).filter(k=>!u[k]).length}
 function pctOf(id){const ks=keysOf(M[idx(id)]);return ks.length?Math.round((ks.length-missing(id))/ks.length*100):0}
 function firstOpen(){const i=M.findIndex(x=>!S.passed[x.id]);return i<0?M.length-1:i}
-function unlocked(i){return i<=firstOpen()}
+function unlocked(i){return ISOWNER||i<=firstOpen()} // instrutor navega sem travas
 let CUR=null,NOTICE='';
 function unit(id,key){const u=S.units[id]=S.units[id]||{};if(u[key])return;u[key]=true;save();if(CUR===id)refreshProg()}
 function refreshProg(){if(!CUR)return;const p=pctOf(CUR);const a=$('#mpct'),b=$('#mbar');if(a){a.textContent=p+'%';b.style.width=p+'%'}
  const st=$('#mstat');if(st)st.textContent=evalStatus(CUR);drawTop();drawNav(CUR);
  const box=$('#evalbox');if(box&&p===100&&box.dataset.open!=='1')box._draw()}
-function evalStatus(id){if(S.passed[id])return `Avaliação: aprovado com ${Math.round(S.score[id]*100)}%`;return pctOf(id)===100?'Avaliação: liberada':`Avaliação: bloqueada até 100% do conteúdo (faltam ${missing(id)} atividades)`}
+function evalStatus(id){if(ISOWNER&&!S.passed[id])return 'Avaliação: liberada (acesso do instrutor, sem travas)';if(S.passed[id])return `Avaliação: aprovado com ${Math.round(S.score[id]*100)}%`;return pctOf(id)===100?'Avaliação: liberada':`Avaliação: bloqueada até 100% do conteúdo (faltam ${missing(id)} atividades)`}
 
 /* ======================= RENDERIZADORES ======================= */
 function readBtn(mod,key){const done=(S.units[mod]||{})[key];const b=h('button',{class:'act alt rd'+(done?' done':''),type:'button',onclick:()=>{unit(mod,key);b.classList.add('done');b.textContent='Lido';b.disabled=true}},done?'Lido':'Marcar como lido');if(done)b.disabled=true;return b}
@@ -926,7 +926,7 @@ function evalSection(modId){
  const box=h('div',{class:'block evalbox',id:'evalbox'});
  function head(){box.append(h('span',{class:'tag'},final?'Avaliação final':'Avaliação do módulo'),h('h3',{},final?(adv?'Avaliação avançada NR-35 (etapa 2)':'Avaliação NR-35 (etapa 1)'):`Avaliação do módulo ${cod(modId)}`))}
  function draw(retake){box.innerHTML='';head();
-  if(pctOf(modId)<100){box.dataset.open='0';box.classList.add('locked');box.append(h('p',{},`Bloqueada. Conclua 100% do conteúdo deste módulo para liberar a avaliação. Faltam ${missing(modId)} atividades.`));return}
+  if(pctOf(modId)<100&&!ISOWNER){box.dataset.open='0';box.classList.add('locked');box.append(h('p',{},`Bloqueada. Conclua 100% do conteúdo deste módulo para liberar a avaliação. Faltam ${missing(modId)} atividades.`));return}
   box.dataset.open='1';box.classList.remove('locked');
   if(S.passed[modId]&&!retake){box.append(h('div',{class:'result pass'},h('strong',{},`${Math.round(S.score[modId]*100)}%`),h('p',{},'Módulo aprovado.')),h('button',{class:'act alt',type:'button',onclick:()=>draw(true)},'Refazer avaliação'));return}
   const ans={};
@@ -1005,7 +1005,7 @@ function renderHome(){CUR=null;drawTop();const m=$('#main');m.innerHTML='';
  const rst=h('button',{class:'act alt',type:'button',style:'margin-left:8px',onclick:()=>{if(rst.dataset.c!=='1'){rst.dataset.c='1';rst.textContent='Clique de novo para apagar todo o progresso';return}S={units:{},passed:{},score:{},inst:S.inst};save();render('home')}},'Reiniciar progresso');
  m.append(h('button',{class:'act',type:'button',onclick:()=>go(first.id)},Object.keys(S.passed).length?`Continuar no módulo ${cod(first.id)}`:'Começar pelo módulo 1'),MODE==='aluno'?null:rst)}
 function drawFoot(){const f=$('#foot');if(!f)return;const i=idx(CUR),mod=M[i];f.innerHTML='';
- const nextOk=!!S.passed[mod.id];
+ const nextOk=ISOWNER||!!S.passed[mod.id];
  f.append(h('div',{class:'sc',id:'sc'},scoreTxt(mod.id)),h('div',{class:'row'},i>0?h('button',{class:'act alt',type:'button',onclick:()=>go(M[i-1].id)},'Anterior'):null,
   i<M.length-1?h('button',{class:'act'+(nextOk?'':' alt'),type:'button',disabled:nextOk?null:'',onclick:()=>go(M[i+1].id)},nextOk?'Próximo módulo':'Próximo (bloqueado)'):null))}
 function render(id){
@@ -1014,10 +1014,11 @@ function render(id){
  if(id==='resumo'&&MODE==='aluno')return renderResumo();
  if(['reg','block','boot','auth','newpass'].includes(MODE))return;
  let i=idx(id);if(id==='home'||i<0){drawNav('home');return renderHome()}
- NOTICE='';const k=firstOpen();if(i>k){NOTICE='Este módulo está bloqueado. Conclua e seja aprovado na avaliação do módulo anterior.';i=k;id=M[k].id}
+ NOTICE='';const k=firstOpen();if(i>k&&!ISOWNER){NOTICE='Este módulo está bloqueado. Conclua e seja aprovado na avaliação do módulo anterior.';i=k;id=M[k].id}
  CUR=id;S.current=id;save();const mod=M[i];drawNav(id);drawTop();const m=$('#main');m.innerHTML='';
  const inDay=M.filter(x=>x.day===mod.day),inSt=inStage(mod.stage),p=pctOf(id);
  if(NOTICE)m.append(h('div',{class:'note warn'},NOTICE));
+ if(ISOWNER)m.append(h('div',{class:'note'},h('strong',{},'Acesso do instrutor: '),'todos os módulos e avaliações estão liberados, sem travas. As respostas feitas aqui não entram no painel nem no progresso dos colaboradores.'));
  m.append(h('div',{class:'mhead'},h('div',{class:'kick'},`Etapa ${mod.stage} · Dia ${mod.day} · Hora ${inDay.indexOf(mod)+1} de ${inDay.length} · Módulo ${inSt.indexOf(mod)+1} de ${inSt.length}`),h('h1',{},mod.title),h('p',{},mod.sub),
   h('div',{class:'mprog'},h('div',{class:'mrow'},h('span',{},'Conteúdo do módulo'),h('strong',{id:'mpct'},p+'%')),h('div',{class:'bar2'},h('i',{id:'mbar',style:`width:${p}%`})),h('div',{class:'mrow sm',id:'mstat'},evalStatus(id)))));
  if(S.inst&&(ISOWNER||MODE==='local'))m.append(h('div',{class:'inst'},h('h3',{},'Roteiro do instrutor (60 min)'),h('ul',{},mod.inst.map(t=>h('li',{},t)))));
