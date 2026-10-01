@@ -148,6 +148,14 @@ td.n{font-family:var(--f-mono)}
 .reg{display:grid;gap:14px;max-width:560px} .reg label{display:grid;gap:4px;font-size:.9rem;color:var(--muted)}
 .reg input[type=text],.reg input[type=email]{font:inherit;padding:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
 .err{color:var(--bad);font-size:.9rem;margin:0;min-height:1.2em}
+/* Pop-up de comemoração ao concluir um módulo */
+.pop{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:rgba(8,16,24,.6)}
+.pop-box{position:relative;background:var(--surface);color:var(--ink);border:3px solid var(--accent);max-width:460px;width:100%;padding:28px 24px 22px;text-align:center;box-shadow:0 18px 48px rgba(0,0,0,.35);animation:popin .35s ease-out}
+.pop-box::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:repeating-linear-gradient(-45deg,var(--accent) 0 10px,#111 10px 20px)}
+.pop-box .ic{font-size:3rem;line-height:1;margin-bottom:8px}
+.pop-box h2{font-size:clamp(1.8rem,7vw,2.6rem);text-transform:uppercase;letter-spacing:.02em;margin-bottom:8px}
+.pop-box p{margin:0 0 4px;color:var(--muted)}
+@keyframes popin{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
 pre.mail{white-space:pre-wrap;word-break:break-word;background:var(--bg);border:1px solid var(--line);padding:12px;font:400 .85rem/1.5 var(--f-mono);overflow:auto}
 @media(max-width:860px){
   .wrap{grid-template-columns:minmax(0,1fr);gap:16px;padding-block:20px 48px}
@@ -947,6 +955,7 @@ function evalSection(modId){
     pass?null:h('button',{class:'act alt',type:'button',onclick:()=>draw(true)},'Tentar novamente')));
    btn.disabled=true;
    (S.attempts[modId]=S.attempts[modId]||[]).push({pct:Math.round(pct*100),pts,total:qs.length,at:new Date().toISOString()});
+   if(pass)comemorar(modId);
    if(pass){S.passed[modId]=true;S.score[modId]=pct;if(final){if(modId==='m12')S.finishedAt=new Date().toISOString();S.summary=summaryOf(S)}}
    save();drawTop();drawNav(modId);drawFoot();
    if(pass&&final&&MODE==='aluno'){push();out.append(h('button',{class:'act',type:'button',onclick:()=>go('resumo')},'Ver resumo do treinamento'))}
@@ -954,6 +963,15 @@ function evalSection(modId){
    out.scrollIntoView({behavior:'smooth',block:'nearest'})}},'Corrigir avaliação');
   box.append(btn,out)}
  box._draw=draw;draw();return box}
+
+function comemorar(modId){const old=$('#pop');if(old)old.remove();const back=document.activeElement;
+ const close=()=>{pop.remove();document.removeEventListener('keydown',esc);if(back&&back.focus)back.focus()};
+ const esc=e=>{if(e.key==='Escape')close()};
+ const ok=h('button',{class:'act',type:'button',onclick:close},'Continuar');
+ const pop=h('div',{class:'pop',id:'pop',role:'dialog','aria-modal':'true','aria-labelledby':'popT',onclick:e=>{if(e.target===pop)close()}},
+  h('div',{class:'pop-box'},h('div',{class:'ic','aria-hidden':'true'},'🏆'),h('h2',{id:'popT'},'ISSO AI CUIUDOOO BORA PRA CIMA!!!'),
+   h('p',{},`Módulo ${cod(modId)} concluído: ${M[idx(modId)].title}`),ok));
+ document.body.append(pop);document.addEventListener('keydown',esc);ok.focus()}
 
 /* ======================= PÁGINAS ======================= */
 function drawTop(){const p=$('#prog');const st=CUR?stageOf(CUR):M[firstOpen()].stage,L=inStage(st);const n=L.filter(m=>S.passed[m.id]).length;p.innerHTML='';
